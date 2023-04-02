@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  // provider = "sqlite"
+  // url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String      @id @default(cuid())
+  name     String
+  password String
+  email    String      @unique
+  image    String?
+  accounts CxAccount[]
+}
+
+model CxAccount {
+  uid           String    @id @unique
+  username      String
+  password      String
+  cookies       Json[]
+  info          Json
+  lastLoginTime DateTime
+  courses       Course[]
+  signlogs      SignLog[]
+  setting       Json
+  User          User      @relation(fields: [userId], references: [id])
+  userId        String
+}
+
+model Course {
+  id       String      @id @unique
+  name     String
+  courseId String
+  classId  String
+  image    String
+  link     String
+  accounts CxAccount[]
+}
+
+model SignLog {
+  id         String    @id @default(cuid())
+  activityId String
+  isSigned     Boolean   @default(false)
+  result     String
+  time       DateTime
+  accounts   CxAccount @relation(fields: [accountId], references: [uid])
+  accountId  String
+}

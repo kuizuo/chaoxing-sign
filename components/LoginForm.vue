@@ -1,0 +1,96 @@
+<script setup lang="ts">
+import { createDiscreteApi } from 'naive-ui'
+const emit = defineEmits(['success'])
+
+const { signIn, getProviders } = useSession()
+
+const providers = await getProviders()
+const { message } = createDiscreteApi(['message'])
+
+const accountStore = useAccountStore()
+const loading = ref(false)
+const form = ref({
+  username: '',
+  password: '',
+})
+
+async function login() {
+  loading.value = true
+  const { error, url } = await signIn('credentials', {
+    ...form.value,
+    redirect: true,
+  })
+  loading.value = false
+
+  if (error) {
+    message.error(error)
+    return
+  }
+
+  message.success('登录成功')
+
+  await accountStore.syncAccounts()
+
+  emit('success')
+
+  if (url)
+    return navigateTo(url, { external: true })
+
+  else
+    return navigateTo('/', { external: true })
+}
+</script>
+
+<template>
+  <div class="text-left">
+    <n-spin :show="loading">
+      <div class="flex bg-cover">
+        <div class="flex flex-col gap-2 justify-center items-center mx-auto">
+          <div class="text-center text-2xl font-semibold mb-4">
+            Login
+          </div>
+          <n-form ref="formRef" :model="form" :show-label="false">
+            <n-form-item label="账号" path="form.username">
+              <n-input v-model:value="form.username" placeholder="账号">
+                <template #prefix>
+                  <i i-ri:user-3-line />
+                </template>
+              </n-input>
+            </n-form-item>
+            <n-form-item label="密码" path="form.password">
+              <n-input
+                v-model:value="form.password" type="password" show-password-on="mousedown" placeholder="密码"
+                :maxlength="16" @keyup.enter="login()"
+              >
+                <template #prefix>
+                  <i i-ri:lock-2-line />
+                </template>
+              </n-input>
+            </n-form-item>
+            <n-form-item>
+              <n-button type="primary" w-full @click="login()">
+                登录
+              </n-button>
+            </n-form-item>
+          </n-form>
+          <div
+            v-if="Object.keys(providers).length > 1"
+            class="w-full flex my-2 -mt-4 text-center truncate before:(content-none relative top-50% w-50% translate-y-50% h-0 b-t-1 b-gray-2 dark:b-gray-7) after:(content-none relative top-50% w-50% translate-y-50% h-0 b-t-1 b-gray-2 dark:b-gray-7)"
+          >
+            <span px-2 text-gray-4 text-sm>or</span>
+          </div>
+          <div class="space-y-4 w-full">
+            <n-button v-if="providers.github" class="w-full flex" @click="signIn('github')">
+              <i i-ri-github-line text-lg mr-1 />
+              Sign in with Github
+            </n-button>
+          </div>
+        </div>
+      </div>
+    </n-spin>
+  </div>
+</template>
+
+<style scoped>
+
+</style>

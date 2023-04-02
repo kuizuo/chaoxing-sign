@@ -1,0 +1,6 @@
+{
+  "extends": "@kuizuo",
+  "rules": {
+    "no-console": "off"
+  }
+}

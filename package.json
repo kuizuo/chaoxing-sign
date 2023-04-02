@@ -1,0 +1,69 @@
+{
+  "name": "chaoxing-sign",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@7.14.0",
+  "author": {
+    "url": "https://kuizuo.cn",
+    "name": "Kuizuo"
+  },
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/kuizuo/chaoxing-sign",
+    "type": "git"
+  },
+  "keywords": [
+    "chaoxing",
+    "sign"
+  ],
+  "scripts": {
+    "build": "nuxi build",
+    "dev": "nuxi dev -o",
+    "start": "node -r dotenv/config .output/server/index.mjs dotenv_config_path=.env.production",
+    "start:pm2": "pm2 start ecosystem.config.js --env production",
+    "migrate": "prisma migrate dev",
+    "lint": "eslint .",
+    "postinstall": "nuxi prepare && prisma generate",
+    "generate": "nuxi generate && prisma generate",
+    "release": "bumpp --commit --push --tag"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.11.0",
+    "next-auth": "^4.18.8",
+    "tough-cookie": "^4.1.2"
+  },
+  "devDependencies": {
+    "@huntersofbook/naive-ui-nuxt": "^0.7.1",
+    "@iconify-json/carbon": "^1.1.16",
+    "@iconify-json/ri": "^1.1.5",
+    "@iconify-json/twemoji": "^1.1.11",
+    "@kuizuo/eslint-config": "^1.0.1",
+    "@kuizuo/utils": "^0.2.0",
+    "@nuxt/content": "^2.5.2",
+    "@nuxt/devtools": "npm:@nuxt/devtools-edge@latest",
+    "@nuxtjs/color-mode": "^3.2.0",
+    "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
+    "@pinia/nuxt": "^0.4.7",
+    "@sidebase/nuxt-auth": "^0.4.3",
+    "@types/async": "^3.2.18",
+    "@types/sortablejs": "^1.15.1",
+    "@types/tough-cookie": "^4.0.2",
+    "@unocss/nuxt": "^0.49.4",
+    "@vueuse/integrations": "^10.0.0-beta.0",
+    "@vueuse/nuxt": "^10.0.0-beta.0",
+    "async": "^3.2.4",
+    "bumpp": "^8.2.1",
+    "cheerio": "1.0.0-rc.12",
+    "eslint": "^8.35.0",
+    "got": "^12.6.0",
+    "lodash": "^4.17.21",
+    "naive-ui": "^2.34.3",
+    "nuxt": "3.2.3",
+    "nuxt-icon": "^0.3.2",
+    "prisma": "^4.11.0",
+    "sass": "^1.59.2",
+    "sortablejs": "^1.15.0",
+    "typescript": "^4.9.5",
+    "vitest": "^0.24.5"
+  }
+}
