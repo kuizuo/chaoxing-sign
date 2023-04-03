@@ -39,11 +39,12 @@ function syncCourse() {
 }
 
 const lookActivities = async (course: API.Course) => {
-  showModal.value = true
   course.isLoadActivity = true
   currentCourse.value = course
+  activities.value = []
   try {
     activities.value = await accountStore.getActivityList(props.account.uid, course)
+    showModal.value = true
   }
   finally {
     course.isLoadActivity = false

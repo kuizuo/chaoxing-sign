@@ -20,11 +20,11 @@ export enum ActivityTypeEnum {
 }
 
 export enum SignTypeEnum {
-  General = '0', // 普通签到/拍照签到
-  QrCode = '2', // 二维码签到
-  Gesture = '3', // 手势签到
-  Location = '4', // 位置签到
-  Code = '5', // 签到码签到
+  General = 0, // 普通签到/拍照签到
+  QrCode = 2, // 二维码签到
+  Gesture = 3, // 手势签到
+  Location = 4, // 位置签到
+  Code = 5, // 签到码签到
 }
 
 export class Cx {
@@ -163,7 +163,7 @@ export class Cx {
     return courseList
   }
 
-  async getActivity(course: CX.Course) {
+  async getActivityList(course: CX.Course) {
     const { body: data } = await this.http.get<CX.ActivityResponse>('https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist', {
       searchParams: {
         fid: this.user.schoolid,
@@ -263,20 +263,21 @@ export class Cx {
       appType: '15',
       name: this.user.realname,
     }, '', '', { encodeURIComponent: s => s })
+
     return this.stuSign(query)
   }
 
   async getAllActivity(type?: ActivityTypeEnum, status?: ActivityStatusEnum) {
     const courseList = await this.getCourseList()
 
-    const activityArr = await mapLimit(courseList, 5, async (course: CX.Course) => (await this.getActivity(course)).map(a => ({ course, ...a })))
+    const activityArr = await mapLimit(courseList, 5, async (course: CX.Course) => (await this.getActivityList(course)).map(a => ({ course, ...a })))
 
     return activityArr.flat(1)
       .filter((activity: { type: number; status: number }) => (type ? activity.type === type : true) && (status ? activity.status === status : true))
   }
 
   async signByCourse(course: CX.Course) {
-    const activityList = await this.getActivity(course)
+    const activityList = await this.getActivityList(course)
 
     const signActivityList = activityList.filter(activity => activity.type === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)
 

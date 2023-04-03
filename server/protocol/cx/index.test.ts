@@ -28,7 +28,7 @@ describe('cx', async () => {
 
   it('getActivity', async () => {
     const course = cx.courseList.find(c => c.name === '愧怍课程')!
-    activityList = await cx.getActivity(course)
+    activityList = await cx.getActivityList(course)
     console.log(activityList.length)
   })
 

@@ -6,7 +6,7 @@ interface Body {
 export default defineEventHandler(async (event) => {
   const { course } = await readBody<Body>(event)
 
-  const result = await event.context.cx.getActivity(course)
+  const result = await event.context.cx.getActivityList(course)
 
   return {
     code: 200,

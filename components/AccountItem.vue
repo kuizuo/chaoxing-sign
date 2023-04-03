@@ -10,16 +10,11 @@ const props = defineProps<{
   lastLoginTime?: string
 }>()
 
-const router = useRouter()
+const message = useMessage()
 const accountStore = useAccountStore()
 
-const message = useMessage()
-
 const loading = ref(false)
-
-function handlePositiveClick() {
-  accountStore.logout(props.uid)
-}
+const showQrCodeModal = ref(false)
 
 async function sign(uid: string) {
   loading.value = true
@@ -30,10 +25,6 @@ async function sign(uid: string) {
   finally {
     loading.value = false
   }
-}
-
-async function signByQrCode() {
-  message.warning('二维码签到暂未开放,请敬请期待')
 }
 </script>
 
@@ -55,7 +46,7 @@ async function signByQrCode() {
 
     <template #header-extra>
       <n-popconfirm
-        @positive-click="handlePositiveClick"
+        @positive-click="accountStore.logout(props.uid)"
       >
         <template #trigger>
           <Icon
@@ -94,7 +85,7 @@ async function signByQrCode() {
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="signByQrCode" />
+            <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="showQrCodeModal = true" />
           </template>
           二维码扫码签到
         </n-tooltip>
@@ -114,6 +105,7 @@ async function signByQrCode() {
         </n-tooltip>
       </n-space>
     </template>
+    <QrCodeSignModal v-model:show="showQrCodeModal" :uid="uid" />
   </n-card>
 </template>
 

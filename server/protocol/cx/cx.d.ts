@@ -58,7 +58,7 @@ declare namespace CX {
     activityList: any
     userStatus: number
     nameTwo: string
-    otherId: string
+    otherId: number | string
     groupId: number
     source: number
     isLook: number

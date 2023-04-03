@@ -120,6 +120,25 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   /*
+    二维码签到
+  */
+  async function signByQrCode(uid: string, link: string) {
+    // 提取 activityId 和 enc
+    // https://mobilelearn.chaoxing.com/widget/sign/e?id=8000063022220&c=529773&enc=A5BC081D895B41540E129437F6B4180F&DB_STRATEGY=PRIMARY_KEY&STRATEGY_PARA=id
+
+    const activityId = link.match(/id=(\d+)/)?.[1]
+    const enc = link.match(/enc=(\w+)/)?.[1]
+
+    const { data } = await request('/api/cx/sign_by_qrcode', {
+      method: 'POST',
+      body: { uid, activityId, enc },
+    })
+
+    logStore.log(`二维码签到结果: ${data.result}`, data.result === '签到成功' ? 'success' : 'error')
+
+    return data
+  }
+  /*
     一键签到
   */
   async function oneClickSign(uid: string) {
@@ -145,6 +164,7 @@ export const useAccountStore = defineStore('account', () => {
     getActivityList,
     signByCourse,
     signByActivity,
+    signByQrCode,
     oneClickSign,
   }
 }, {
