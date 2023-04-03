@@ -17,24 +17,27 @@ onMounted(() => {
 </script>
 
 <template>
-  <n-card class="my-4 text-left" title="🗒️ 日志" content-style="padding: 0 0.5rem;" header-style="padding: 0.5rem 0.5rem;">
-    <template #header-extra>
-      <n-switch v-model:value="logStore.showLog" />
+  <n-card class="my-4 text-left" content-style="padding: 0 0.5rem;" header-style="padding: 0.5rem 0.5rem;">
+    <template #header>
+      <div class="inline-flex justify-center items-center gap-1">
+        <Icon name="material-symbols:docs-outline" />
+        日志
+      </div>
     </template>
-    <Transition>
-      <n-log v-show="logStore.showLog" ref="logInstRef" class="text-left" :rows="10" :log="logList.join('\n')" trim />
-    </Transition>
+    <template #header-extra>
+      <div class="inline-flex justify-center items-center gap-2">
+        <n-popconfirm @positive-click="logStore.cleanLog()">
+          <template #trigger>
+            <Icon name="material-symbols:cleaning-services" class="cursor-pointer transition hover:text-blue-4" />
+          </template>
+          确认清除所有日志?
+        </n-popconfirm>
+
+        <Icon :name="logStore.showLog ? 'tabler:layout-bottombar-collapse' : 'tabler:layout-navbar-collapse'" class="cursor-pointer transition hover:text-blue-4" @click="logStore.showLog = !logStore.showLog" />
+      </div>
+    </template>
+    <n-collapse-transition :show="logStore.showLog">
+      <n-log ref="logInstRef" class="text-left" :rows="10" :log="logList.join('\n')" trim />
+    </n-collapse-transition>
   </n-card>
 </template>
-
-<style scoped>
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-</style>
