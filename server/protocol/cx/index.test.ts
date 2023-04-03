@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Cx } from '.'
+import { ActivityStatusEnum, ActivityTypeEnum, Cx } from '.'
 
 const testAccount: Pick<CX.Account, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,
@@ -42,8 +42,9 @@ describe('cx', async () => {
   })
 
   it.skip('getSignActivityList', async () => {
-    const signActivity = await cx.getSignActivityList()
-    console.log(signActivity.length)
+    const signActivityList = await cx.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
+
+    console.log(signActivityList.length)
   })
 
   it.skip('sign', async () => {

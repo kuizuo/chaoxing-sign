@@ -3,6 +3,12 @@ declare namespace API {
 
   interface User extends CX.User { }
 
+  interface Account extends CX.AccountWithoutPassword {
+    selected: boolean
+  }
+
+  interface AccountInfo extends CX.AccountInfo { }
+
   interface Course extends CX.Course {
     isSigning?: boolean
     isLoadActivity?: boolean

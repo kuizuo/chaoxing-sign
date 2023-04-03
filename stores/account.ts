@@ -1,5 +1,7 @@
 export const useAccountStore = defineStore('account', () => {
-  const accounts = ref<CX.AccountWithoutPassword[]>([])
+  const accounts = ref<API.Account[]>([])
+
+  const selectAccounts = computed(() => accounts.value.filter(a => a.selected === true))
 
   const loading = ref(false)
   const message = useMessage()
@@ -19,7 +21,7 @@ export const useAccountStore = defineStore('account', () => {
 
   async function syncAccounts() {
     const { data } = await request('/api/user/accounts')
-    accounts.value = data as unknown as CX.AccountWithoutPassword[]
+    accounts.value = data as unknown as API.Account[]
     message.success('同步成功')
   }
 
@@ -36,7 +38,7 @@ export const useAccountStore = defineStore('account', () => {
       if (code === 200) {
         logStore.log(`${data?.info?.username} ${message}`, 'success')
 
-        accounts.value.push(data as unknown as CX.AccountWithoutPassword)
+        accounts.value.push(data as unknown as API.Account)
       }
       else {
         logStore.log(`${form.username} ${message}`, 'error')
@@ -142,12 +144,14 @@ export const useAccountStore = defineStore('account', () => {
     一键签到
   */
   async function oneClickSign(uid: string) {
+    const account = getAccount(uid)
+
     const { data } = await request('/api/cx/sign_all', {
       method: 'POST',
       body: { uid },
     })
 
-    message.success(`共有${data.length}个正在的签到活动`)
+    message.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
     data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, d.result === '签到成功' ? 'success' : 'error'))
 
     return data
@@ -155,6 +159,7 @@ export const useAccountStore = defineStore('account', () => {
 
   return {
     accounts,
+    selectAccounts,
     loading,
     login,
     logout,
@@ -170,7 +175,7 @@ export const useAccountStore = defineStore('account', () => {
 }, {
   persist: {
     key: 'account',
-    paths: ['accounts'],
+    paths: ['accounts', 'selectAccounts'],
   },
 })
 

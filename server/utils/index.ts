@@ -9,8 +9,8 @@ export class ResOp<T = any> {
     this.message = message
   }
 
-  static success<T>(data: T) {
-    return new ResOp<T>(200, data)
+  static success<T>(data: T, message = 'success') {
+    return new ResOp<T>(200, data, message)
   }
 
   static error(code: number, message: string) {

@@ -29,6 +29,10 @@ async function addAccount() {
 
   showModal.value = false
 }
+
+async function selectAccount(account: API.Account) {
+  account.selected = !account.selected
+}
 </script>
 
 <template>
@@ -50,24 +54,24 @@ async function addAccount() {
       </span>
     </n-divider>
 
-    <div v-if="accountList?.length! > 0">
+    <template v-if="accountList?.length! > 0">
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <AccountItem v-for="account in accountList" v-bind="account.info" :key="account.uid" />
+        <AccountItem v-for="account in accountList" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
         <n-card>
           <div class="cursor-pointer flex justify-center items-center h-full" @click="showModal = true">
             <Icon name="ic:outline-add-box" size="30" />
           </div>
         </n-card>
       </div>
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
       <div class="space-y-2">
         <n-empty description="暂无账号" size="small" />
         <n-button @click="showModal = true">
           添加账号
         </n-button>
       </div>
-    </div>
+    </template>
     <n-modal
       v-model:show="showModal"
       :mask-closable="true"

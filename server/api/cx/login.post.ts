@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const result = await cx.login()
 
   if (!cx.user.logged)
-    return new ResOp(201, null, result)
+    return new ResOp(201, null, result!)
 
   CXMap.set(cx.user.username, cx)
 
@@ -37,5 +37,5 @@ export default defineEventHandler(async (event) => {
     },
     lastLoginTime: account.lastLoginTime.toISOString(),
   }
-  return ResOp.success(data)
+  return ResOp.success(data, '登录成功')
 })

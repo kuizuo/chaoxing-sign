@@ -4,7 +4,7 @@ import * as QRcode from 'qrcode'
 import jsQR from 'jsqr'
 
 const props = defineProps<{
-  uid: string
+  uids: string[]
   showModal: boolean
 }>()
 
@@ -12,7 +12,11 @@ const accountStore = useAccountStore()
 const message = useMessage()
 
 async function signByQrCode(link: string) {
-  accountStore.signByQrCode(props.uid, link)
+  await Promise.allSettled(
+    props.uids.map((uid) => {
+      return accountStore.signByQrCode(uid, link)
+    }),
+  )
 }
 
 const showPreviewModal = ref(false)

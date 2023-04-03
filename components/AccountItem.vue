@@ -1,13 +1,12 @@
 <script setup lang="ts">
 const props = defineProps<{
   uid: string
-  avatar: string
-  siteName: string
-  realname: string
+  info: API.AccountInfo
   setting: {
     autoSign: boolean
   }
   lastLoginTime?: string
+  selected: boolean
 }>()
 
 const message = useMessage()
@@ -29,12 +28,12 @@ async function sign(uid: string) {
 </script>
 
 <template>
-  <n-card hoverable class="group">
+  <n-card hoverable class="group cursor-pointer " :class="{ 'n-card-checked': selected }">
     <template #header>
       <div class="flex items-center gap-2">
-        <n-avatar :src="avatar" />
-        <span>{{ siteName }}</span>
-        <span>{{ realname }}</span>
+        <n-avatar :src="info.avatar" />
+        <span>{{ info.siteName }}</span>
+        <span>{{ info.realname }}</span>
         <n-popover v-if="setting?.autoSign" trigger="hover">
           <template #trigger>
             <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" />
@@ -105,12 +104,28 @@ async function sign(uid: string) {
         </n-tooltip>
       </n-space>
     </template>
-    <QrCodeSignModal v-model:show="showQrCodeModal" :uid="uid" />
+    <QrCodeSignModal v-model:show="showQrCodeModal" :uids="[uid]" />
   </n-card>
 </template>
 
 <style scoped>
 .icon{
   --at-apply: cursor-pointer transition hover:text-red-4
+}
+
+.n-card-checked {
+  --at-apply: ring-2 transition;
+}
+.n-card-checked:after {
+    position: absolute;
+    inset-block-start: 2px;
+    inset-inline-end: 2px;
+    width: 0;
+    height: 0;
+    border: 6px solid #3c86ec;
+    border-block-end: 6px solid transparent;
+    border-inline-start: 6px solid transparent;
+    border-start-end-radius: 2px;
+    content: '';
 }
 </style>
