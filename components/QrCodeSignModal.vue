@@ -5,7 +5,6 @@ import jsQR from 'jsqr'
 
 const props = defineProps<{
   uids: string[]
-  showModal: boolean
 }>()
 
 const accountStore = useAccountStore()

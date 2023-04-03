@@ -6,7 +6,7 @@ const props = defineProps<{
     autoSign: boolean
   }
   lastLoginTime?: string
-  selected: boolean
+  selected?: boolean
 }>()
 
 const message = useMessage()

@@ -29,8 +29,7 @@
   },
   "dependencies": {
     "@prisma/client": "^4.11.0",
-    "next-auth": "^4.18.8",
-    "tough-cookie": "^4.1.2"
+    "next-auth": "^4.18.8"
   },
   "devDependencies": {
     "@huntersofbook/naive-ui-nuxt": "^0.7.1",
@@ -42,7 +41,7 @@
     "@nuxt/content": "^2.5.2",
     "@nuxt/devtools": "npm:@nuxt/devtools-edge@latest",
     "@nuxtjs/color-mode": "^3.2.0",
-    "@pinia-plugin-persistedstate/nuxt": "^1.0.0",
+    "@pinia-plugin-persistedstate/nuxt": "^1.1.1",
     "@pinia/nuxt": "^0.4.7",
     "@sidebase/nuxt-auth": "^0.4.3",
     "@types/async": "^3.2.18",
@@ -66,6 +65,7 @@
     "qrcode": "^1.5.1",
     "sass": "^1.59.2",
     "sortablejs": "^1.15.0",
+    "tough-cookie": "^4.1.2",
     "typescript": "^4.9.5",
     "vitest": "^0.24.5"
   }

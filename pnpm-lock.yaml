@@ -10,7 +10,7 @@ specifiers:
   '@nuxt/content': ^2.5.2
   '@nuxt/devtools': npm:@nuxt/devtools-edge@latest
   '@nuxtjs/color-mode': ^3.2.0
-  '@pinia-plugin-persistedstate/nuxt': ^1.0.0
+  '@pinia-plugin-persistedstate/nuxt': ^1.1.1
   '@pinia/nuxt': ^0.4.7
   '@prisma/client': ^4.11.0
   '@sidebase/nuxt-auth': ^0.4.3
@@ -43,7 +43,6 @@ specifiers:
 dependencies:
   '@prisma/client': 4.11.0_prisma@4.11.0
   next-auth: 4.20.1
-  tough-cookie: 4.1.2
 
 devDependencies:
   '@huntersofbook/naive-ui-nuxt': 0.7.1
@@ -53,9 +52,9 @@ devDependencies:
   '@kuizuo/eslint-config': 1.0.1_ycpbpc6yetojsgtrx3mwntkhsu
   '@kuizuo/utils': 0.2.0
   '@nuxt/content': 2.5.2
-  '@nuxt/devtools': /@nuxt/devtools-edge/0.3.1-28002813.ab4e03d_nuxt@3.2.3
+  '@nuxt/devtools': /@nuxt/devtools-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3
   '@nuxtjs/color-mode': 3.2.0
-  '@pinia-plugin-persistedstate/nuxt': 1.0.0_@pinia+nuxt@0.4.7
+  '@pinia-plugin-persistedstate/nuxt': 1.1.1_@pinia+nuxt@0.4.7
   '@pinia/nuxt': 0.4.7_typescript@4.9.5
   '@sidebase/nuxt-auth': 0.4.3_next-auth@4.20.1
   '@types/async': 3.2.18
@@ -79,6 +78,7 @@ devDependencies:
   qrcode: 1.5.1
   sass: 1.59.2
   sortablejs: 1.15.0
+  tough-cookie: 4.1.2
   typescript: 4.9.5
   vitest: 0.24.5_sass@1.59.2
 
@@ -1790,14 +1790,14 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: true
 
-  /@nuxt/devtools-edge/0.3.1-28002813.ab4e03d_nuxt@3.2.3:
-    resolution: {integrity: sha512-CzDAZgWshA0DqwqxcVAYayoB7ArbEq2eUAjYRyozUPY2EKVSg814j/aoSRDnrAAqAorzbuZdiy27walwlARMBw==}
+  /@nuxt/devtools-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3:
+    resolution: {integrity: sha512-wU8/ioRRYzg5ZfeaKKbMb7nYJO2VRGuljnTt4erWRgKH0BpEsDAH9VM3FJ24oBPfaLVQjzZrrIO23xlY8xIuJA==}
     hasBin: true
     peerDependencies:
       nuxt: ^3.3.1
       vite: '*'
     dependencies:
-      '@nuxt/devtools-kit': /@nuxt/devtools-kit-edge/0.3.1-28002813.ab4e03d_nuxt@3.2.3
+      '@nuxt/devtools-kit': /@nuxt/devtools-kit-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3
       '@nuxt/kit': 3.3.2
       birpc: 0.2.10
       consola: 2.15.3
@@ -1823,8 +1823,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/devtools-kit-edge/0.3.1-28002813.ab4e03d_nuxt@3.2.3:
-    resolution: {integrity: sha512-vsNmgiJjsF737hkGPyCHUgnB81IceDV+r491bLCcyewElVKO/KxUf65Ro6H4B1ST25QgYhD8bU/SAQTZDRc1uA==}
+  /@nuxt/devtools-kit-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3:
+    resolution: {integrity: sha512-tQeydN+WO0W3MS/skdG1w9FSgejbAff7xN5NXktODkUKYLrzQkvnvPnR3FBJk0IiP+XA5B+0EaNtFebNMy37PA==}
     peerDependencies:
       nuxt: ^3.3.1
       vite: '*'
@@ -2146,13 +2146,14 @@ packages:
   /@panva/hkdf/1.0.4:
     resolution: {integrity: sha512-003xWiCuvePbLaPHT+CRuaV4GlyCAVm6XYSbBZDHoWZGn1mNkVKFaDbGJjjxmEFvizUwlCoM6O18FCBMMky2zQ==}
 
-  /@pinia-plugin-persistedstate/nuxt/1.0.0_@pinia+nuxt@0.4.7:
-    resolution: {integrity: sha512-oBLnkFXy0mcP9wCR0NQj1SguhgalEoubDF302gpRr1lh0V34vSL2Nlw8XDwRrULq5v3eHt4da632YSjNny1+BA==}
+  /@pinia-plugin-persistedstate/nuxt/1.1.1_@pinia+nuxt@0.4.7:
+    resolution: {integrity: sha512-b6ZNP3Re8COmfZEpj4KQmbp2TuDKrLggDFLZa8FiJF68xE/oCsPXIuXUvAt8E4ht/5sq4Z/grlA+iGXaI2aeKQ==}
     peerDependencies:
       '@pinia/nuxt': ^0.4.4
     dependencies:
-      '@nuxt/kit': 3.2.3
+      '@nuxt/kit': 3.3.2
       '@pinia/nuxt': 0.4.7_typescript@4.9.5
+      defu: 6.1.2
       pinia-plugin-persistedstate: 3.1.0
     transitivePeerDependencies:
       - pinia
@@ -8971,10 +8972,12 @@ packages:
 
   /psl/1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
+    dev: true
 
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
     engines: {node: '>=6'}
+    dev: true
 
   /qrcode/1.5.1:
     resolution: {integrity: sha512-nS8NJ1Z3md8uTjKtP+SGGhfqmTCs5flU/xR623oI0JX+Wepz9R8UrRVCTBTJm3qGw3rH6jJ6MUHjkDx15cxSSg==}
@@ -8989,6 +8992,7 @@ packages:
 
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+    dev: true
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -9264,6 +9268,7 @@ packages:
 
   /requires-port/1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
+    dev: true
 
   /requrl/3.0.2:
     resolution: {integrity: sha512-f3gjR6d8MhOpn46PP+DSJywbmxi95fxQm3coXBFwognjFLla9X6tr8BdNyaIKNOEkaRbRcm0/zYAqN19N1oyhg==}
@@ -9997,6 +10002,7 @@ packages:
       punycode: 2.3.0
       universalify: 0.2.0
       url-parse: 1.5.10
+    dev: true
 
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
@@ -10346,6 +10352,7 @@ packages:
   /universalify/0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
+    dev: true
 
   /universalify/2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
@@ -10504,6 +10511,7 @@ packages:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
+    dev: true
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

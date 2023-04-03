@@ -1,8 +1,6 @@
 <script setup lang="ts">
 const accountStore = useAccountStore()
 
-const accountList = computedAsync(() => accountStore.accounts)
-
 const showModal = ref(false)
 const form = reactive({
   username: '',
@@ -16,7 +14,7 @@ async function handleSync() {
     return
 
   isSyncing.value = true
-  accountStore.syncAccounts().finally(() => {
+  await accountStore.syncAccounts().finally(() => {
     isSyncing.value = false
   })
 }
@@ -54,9 +52,9 @@ async function selectAccount(account: API.Account) {
       </span>
     </n-divider>
 
-    <template v-if="accountList?.length! > 0">
+    <template v-if="accountStore.accounts?.length! > 0">
       <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <AccountItem v-for="account in accountList" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
+        <AccountItem v-for="account in accountStore.accounts" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
         <n-card>
           <div class="cursor-pointer flex justify-center items-center h-full" @click="showModal = true">
             <Icon name="ic:outline-add-box" size="30" />

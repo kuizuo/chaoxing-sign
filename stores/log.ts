@@ -1,7 +1,8 @@
+import { acceptHMRUpdate } from 'pinia'
 import type { MessageOptions } from 'naive-ui'
 
 export const useLogStore = defineStore('log', () => {
-  const logList = reactive<string[]>([])
+  const logList = useLocalStorage<string[]>('log', []) // reactive<string[]>([])
   const showLog = ref(true)
   const message = useMessage()
 
@@ -14,11 +15,11 @@ export const useLogStore = defineStore('log', () => {
     if (options)
       message.create(content, options)
 
-    logList.push(info)
+    logList.value.push(info)
   }
 
   function cleanLog() {
-    logList.length = 0
+    logList.value = []
     log('日志已清空', { type: 'success' })
   }
 
@@ -29,7 +30,12 @@ export const useLogStore = defineStore('log', () => {
     cleanLog,
   }
 }, {
-  persist: {
-    key: 'log',
-  },
+  persist: true,
 })
+
+if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  import.meta.hot.accept(acceptHMRUpdate(useLogStore, import.meta.hot))
+}
+

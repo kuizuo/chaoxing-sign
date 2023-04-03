@@ -1,12 +1,14 @@
+import { acceptHMRUpdate, skipHydrate } from 'pinia'
+
 export const useAccountStore = defineStore('account', () => {
-  const accounts = ref<API.Account[]>([])
+  const accounts = useLocalStorage<API.Account[]>('account', []) // ref<API.Account[]>([])
 
   const selectAccounts = computed(() => accounts.value.filter(a => a.selected === true))
 
   const loading = ref(false)
   const message = useMessage()
 
-  const logStore = useLogStore()
+  const { log } = useLogStore()
 
   function getAccount(uid: string) {
     const account = accounts.value.find(a => a.uid === uid)
@@ -22,7 +24,7 @@ export const useAccountStore = defineStore('account', () => {
   async function syncAccounts() {
     const { data } = await request('/api/user/accounts')
     accounts.value = data as unknown as API.Account[]
-    message.success('同步成功')
+    log('同步成功', { type: 'success' })
   }
 
   async function login(form: API.LoginForm) {
@@ -36,12 +38,12 @@ export const useAccountStore = defineStore('account', () => {
     try {
       const { code, message, data } = await request('/api/cx/login', { method: 'POST', body: form })
       if (code === 200) {
-        logStore.log(`${data?.info?.username} ${message}`, { type: 'success' })
+        log(`${data?.info?.username} ${message}`, { type: 'success' })
 
         accounts.value.push(data as unknown as API.Account)
       }
       else {
-        logStore.log(`${form.username} ${message}`, { type: 'error' })
+        log(`${form.username} ${message}`, { type: 'error' })
       }
 
       return data
@@ -57,9 +59,9 @@ export const useAccountStore = defineStore('account', () => {
     const account = getAccount(uid)
     accounts.value = accounts.value.filter(a => a.uid !== uid)
 
-    ; (await request('/api/cx/logout', { method: 'POST', body: { uid } }))
+    await request('/api/cx/logout', { method: 'POST', body: { uid } })
 
-    logStore.log(`${account.info.realname} 退出成功`, { type: 'success' })
+    log(`${account.info.realname} 退出成功`, { type: 'success' })
   }
 
   /*
@@ -72,7 +74,7 @@ export const useAccountStore = defineStore('account', () => {
 
     account.courses = data
 
-    logStore.log(`${account.info.realname} 课程获取成功`, { type: 'success' })
+    log(`${account.info.realname} 课程获取成功`, { type: 'success' })
     return data
   }
 
@@ -98,11 +100,11 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     if (data.length === 0) {
-      logStore.log(`${course.name} 无签到活动`, { type: 'warning' })
+      log(`${course.name} 无签到活动`, { type: 'warning' })
     }
     else {
       message.success(`${course.name} 共有${data.length}个正在的签到活动`)
-      data.forEach(d => logStore.log(`${course?.name} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
+      data.forEach(d => log(`${course?.name} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
     }
 
     return data
@@ -117,7 +119,7 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, course, activity },
     })
 
-    logStore.log(`${course?.name} ${activity.nameOne} ${data.result}`, { type: 'success' })
+    log(`${course?.name} ${activity.nameOne} ${data.result}`, { type: 'success' })
     return data
   }
 
@@ -136,7 +138,7 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, activityId, enc },
     })
 
-    logStore.log(`二维码签到结果: ${data.result}`, { type: data.result === '签到成功' ? 'success' : 'error' })
+    log(`二维码签到结果: ${data.result}`, { type: data.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
@@ -152,13 +154,13 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     message.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
-    data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
+    data.forEach(d => log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
 
     return data
   }
 
   return {
-    accounts,
+    accounts: skipHydrate(accounts),
     selectAccounts,
     loading,
     login,
@@ -172,10 +174,10 @@ export const useAccountStore = defineStore('account', () => {
     signByQrCode,
     oneClickSign,
   }
-}, {
-  persist: {
-    key: 'account',
-    paths: ['accounts', 'selectAccounts'],
-  },
 })
 
+if (import.meta.hot) {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  import.meta.hot.accept(acceptHMRUpdate(useAccountStore, import.meta.hot))
+}

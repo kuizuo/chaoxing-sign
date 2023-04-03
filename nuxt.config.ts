@@ -64,11 +64,7 @@ export default defineNuxtConfig({
     enableGlobalAppMiddleware: true,
     globalMiddlewareOptions: {
       allow404WithoutAuth: true,
-
     },
-  },
-  piniaPersistedstate: {
-    storage: 'sessionStorage',
   },
   typescript: {
     shim: false,
