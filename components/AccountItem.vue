@@ -108,13 +108,20 @@ async function sign(uid: string) {
   </n-card>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .icon{
   --at-apply: cursor-pointer transition hover:text-red-4
 }
 
 .n-card-checked {
-  --at-apply: ring-2 transition;
+  --checked-color: rgba(147,197,253,0.5);
+  --n-border-color: var(--checked-color) !important;
+  --at-apply: transition;
+
+  :deep(:is(.n-card-header, .n-card__content)) {
+    --at-apply: bg-[var(--checked-color)];
+  }
+
 }
 .n-card-checked:after {
     position: absolute;
