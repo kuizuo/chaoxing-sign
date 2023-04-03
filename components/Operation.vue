@@ -31,7 +31,7 @@ const toSignUids = computed(() => selectAccounts.value.map(account => account.ui
 async function handleSignAll() {
   const toAccounts = unref(selectAccounts)
 
-  logStore.log(`共 ${toAccounts.length} 个账号正在签到`, 'loading')
+  logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
 
   await Promise.allSettled(
     toAccounts.map((account) => {
@@ -39,7 +39,7 @@ async function handleSignAll() {
     }),
   )
 
-  logStore.log(`共 ${toAccounts.length} 个账号签到完成`, 'success')
+  logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
 }
 </script>
 

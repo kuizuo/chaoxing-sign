@@ -36,12 +36,12 @@ export const useAccountStore = defineStore('account', () => {
     try {
       const { code, message, data } = await request('/api/cx/login', { method: 'POST', body: form })
       if (code === 200) {
-        logStore.log(`${data?.info?.username} ${message}`, 'success')
+        logStore.log(`${data?.info?.username} ${message}`, { type: 'success' })
 
         accounts.value.push(data as unknown as API.Account)
       }
       else {
-        logStore.log(`${form.username} ${message}`, 'error')
+        logStore.log(`${form.username} ${message}`, { type: 'error' })
       }
 
       return data
@@ -59,7 +59,7 @@ export const useAccountStore = defineStore('account', () => {
 
     ; (await request('/api/cx/logout', { method: 'POST', body: { uid } }))
 
-    logStore.log(`${account.info.realname} 退出成功`, 'success')
+    logStore.log(`${account.info.realname} 退出成功`, { type: 'success' })
   }
 
   /*
@@ -72,7 +72,7 @@ export const useAccountStore = defineStore('account', () => {
 
     account.courses = data
 
-    logStore.log(`${account.info.realname} 课程获取成功`, 'success')
+    logStore.log(`${account.info.realname} 课程获取成功`, { type: 'success' })
     return data
   }
 
@@ -98,11 +98,11 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     if (data.length === 0) {
-      logStore.log(`${course.name} 无签到活动`, 'warning')
+      logStore.log(`${course.name} 无签到活动`, { type: 'warning' })
     }
     else {
       message.success(`${course.name} 共有${data.length}个正在的签到活动`)
-      data.forEach(d => logStore.log(`${course?.name} ${d.activity.nameOne} ${d.result}`, d.result === '签到成功' ? 'success' : 'error'))
+      data.forEach(d => logStore.log(`${course?.name} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
     }
 
     return data
@@ -117,7 +117,7 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, course, activity },
     })
 
-    logStore.log(`${course?.name} ${activity.nameOne} ${data.result}`, 'success')
+    logStore.log(`${course?.name} ${activity.nameOne} ${data.result}`, { type: 'success' })
     return data
   }
 
@@ -136,7 +136,7 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, activityId, enc },
     })
 
-    logStore.log(`二维码签到结果: ${data.result}`, data.result === '签到成功' ? 'success' : 'error')
+    logStore.log(`二维码签到结果: ${data.result}`, { type: data.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
@@ -152,7 +152,7 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     message.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
-    data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, d.result === '签到成功' ? 'success' : 'error'))
+    data.forEach(d => logStore.log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
 
     return data
   }
