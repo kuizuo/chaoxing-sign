@@ -31,6 +31,9 @@ const toSignUids = computed(() => selectAccounts.value.map(account => account.ui
 async function handleSignAll() {
   const toAccounts = unref(selectAccounts)
 
+  if (toAccounts.length === 0)
+    return logStore.log('请先选择账号', { type: 'warning' })
+
   logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
 
   await Promise.allSettled(
@@ -40,6 +43,17 @@ async function handleSignAll() {
   )
 
   logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
+}
+
+async function handleQrCodeSignAll() {
+  const toAccounts = unref(selectAccounts)
+
+  if (toAccounts.length === 0)
+    return logStore.log('请先选择账号', { type: 'warning' })
+
+  logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
+
+  showQrCodeModal.value = true
 }
 </script>
 
@@ -58,7 +72,7 @@ async function handleSignAll() {
 
       <n-tooltip trigger="hover">
         <template #trigger>
-          <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="showQrCodeModal = true" />
+          <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="handleQrCodeSignAll()" />
         </template>
         全部二维码扫码签到
       </n-tooltip>
