@@ -52,24 +52,48 @@ async function selectAccount(account: API.Account) {
       </span>
     </n-divider>
 
-    <template v-if="accountStore.accounts?.length! > 0">
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-        <AccountItem v-for="account in accountStore.accounts" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
-        <n-card>
-          <div class="cursor-pointer flex justify-center items-center h-full" @click="showModal = true">
-            <Icon name="ic:outline-add-box" size="30" />
-          </div>
-        </n-card>
-      </div>
-    </template>
-    <template v-else>
-      <div class="space-y-2">
-        <n-empty description="暂无账号" size="small" />
-        <n-button @click="showModal = true">
-          添加账号
-        </n-button>
-      </div>
-    </template>
+    <ClientOnly>
+      <template #fallback>
+        <div class="text-left flex justify-center items-center h-48">
+          <n-card v-for="i in [1, 2, 3]" :key="i">
+            <template #header>
+              <n-space :size="10">
+                <n-skeleton height="40px" width="40px" />
+                <n-skeleton height="40px" width="120px" />
+              </n-space>
+            </template>
+            <n-skeleton text :repeat="1" />
+            <template #action>
+              <n-space :size="20">
+                <n-skeleton height="20px" width="20px" />
+                <n-skeleton height="20px" width="20px" />
+                <n-skeleton height="20px" width="20px" />
+                <n-skeleton height="20px" width="20px" />
+              </n-space>
+            </template>
+          </n-card>
+        </div>
+      </template>
+      <template v-if="accountStore.accounts?.length! > 0">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          <AccountItem v-for="account in accountStore.accounts" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
+          <n-card>
+            <div class="cursor-pointer flex justify-center items-center h-full" @click="showModal = true">
+              <Icon name="ic:outline-add-box" size="30" />
+            </div>
+          </n-card>
+        </div>
+      </template>
+      <template v-else>
+        <div class="space-y-2">
+          <n-empty description="暂无账号" size="small" />
+          <n-button @click="showModal = true">
+            添加账号
+          </n-button>
+        </div>
+      </template>
+    </ClientOnly>
+
     <n-modal
       v-model:show="showModal"
       :mask-closable="true"
