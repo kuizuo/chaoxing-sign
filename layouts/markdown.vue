@@ -11,6 +11,10 @@
 </template>
 
 <style>
+.prose {
+   max-width: 100%;
+}
+
 .prose h2 a,
 .prose h3 a {
   --at-apply: "no-underline";

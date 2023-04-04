@@ -1,14 +1,24 @@
 # 帮助
 
-## 使用说明
+## 💡 使用说明
 
-1. 点击添加按钮 添加某星账号（目前暂时只支持手机号登录）
+### 1. 添加账号
 
-2. 点击 <Icon name="material-symbols:swipe-up-outline" > </Icon> 即可一键签到（自动检测所有课程，所有可签到活动进行签到，比较耗时），也可点击 <Icon name=material-symbols:medical-information-outline-sharp" > </Icon> 进入账号详情对应课程进行签到。
+点击添加按钮 添加某星账号（暂时只支持手机号登录）
 
-3. 二维码签到、定时签到、账户设置等功能将在后续版本中添加。
+### 2. 选择操作类型
 
-4. 本应用会收集部分用户信息，用于优化应用体验，如介意请勿使用。
+![home](/img/home.png)
+
+- 点击 <Icon name="material-symbols:swipe-up-outline" ></Icon> 即可一键签到（自动检测所有课程，所有可签到活动进行签到，比较耗时），
+- 点击 <Icon name="material-symbols:medical-information-outline-sharp" ></Icon> 进入账号详情，到对应课程进行签到。
+- 点击 <Icon name="mdi:qrcode-scan" ></Icon> 进入二维码签到，上传二维码页面，将会自动识别出二维码中的信息，进行签到。
+  
+也可在下方的批量操作栏中进行批量操作。部分功能还在实现中...
+
+---
+
+> 隐私声明: 本应用会收集部分用户信息，用于优化应用体验，如介意请勿使用。
 
 ## 免责声明
 
