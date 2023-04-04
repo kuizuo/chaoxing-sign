@@ -39,7 +39,7 @@ model Course {
   classId  String
   image    String
   link     String
-  accounts CxAccount[]
+  accounts CxAccount[] 
 }
 
 model SignLog {
@@ -48,6 +48,6 @@ model SignLog {
   isSigned     Boolean   @default(false)
   result     String
   time       DateTime
-  accounts   CxAccount @relation(fields: [accountId], references: [uid])
+  accounts   CxAccount @relation(fields: [accountId], references: [uid], onDelete: Cascade)
   accountId  String
 }

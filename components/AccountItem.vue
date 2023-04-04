@@ -15,7 +15,7 @@ const accountStore = useAccountStore()
 const loading = ref(false)
 const showQrCodeModal = ref(false)
 
-async function sign(uid: string) {
+async function oneClickSign(uid: string) {
   loading.value = true
   try {
     await accountStore.oneClickSign(uid)
@@ -24,6 +24,10 @@ async function sign(uid: string) {
   finally {
     loading.value = false
   }
+}
+
+async function handleLogout() {
+  await accountStore.logout(props.uid)
 }
 </script>
 
@@ -45,7 +49,8 @@ async function sign(uid: string) {
 
     <template #header-extra>
       <n-popconfirm
-        @positive-click="accountStore.logout(props.uid)"
+        :negative-text="null"
+        @positive-click="handleLogout()"
       >
         <template #trigger>
           <Icon
@@ -77,7 +82,7 @@ async function sign(uid: string) {
         <n-tooltip trigger="hover">
           <template #trigger>
             <Icon v-if="loading" name="line-md:loading-loop" />
-            <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click="sign(uid)" />
+            <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click="oneClickSign(uid)" />
           </template>
           手动一键签到(检测所有课程,可能会比较慢)
         </n-tooltip>
