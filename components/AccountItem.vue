@@ -29,6 +29,10 @@ async function oneClickSign(uid: string) {
 async function handleLogout() {
   await accountStore.logout(props.uid)
 }
+
+async function handleSuccess(result: string) {
+  await accountStore.signByQrCode(props.uid, result)
+}
 </script>
 
 <template>
@@ -109,7 +113,7 @@ async function handleLogout() {
         </n-tooltip>
       </n-space>
     </template>
-    <QrCodeSignModal v-model:show="showQrCodeModal" :uids="[uid]" />
+    <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
   </n-card>
 </template>
 

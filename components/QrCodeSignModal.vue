@@ -3,25 +3,18 @@ import type { UploadFileInfo } from 'naive-ui'
 import * as QRcode from 'qrcode'
 import jsQR from 'jsqr'
 
-const props = defineProps<{
-  uids: string[]
-}>()
+const emit = defineEmits(['success'])
 
-const accountStore = useAccountStore()
 const message = useMessage()
-
-async function signByQrCode(link: string) {
-  await Promise.allSettled(
-    props.uids.map((uid) => {
-      return accountStore.signByQrCode(uid, link)
-    }),
-  )
-}
-
 const showPreviewModal = ref(false)
 const fileList = ref<UploadFileInfo[]>([])
 const previewImageUrl = ref('')
 const link = ref<string>('')
+
+async function handleQrCode(result: string) {
+  // 将二维码识别结果返回给父组件
+  emit('success', result)
+}
 
 async function handlePreview(file: UploadFileInfo) {
   previewImageUrl.value = file.url ?? await file2Base64(file.file!)
@@ -29,7 +22,7 @@ async function handlePreview(file: UploadFileInfo) {
 }
 
 const qrCodeSigning = ref(false)
-const handleQrCode = async ({
+const handleUpload = async ({
   file,
   onFinish,
 }: any) => {
@@ -73,7 +66,7 @@ const handleQrCode = async ({
         url: imgBase64,
       }
 
-      await signByQrCode(qrCode.data).finally(() => {
+      await handleQrCode(qrCode.data).finally(() => {
         qrCodeSigning.value = false
       })
     }
@@ -108,7 +101,7 @@ watch(fileList, (fileList) => {
       :show-file-list="true"
       list-type="image-card"
       :max="1"
-      :custom-request="handleQrCode"
+      :custom-request="handleUpload"
       @preview="handlePreview"
     >
       <n-upload-dragger>
@@ -132,7 +125,7 @@ watch(fileList, (fileList) => {
     <span>若有签到链接，请在下方输入</span>
     <n-input-group>
       <n-input v-model:value="link" placeholder="签到链接" clearable />
-      <n-button type="primary" :loading="qrCodeSigning" @click="signByQrCode(link)">
+      <n-button type="primary" :loading="qrCodeSigning" @click="handleQrCode(link)">
         签到
       </n-button>
     </n-input-group>

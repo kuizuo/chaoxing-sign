@@ -26,7 +26,6 @@ watch(selectAccounts, () => {
 
 const loading = ref(false)
 const showQrCodeModal = ref(false)
-const toSignUids = computed(() => selectAccounts.value.map(account => account.uid))
 
 async function handleSignAll() {
   const toAccounts = unref(selectAccounts)
@@ -45,15 +44,27 @@ async function handleSignAll() {
   logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
 }
 
-async function handleQrCodeSignAll() {
+async function openQrCodeSignModal() {
   const toAccounts = unref(selectAccounts)
 
   if (toAccounts.length === 0)
     return logStore.log('请先选择账号', { type: 'warning' })
 
+  showQrCodeModal.value = true
+}
+
+async function handleSuccess(result: string) {
+  const toAccounts = unref(selectAccounts)
+
   logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
 
-  showQrCodeModal.value = true
+  await Promise.allSettled(
+    toAccounts.map((account) => {
+      return accountStore.signByQrCode(account.uid, result)
+    }),
+  )
+
+  logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
 }
 </script>
 
@@ -72,12 +83,12 @@ async function handleQrCodeSignAll() {
 
       <n-tooltip trigger="hover">
         <template #trigger>
-          <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="handleQrCodeSignAll()" />
+          <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="openQrCodeSignModal()" />
         </template>
         全部二维码扫码签到
       </n-tooltip>
     </n-space>
-    <QrCodeSignModal v-model:show="showQrCodeModal" :uids="toSignUids" />
+    <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
   </n-card>
 </template>
 
