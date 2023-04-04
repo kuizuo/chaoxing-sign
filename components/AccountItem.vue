@@ -18,9 +18,16 @@ const showQrCodeModal = ref(false)
 async function oneClickSign(uid: string) {
   loading.value = true
   try {
-    await accountStore.oneClickSign(uid)
+    const data = await accountStore.oneClickSign(uid)
+
+    // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
+    const hasQrCodeSign = data.some(({ activity }) => activity.activeType === 2)
+
+    if (hasQrCodeSign) {
+      message.warning('检测到有二维码签到的课程,请扫码签到')
+      showQrCodeModal.value = true
+    }
   }
-  catch (error) { }
   finally {
     loading.value = false
   }
