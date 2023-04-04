@@ -7,7 +7,7 @@ const logInstRef = ref<LogInst | null>(null)
 
 onMounted(() => {
   watchEffect(() => {
-    if (logList) {
+    if (logList.value.length) {
       nextTick(() => {
         logInstRef.value?.scrollTo({ position: 'bottom', slient: true })
       })
