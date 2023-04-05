@@ -159,6 +159,46 @@ export const useAccountStore = defineStore('account', () => {
     return data
   }
 
+  /*
+    添加监听账号
+  */
+  async function monitorAccount(uid: string) {
+    const account = getAccount(uid)
+    const { data } = await request('/api/cx/monitor', {
+      method: 'POST',
+      body: { uid },
+    })
+
+    if (data.data?.isOpened) {
+      const index = accounts.value.findIndex(a => a.uid === uid)
+      accounts.value[index].setting.monitor = data.data.isOpened
+      log(`${account.info.realname} 监听成功`, { type: 'success' })
+    }
+    else {
+      log(`${account.info.realname} 监听失败`, { type: 'error' })
+    }
+  }
+
+  /*
+    移除监听账号
+  */
+  async function unMonitorAccount(uid: string) {
+    const account = getAccount(uid)
+    const { data } = await request('/api/cx/unmonitor', {
+      method: 'POST',
+      body: { uid },
+    })
+
+    if (!data.data?.isOpened) {
+      const index = accounts.value.findIndex(a => a.uid === uid)
+      accounts.value[index].setting.monitor = data.data.isOpened
+      log(`${account.info.realname} 取消监听成功`, { type: 'success' })
+    }
+    else {
+      log(`${account.info.realname} 取消监听失败`, { type: 'error' })
+    }
+  }
+
   return {
     accounts: skipHydrate(accounts),
     selectAccounts,
@@ -173,6 +213,8 @@ export const useAccountStore = defineStore('account', () => {
     signByActivity,
     signByQrCode,
     oneClickSign,
+    monitorAccount,
+    unMonitorAccount,
   }
 })
 

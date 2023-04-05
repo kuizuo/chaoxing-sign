@@ -2,9 +2,7 @@
 const props = defineProps<{
   uid: string
   info: API.AccountInfo
-  setting: {
-    autoSign: boolean
-  }
+  setting: API.Setting
   lastLoginTime?: string
   selected?: boolean
 }>()
@@ -40,6 +38,14 @@ async function handleLogout() {
 async function handleSuccess(result: string) {
   await accountStore.signByQrCode(props.uid, result)
 }
+
+async function handleMonitor() {
+  await accountStore.monitorAccount(props.uid)
+}
+
+async function handleUnMonitor() {
+  await accountStore.unMonitorAccount(props.uid)
+}
 </script>
 
 <template>
@@ -49,11 +55,19 @@ async function handleSuccess(result: string) {
         <n-avatar :src="info.avatar" />
         <span>{{ info.siteName }}</span>
         <span>{{ info.realname }}</span>
-        <n-popover v-if="setting?.autoSign" trigger="hover">
+        <n-popover v-if="setting?.monitor" trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" />
+            <n-popconfirm
+              :negative-text="null"
+              @positive-click="handleUnMonitor()"
+            >
+              <template #trigger>
+                <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" @click.stop="" />
+              </template>
+              确认取消监听该账号签到任务?
+            </n-popconfirm>
           </template>
-          自动签到中...
+          监听中...
         </n-popover>
       </div>
     </template>
@@ -61,7 +75,7 @@ async function handleSuccess(result: string) {
     <template #header-extra>
       <n-popconfirm
         :negative-text="null"
-        @positive-click="handleLogout()"
+        @positive-click.stop="handleLogout()"
       >
         <template #trigger>
           <Icon
@@ -69,7 +83,7 @@ async function handleSuccess(result: string) {
             class="absolute -right-2 cursor-pointer transition opacity-0 hover:text-red-500 group-hover:(opacity-100 -translate-x-6)"
           />
         </template>
-        确认退出?
+        确认退出? 这将会清空本系统该账号的所有信息
       </n-popconfirm>
     </template>
 
@@ -93,28 +107,36 @@ async function handleSuccess(result: string) {
         <n-tooltip trigger="hover">
           <template #trigger>
             <Icon v-if="loading" name="line-md:loading-loop" />
-            <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click="oneClickSign(uid)" />
+            <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click.stop="oneClickSign(uid)" />
           </template>
           手动一键签到(检测所有课程,可能会比较慢)
         </n-tooltip>
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click="showQrCodeModal = true" />
+            <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click.stop="showQrCodeModal = true" />
           </template>
           二维码扫码签到
         </n-tooltip>
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:alarm-outline" class="hover:animate-swing" @click="message.warning('敬请期待')" />
+            <Icon v-if="setting?.monitor" name="material-symbols:notifications-off-outline" class="hover:animate-swing" @click.stop="handleUnMonitor()" />
+            <Icon v-else name="material-symbols:notifications-active-outline" class="hover:animate-swing" @click.stop="handleMonitor()" />
           </template>
-          后台自动签到
+          {{ setting?.monitor ? '正在监听...' : '自动监听签到任务' }}
         </n-tooltip>
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:settings-outline" @click="message.warning('敬请期待')" />
+            <Icon name="material-symbols:history-rounded" @click.stop="message.warning('敬请期待')" />
+          </template>
+          签到记录
+        </n-tooltip>
+
+        <n-tooltip trigger="hover">
+          <template #trigger>
+            <Icon name="material-symbols:settings-outline" @click.stop="message.warning('敬请期待')" />
           </template>
           签到设置
         </n-tooltip>

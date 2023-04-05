@@ -7,6 +7,8 @@ declare namespace API {
     selected: boolean
   }
 
+  interface Setting extends CX.Setting { }
+
   interface AccountInfo extends CX.AccountInfo { }
 
   interface Course extends CX.Course {

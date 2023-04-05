@@ -2,6 +2,12 @@ import _ from 'lodash'
 import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
 
+const defaultSetting: API.Setting = {
+  monitor: false,
+  latitude: '0',
+  longitude: '0',
+}
+
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
 
@@ -24,7 +30,7 @@ export default defineEventHandler(async (event) => {
       password: cx.user.password,
       info: cx.user as any,
       cookies: cx.getCookie('', 'json'),
-      setting: {},
+      setting: defaultSetting as any,
       lastLoginTime: new Date(),
       userId: session!.uid,
     },

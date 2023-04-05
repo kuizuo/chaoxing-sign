@@ -39,13 +39,13 @@ model Course {
   classId  String
   image    String
   link     String
-  accounts CxAccount[] 
+  accounts CxAccount[]
 }
 
 model SignLog {
   id         String    @id @default(cuid())
   activityId String
-  isSigned     Boolean   @default(false)
+  isSigned   Boolean   @default(false)
   result     String
   time       DateTime
   accounts   CxAccount @relation(fields: [accountId], references: [uid], onDelete: Cascade)

@@ -45,17 +45,21 @@
     "@pinia/nuxt": "^0.4.7",
     "@sidebase/nuxt-auth": "^0.4.3",
     "@types/async": "^3.2.18",
+    "@types/jsdom": "^21.1.1",
     "@types/qrcode": "^1.5.0",
     "@types/sortablejs": "^1.15.1",
     "@types/tough-cookie": "^4.0.2",
+    "@types/ws": "^8.5.4",
     "@unocss/nuxt": "^0.49.4",
     "@vueuse/integrations": "^10.0.0-beta.0",
     "@vueuse/nuxt": "^10.0.0-beta.0",
     "async": "^3.2.4",
     "bumpp": "^8.2.1",
     "cheerio": "1.0.0-rc.12",
+    "easemob-websdk": "^4.1.4",
     "eslint": "^8.35.0",
     "got": "^12.6.0",
+    "jsdom": "^21.1.1",
     "jsqr": "^1.4.0",
     "lodash": "^4.17.21",
     "naive-ui": "^2.34.3",
@@ -67,6 +71,7 @@
     "sortablejs": "^1.15.0",
     "tough-cookie": "^4.1.2",
     "typescript": "^4.9.5",
-    "vitest": "^0.24.5"
+    "vitest": "^0.24.5",
+    "ws": "^8.13.0"
   }
 }

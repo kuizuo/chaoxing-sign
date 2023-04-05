@@ -1,11 +1,20 @@
 
 declare namespace CX {
+
+  interface Setting {
+    monitor: boolean
+    // signType: Array<>
+    longitude: string
+    latitude: string
+  }
+
   interface Account {
     uid: string
     username: string
     password: string
     info: AccountInfo
     cookies: Record<string, any>[]
+    setting: Setting
     lastLoginTime: string
     courses: Course[]
     activities: Activity[]
@@ -57,7 +66,6 @@ declare namespace CX {
   interface Activity {
     activityList: any
     userStatus: number
-    nameTwo: string
     otherId: number | string
     groupId: number
     source: number
@@ -67,30 +75,56 @@ declare namespace CX {
     attendNum: number
     activeType: number
     logo: string
+    name: string
     nameOne: string
+    nameTwo: string
+    nameFour: string
     startTime: number
     id: number
     endTime: number
     status: number
-    nameFour: string
   }
-
+  
+  interface AttChatCourse {
+    aid: number
+    atype: number
+    atypeName: string
+    courseInfo: {
+      bbsid: string
+      classid: number
+      courseid: string
+      coursename: string
+      imageUrl: string
+      isthirdaq: string
+      teacherfactor: string
+    }
+    logo: string
+    msgStatus: number
+    pcUrl: string
+    subTitle: string
+    title: string
+    toolbarType: number
+    type: number
+    url: string
+  }
 
   interface SignLocation {
     latitude: string
     longitude: string
   }
 
-  interface ActivityResponse {
+  interface ActivityListResponse extends Response<{
+    ext: {
+      _from_: string
+    }
+    readingDuration: number
+    activeList: Activity[]
+  }> {}
+
+  interface Response<T> {
     result: number
     msg: any
-    data: {
-      ext: {
-        _from_: string
-      }
-      readingDuration: number
-      activeList: Activity[]
-    }
+    data: T
     errorMsg: any
   }
 }

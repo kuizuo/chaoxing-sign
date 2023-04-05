@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import { ActivityStatusEnum, ActivityTypeEnum, Cx } from '.'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require('dotenv').config()
+
 const testAccount: Pick<CX.Account, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,
   password: process.env.CX_PASSWORD!,
@@ -17,7 +20,6 @@ describe('cx', async () => {
     console.log(cx.user)
 
     expect(result).toBe('登录成功')
-    console.log('user', cx.user)
   })
 
   it('getCourseList', async () => {

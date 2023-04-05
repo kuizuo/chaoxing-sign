@@ -1,6 +1,7 @@
 {
   "extends": "@kuizuo",
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "new-cap": "off",
   }
 }

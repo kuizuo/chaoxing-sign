@@ -164,7 +164,7 @@ export class Cx {
   }
 
   async getActivityList(course: CX.Course) {
-    const { body: data } = await this.http.get<CX.ActivityResponse>('https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist', {
+    const { body: data } = await this.http.get<CX.ActivityListResponse>('https://mobilelearn.chaoxing.com/v2/apis/active/student/activelist', {
       searchParams: {
         fid: this.user.schoolid,
         courseId: course.courseId,
@@ -174,6 +174,19 @@ export class Cx {
     })
 
     return data.data.activeList ?? []
+  }
+
+  /*
+    根据 aid 获取活动详情
+  */
+  async getActiveInfo(activeId: string | number) {
+    const { body: data } = await this.http.get<CX.Response<CX.Activity>>('https://mobilelearn.chaoxing.com/v2/apis/active/getPPTActiveInfo', {
+      searchParams: {
+        activeId,
+      },
+    })
+
+    return data.data
   }
 
   /*
@@ -285,24 +298,7 @@ export class Cx {
 
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
-        await this.preSign(course, activity)
-
-        let result = ''
-        // 普通签到 手势签到 签到码签到
-        if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum)) {
-          result = await this.signGeneral(activity)
-        }
-
-        else if (activity.otherId === SignTypeEnum.QrCode) {
-          // TODO: 所在组群中有二维码 则自动签到
-
-          result = '二维码签到'
-        }
-
-        else if (activity.otherId === SignTypeEnum.Location) {
-          // TODO: 获取用户所设置的位置信息 进行签到
-          result = await this.signLocation(activity)
-        }
+        const result = await this.handleSign(course, activity)
 
         console.log(`课程: ${course.name} 签到结果: ${result}`)
 
@@ -323,25 +319,7 @@ export class Cx {
         result: '不是签到活动或活动已结束',
       }
     }
-
-    await this.preSign(course, activity)
-
-    let result = ''
-    // 普通签到 手势签到 签到码签到
-    if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum)) {
-      result = await this.signGeneral(activity)
-    }
-
-    else if (activity.otherId === SignTypeEnum.QrCode) {
-      // TODO: 所在组群中有二维码 则自动签到
-
-      result = '二维码签到'
-    }
-
-    else if (activity.otherId === SignTypeEnum.Location) {
-      // TODO: 获取用户所设置的位置信息 进行签到
-      result = await this.signLocation(activity)
-    }
+    const result = await this.handleSign(course, activity)
 
     console.log(`课程: ${course.name} 签到结果: ${result}`)
 
@@ -360,18 +338,7 @@ export class Cx {
     const signResult = []
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
-        await this.preSign(activity.course, activity)
-
-        let result = ''
-        if ([SignTypeEnum.General, SignTypeEnum.Gesture, SignTypeEnum.Code].includes(activity.otherId as SignTypeEnum))
-          result = await this.signGeneral(activity)
-
-        else if (activity.otherId === SignTypeEnum.QrCode)
-          // 将该签到任务返回给用户, 用户自行扫码签到
-          result = '请扫码/或填写 Enc 签到'
-
-        else if (activity.otherId === SignTypeEnum.Location)
-          result = await this.signLocation(activity)
+        const result = await this.handleSign(activity.course, activity)
 
         signResult.push({
           activity,
@@ -380,6 +347,40 @@ export class Cx {
       }
     }
     return signResult
+  }
+
+  async handleSign(course: CX.Course, activity: CX.Activity) {
+    await this.preSign(course, activity)
+
+    switch (activity.otherId) {
+      case SignTypeEnum.General:
+      case SignTypeEnum.Gesture:
+      case SignTypeEnum.Code:
+        return await this.signGeneral(activity)
+
+      case SignTypeEnum.Location:
+        return await this.signLocation(activity)
+
+      case SignTypeEnum.QrCode:
+        return '请扫码/或填写 Enc 签到'
+
+      default:
+        return '未知签到类型'
+    }
+  }
+
+  async getWebIM() {
+    const { body: html } = await this.http.get('https://im.chaoxing.com/webim/me', {
+      responseType: 'text',
+    })
+
+    const $ = cheerio.load(html)
+
+    return {
+      token: $('#myToken').text(),
+      uid: $('#myTuid').text(),
+      name: $('#myName').text(),
+    }
   }
 }
 
