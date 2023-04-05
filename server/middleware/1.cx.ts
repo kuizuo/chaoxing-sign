@@ -44,8 +44,8 @@ export default eventHandler(async (event) => {
       context.cx = cx
     }
   }
-  catch (error) {
+  catch (error: any) {
     console.log(error)
-    return createError({ statusCode: 400, message: '请求账号不存在' })
+    return createError({ statusCode: 500, message: error.message })
   }
 })

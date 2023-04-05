@@ -18,7 +18,7 @@ async function login() {
   loading.value = true
   const { error, url } = await signIn('credentials', {
     ...form.value,
-    redirect: true,
+    redirect: false,
   })
   loading.value = false
 

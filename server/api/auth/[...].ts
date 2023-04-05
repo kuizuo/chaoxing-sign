@@ -45,7 +45,7 @@ export default NuxtAuthHandler({
         if (!user) {
           throw createError({
             statusCode: 403,
-            statusMessage: 'Invalid credentials',
+            statusMessage: '账号或密码错误',
           })
         }
 
