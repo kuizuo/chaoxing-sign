@@ -7,14 +7,12 @@
         </div>
       </template>
       <div flex justify-center>
-        <n-card max-w-6xl>
-          <div min-w-sm>
-            <Hero />
-            <AccountList />
-            <Operation />
-            <Log />
-          </div>
-        </n-card>
+        <div min-w-sm>
+          <Hero />
+          <AccountList />
+          <Operation />
+          <Log />
+        </div>
       </div>
     </Suspense>
   </div>

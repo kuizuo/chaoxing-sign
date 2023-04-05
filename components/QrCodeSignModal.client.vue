@@ -24,9 +24,8 @@ async function handleQrCode(text: string) {
 const qrCodeSigning = ref(false)
 
 const showScan = ref(false)
-const showScanConfirmation = ref(false)
 const errorMessage = ref('')
-const camera = ref('off')
+const camera = ref<'auto' | 'off'>('off')
 
 async function handleScan() {
   if (showScan.value) {
@@ -76,20 +75,20 @@ async function onDecode(res: string) {
     text.value = res
     showScan.value = false
     camera.value = 'off'
-    showScanConfirmation.value = true
 
-    setTimeout(() => {
-      showScanConfirmation.value = false
-    }, 1000)
-
-    // qrCodeSigning.value = true
-    // await handleQrCode(res).finally(() => {
-    //   qrCodeSigning.value = false
-    // })
+    qrCodeSigning.value = true
+    await handleQrCode(res).finally(() => {
+      qrCodeSigning.value = false
+    })
   }
   else {
     message.error('二维码识别失败')
   }
+}
+
+function handleClose() {
+  showScan.value = false
+  camera.value = 'off'
 }
 </script>
 
@@ -101,8 +100,9 @@ async function onDecode(res: string) {
     title="上传二维码图片"
     :bordered="false"
     :closable="true"
-    :style="{ 'max-width': '400px' }"
+    :style="{ 'max-width': '360px' }"
     transform-origin="center"
+    @after-leave="handleClose"
   >
     <n-alert v-show="errorMessage" class="mb-2">
       {{ errorMessage }}
@@ -111,9 +111,9 @@ async function onDecode(res: string) {
       <n-button type="info" @click="handleScan">
         {{ showScan ? '关闭' : '扫一扫' }}
       </n-button>
-      <n-button>
+      <!-- <n-button>
         <QrCapture class="w-150px" @decode="onDecode" />
-      </n-button>
+      </n-button> -->
       <n-button v-if="qrcode" type="error" @click="text = ''">
         清除
       </n-button>
@@ -122,11 +122,7 @@ async function onDecode(res: string) {
       <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
       <template v-else>
-        <QrStream v-if="showScan" class="stream" :camera="camera" @onInit="onInit" @decode="onDecode">
-          <div v-show="showScanConfirmation" class="scan-confirmation">
-            <Icon name="carbon:user" />
-          </div>
-        </QrStream>
+        <QrStream v-if="showScan" class="stream" :camera="camera" @onInit="onInit" @decode="onDecode" />
         <QrDropzone v-else class="flex justify-center items-center h-full w-full" @decode="onDecode">
           <div style="padding-top: 16px;margin-bottom: 12px">
             <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
