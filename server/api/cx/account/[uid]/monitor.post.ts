@@ -4,8 +4,6 @@ import { ActivityTypeEnum, Cx } from '~~/server/protocol/cx'
 import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
 
 const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) => {
-  console.log(message)
-
   if (!message?.ext?.attachment)
     return
 

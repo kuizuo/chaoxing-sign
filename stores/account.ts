@@ -133,7 +133,7 @@ export const useAccountStore = defineStore('account', () => {
     const activityId = link.match(/id=(\d+)/)?.[1]
     const enc = link.match(/enc=(\w+)/)?.[1]
 
-    const { data } = await request('/api/cx/sign_by_qrcode', {
+    const { data } = await request(`/api/cx/account/${uid}/sign_by_qrcode`, {
       method: 'POST',
       body: { uid, activityId, enc },
     })
@@ -148,7 +148,7 @@ export const useAccountStore = defineStore('account', () => {
   async function oneClickSign(uid: string) {
     const account = getAccount(uid)
 
-    const { data } = await request('/api/cx/sign_all', {
+    const { data } = await request(`/api/cx/account/${uid}/sign_all`, {
       method: 'POST',
       body: { uid },
     })
@@ -164,7 +164,7 @@ export const useAccountStore = defineStore('account', () => {
   */
   async function monitorAccount(uid: string) {
     const account = getAccount(uid)
-    const { data } = await request('/api/cx/monitor', {
+    const { data } = await request(`/api/cx/account/${uid}/monitor`, {
       method: 'POST',
       body: { uid },
     })
@@ -184,7 +184,7 @@ export const useAccountStore = defineStore('account', () => {
   */
   async function unMonitorAccount(uid: string) {
     const account = getAccount(uid)
-    const { data } = await request('/api/cx/unmonitor', {
+    const { data } = await request(`/api/cx/account/${uid}/unmonitor`, {
       method: 'POST',
       body: { uid },
     })
