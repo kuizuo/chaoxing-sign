@@ -1,87 +1,96 @@
 <script setup lang="ts">
-import type { UploadFileInfo } from 'naive-ui'
-import * as QRcode from 'qrcode'
-import jsQR from 'jsqr'
+import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { QrCapture, QrDropzone, QrStream } from 'vue3-qr-reader'
 
 const emit = defineEmits(['success'])
 
 const message = useMessage()
-const showPreviewModal = ref(false)
-const fileList = ref<UploadFileInfo[]>([])
-const previewImageUrl = ref('')
-const link = ref<string>('')
+const text = ref('')
+const qrcode = useQRCode(text, {
+  errorCorrectionLevel: 'H',
+  margin: 2,
+  scale: 10,
+  color: {
+    dark: '#000000',
+    light: '#FFFFFF',
+  },
+})
 
-async function handleQrCode(result: string) {
+async function handleQrCode(text: string) {
   // 将二维码识别结果返回给父组件
-  emit('success', result)
-}
-
-async function handlePreview(file: UploadFileInfo) {
-  previewImageUrl.value = file.url ?? await file2Base64(file.file!)
-  showPreviewModal.value = true
+  emit('success', text)
 }
 
 const qrCodeSigning = ref(false)
-const handleUpload = async ({
-  file,
-  onFinish,
-}: any) => {
-  file = {
-    ...file,
-    status: 'finished',
-    url: await file2Base64(file.file!),
+
+const showScan = ref(false)
+const showScanConfirmation = ref(false)
+const errorMessage = ref('')
+const camera = ref('off')
+
+async function handleScan() {
+  if (showScan.value) {
+    showScan.value = false
+    camera.value = 'off'
   }
-
-  const image = new Image()
-  image.src = await file2Base64(file.file!)
-  image.onload = async () => {
-    const canvas = document.createElement('canvas')
-    canvas.width = image.width
-    canvas.height = image.height
-    canvas.getContext('2d')!.drawImage(image, 0, 0, image.width, image.height)
-    const imageData = canvas.getContext('2d')!.getImageData(0, 0, image.width, image.height)
-    const qrCode = jsQR(imageData.data, imageData.width, imageData.height)
-
-    if (qrCode) {
-      message.success('二维码识别成功,正在签到...')
-
-      link.value = qrCode.data
-      qrCodeSigning.value = true
-
-      const imgBase64 = await QRcode.toDataURL(qrCode.data, {
-        errorCorrectionLevel: 'H',
-        margin: 2,
-        scale: 6,
-        color: {
-          dark: '#000000',
-          light: '#FFFFFF',
-        },
-      })
-      file.url = imgBase64
-
-      fileList.value[0] = {
-        id: 'qrCode',
-        name: 'qrCode.png',
-        status: 'finished',
-        url: imgBase64,
-      }
-
-      await handleQrCode(qrCode.data).finally(() => {
-        qrCodeSigning.value = false
-      })
-    }
-    else {
-      message.error('二维码识别失败')
-    }
-
-    onFinish()
+  else {
+    showScan.value = true
+    camera.value = 'auto'
   }
 }
 
-watch(fileList, (fileList) => {
-  if (fileList.length === 0)
-    link.value = ''
-})
+async function onInit(promise: any) {
+  try {
+    await promise
+  }
+  catch (error: any) {
+    if (error.name === 'NotAllowedError')
+      errorMessage.value = '错误：您需要授予相机访问权限！'
+
+    else if (error.name === 'NotFoundError')
+      errorMessage.value = '错误：此设备上没有摄像头！'
+
+    else if (error.name === 'NotSupportedError')
+      errorMessage.value = '错误：需要安全上下文（HTTPS，本地主机）！'
+
+    else if (error.name === 'NotReadableError')
+      errorMessage.value = '错误：相机是否已经在使用？'
+
+    else if (error.name === 'OverconstrainedError')
+      errorMessage.value = '错误：安装的摄像头不合适！'
+
+    else if (error.name === 'StreamApiNotSupportedError')
+      errorMessage.value = '错误：此浏览器不支持 Stream API！'
+
+    else if (error.name === 'InsecureContextError')
+      errorMessage.value = '错误：仅在安全上下文中允许访问相机。使用 HTTPS 或 localhost 而不是 HTTP！'
+
+    else
+      errorMessage.value = `错误：相机错误（${error.name}）！`
+  }
+}
+
+async function onDecode(res: string) {
+  if (res) {
+    message.success('二维码识别成功,正在签到...')
+    text.value = res
+    showScan.value = false
+    camera.value = 'off'
+    showScanConfirmation.value = true
+
+    setTimeout(() => {
+      showScanConfirmation.value = false
+    }, 1000)
+
+    // qrCodeSigning.value = true
+    // await handleQrCode(res).finally(() => {
+    //   qrCodeSigning.value = false
+    // })
+  }
+  else {
+    message.error('二维码识别失败')
+  }
+}
 </script>
 
 <template>
@@ -92,64 +101,69 @@ watch(fileList, (fileList) => {
     title="上传二维码图片"
     :bordered="false"
     :closable="true"
-    :style="{ 'max-width': '300px' }"
+    :style="{ 'max-width': '400px' }"
     transform-origin="center"
   >
-    <n-upload
-      v-model:file-list="fileList"
-      directory-dnd
-      :show-file-list="true"
-      list-type="image-card"
-      :max="1"
-      :custom-request="handleUpload"
-      @preview="handlePreview"
-    >
-      <n-upload-dragger>
-        <div style="padding-top: 16px;margin-bottom: 12px">
-          <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
-        </div>
-        <n-text>
-          请上传二维码图片
-        </n-text>
-      </n-upload-dragger>
-    </n-upload>
-    <n-modal
-      v-model:show="showPreviewModal"
-      preset="card"
-      style="width: 600px"
-      title="预览"
-    >
-      <img :src="previewImageUrl" style="width: 100%">
-    </n-modal>
+    <n-alert v-show="errorMessage" class="mb-2">
+      {{ errorMessage }}
+    </n-alert>
+    <n-space class="mb-2">
+      <n-button type="info" @click="handleScan">
+        {{ showScan ? '关闭' : '扫一扫' }}
+      </n-button>
+      <n-button>
+        <QrCapture class="w-150px" @decode="onDecode" />
+      </n-button>
+      <n-button v-if="qrcode" type="error" @click="text = ''">
+        清除
+      </n-button>
+    </n-space>
+    <div class="w-full aspect-1 border-1">
+      <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
+      <template v-else>
+        <QrStream v-if="showScan" class="stream" :camera="camera" @onInit="onInit" @decode="onDecode">
+          <div v-show="showScanConfirmation" class="scan-confirmation">
+            <Icon name="carbon:user" />
+          </div>
+        </QrStream>
+        <QrDropzone v-else class="flex justify-center items-center h-full w-full" @decode="onDecode">
+          <div style="padding-top: 16px;margin-bottom: 12px">
+            <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
+          </div>
+          <n-text>
+            将二维码图片拖拽至此
+          </n-text>
+        </QrDropzone>
+      </template>
+    </div>
     <span>若有签到链接，请在下方输入</span>
     <n-input-group>
-      <n-input v-model:value="link" placeholder="签到链接" clearable />
-      <n-button type="primary" :loading="qrCodeSigning" @click="handleQrCode(link)">
+      <n-input v-model:value="text" placeholder="签到链接" clearable />
+      <n-button type="primary" :loading="qrCodeSigning" @click="handleQrCode(text)">
         签到
       </n-button>
     </n-input-group>
   </n-modal>
 </template>
 
-<style scoped>
-:deep(.n-upload-file-list.n-upload-file-list--grid) {
-  display: flex;
+<style lang='scss' scoped>
+.stream {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
 }
-
-:deep(.n-upload-trigger.n-upload-trigger--image-card){
+.scan-confirmation {
+  position: absolute;
   width: 100%;
   height: 100%;
-  aspect-ratio: 1/1;
-}
 
-:deep(.n-upload-file-list .n-upload-file.n-upload-file--image-card-type){
-  width: 100%;
-  height: 100%;
-  aspect-ratio: 1/1;
-}
-:deep(.n-upload-trigger.n-upload-trigger--image-card .n-upload-dragger){
+  background-color: rgba(255, 255, 255, .8);
+
   display: flex;
-  flex-direction: column;
+  flex-flow: row nowrap;
+  justify-content: center;
 }
 </style>

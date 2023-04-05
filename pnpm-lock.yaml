@@ -43,6 +43,7 @@ specifiers:
   tough-cookie: ^4.1.2
   typescript: ^4.9.5
   vitest: ^0.24.5
+  vue3-qr-reader: ^1.0.0
   ws: ^8.13.0
 
 dependencies:
@@ -90,6 +91,7 @@ devDependencies:
   tough-cookie: 4.1.2
   typescript: 4.9.5
   vitest: 0.24.5_jsdom@21.1.1+sass@1.59.2
+  vue3-qr-reader: 1.0.0
   ws: 8.13.0
 
 packages:
@@ -11093,6 +11095,12 @@ packages:
       '@vue/runtime-dom': 3.2.47
       '@vue/server-renderer': 3.2.47_vue@3.2.47
       '@vue/shared': 3.2.47
+    dev: true
+
+  /vue3-qr-reader/1.0.0:
+    resolution: {integrity: sha512-BRgmR+lDPkNwgL6skSaEOGFg4Aup/FLYnOGFCV0knYHxfbAnliJN/+wr//iqD2G3EOBrXw4TPGNfj/5Wxl7wwQ==}
+    dependencies:
+      jsqr: 1.4.0
     dev: true
 
   /vueuc/0.4.51:

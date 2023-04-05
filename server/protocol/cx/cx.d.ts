@@ -79,6 +79,7 @@ declare namespace CX {
     nameOne: string
     nameTwo: string
     nameFour: string
+    clazzid: number
     startTime: number
     id: number
     endTime: number

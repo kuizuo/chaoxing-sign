@@ -212,6 +212,31 @@ export class Cx {
   }
 
   /*
+    群聊预签到
+  */
+  async preSign_chat(activity: CX.Activity) {
+    const { body: data } = await this.http.get(
+      'https://mobilelearn.chaoxing.com/sign/preStuSign',
+      {
+        searchParams: {
+          activeId: activity.id,
+          code: '',
+          uid: this.user.uid,
+          courseId: null,
+          classId: '0',
+          general: '0',
+          // chatId: activity.chatId,
+          appType: '0',
+          tid: '',
+          atype: null,
+          sys: '0',
+        },
+      },
+    )
+    return data
+  }
+
+  /*
     签到请求
   */
   async stuSign(query: string) {
@@ -222,8 +247,10 @@ export class Cx {
 
     if (data === 'success' || data === '您已签到过了')
       return '签到成功'
-    else
-      return data
+    else if (data === 'success2')
+      return '签到已过期'
+
+    return data
   }
 
   async signGeneral(activity: CX.Activity) {
