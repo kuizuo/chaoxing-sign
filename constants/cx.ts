@@ -5,6 +5,10 @@ export enum ActivityTypeEnum {
   Question = 6, // 投票
   Pick = 11, // 选人
   Homework = 19, // 作业
+  Evaluation = 23, // 评分
+  Practice = 42, //  随堂练习
+  Vote = 43, // 投票
+  Notice = 45, // 通知
 }
 
 export const activityTypeMap: Record<number, string> = {
@@ -14,7 +18,11 @@ export const activityTypeMap: Record<number, string> = {
   [ActivityTypeEnum.Question]: '投票',
   [ActivityTypeEnum.Pick]: '选人',
   [ActivityTypeEnum.Homework]: '作业',
-}
+  [ActivityTypeEnum.Evaluation]: '评分',
+  [ActivityTypeEnum.Practice]: '随堂练习',
+  [ActivityTypeEnum.Vote]: '投票',
+  [ActivityTypeEnum.Notice]: '通知',
+} as const
 
 export enum ActivityStatusEnum {
   Doing = 1,
