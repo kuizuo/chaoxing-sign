@@ -66,10 +66,11 @@ declare namespace CX {
   interface Activity {
     activityList: any
     userStatus: number
-    otherId: number | string
+    otherId: number
     groupId: number
     source: number
     isLook: number
+    ifphoto: number
     type: number
     releaseNum: number
     attendNum: number

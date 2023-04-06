@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
   const result = await event.context.cx.signQrCode(activity, enc)
 
   return ResOp.success({
+    activity,
     result,
   })
 })

@@ -1,5 +1,13 @@
 import { acceptHMRUpdate, skipHydrate } from 'pinia'
 
+const signTypeMap: Record<number, string> = {
+  0: '普通签到',
+  2: '二维码签到',
+  3: '手势签到 ',
+  4: '位置签到',
+  5: '签到码签到',
+} as const
+
 export const useAccountStore = defineStore('account', () => {
   const accounts = useLocalStorage<API.Account[]>('account', []) // ref<API.Account[]>([])
 
@@ -100,11 +108,15 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     if (data.length === 0) {
-      log(`${course.name} 无签到活动`, { type: 'warning' })
+      log(`课程: ${course.name} 无签到活动`, { type: 'warning' })
     }
     else {
       message.success(`${course.name} 共有${data.length}个正在的签到活动`)
-      data.forEach(d => log(`${course?.name} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
+      data.forEach(({ activity, result }) => {
+        const signType = signTypeMap[activity.otherId] ?? '未知'
+        const activityName = activity.name || signType
+        log(`课程: ${course?.name} 活动: ${activityName} [${signType}]结果: ${result}`, { type: result === '签到成功' ? 'success' : 'error' })
+      })
     }
 
     return data
@@ -119,7 +131,10 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, course, activity },
     })
 
-    log(`${course?.name} ${activity.nameOne} ${data.result}`, { type: 'success' })
+    const signType = signTypeMap[activity.otherId] ?? '未知'
+    const activityName = activity.name || signType
+    log(`课程: ${course.name} 活动: ${activityName} [${signType}]结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+
     return data
   }
 
@@ -138,7 +153,10 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, activityId, enc },
     })
 
-    log(`二维码签到结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+    const { activity } = data!
+    const signType = signTypeMap[activity.otherId] ?? '未知'
+    const activityName = activity.name || signType
+    log(`活动: ${activityName} [${signType}]结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
@@ -155,7 +173,13 @@ export const useAccountStore = defineStore('account', () => {
     })
 
     message.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
-    data.forEach(d => log(`${d.activity.course?.name ?? ''} ${d.activity.nameOne} ${d.result}`, { type: d.result === '签到成功' ? 'success' : 'error' }))
+    data.forEach(({ activity, result }) => {
+      const signType = signTypeMap[activity.otherId] ?? '未知'
+      const activityName = activity.name || signType
+
+      log(`课程: ${activity.course?.name} 活动: ${activityName} [${signType}]结果: ${result}`,
+        { type: result === '签到成功' ? 'success' : 'error' })
+    })
 
     return data
   }

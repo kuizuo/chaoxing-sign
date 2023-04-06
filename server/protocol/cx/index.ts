@@ -308,12 +308,18 @@ export class Cx {
   }
 
   async getAllActivity(type?: ActivityTypeEnum, status?: ActivityStatusEnum) {
-    const courseList = await this.getCourseList()
+    const courseList = this.courseList.length > 0 ? this.courseList : await this.getCourseList()
 
     const activityArr = await mapLimit(courseList, 5, async (course: CX.Course) => (await this.getActivityList(course)).map(a => ({ course, ...a })))
 
     return activityArr.flat(1)
       .filter((activity: { type: number; status: number }) => (type ? activity.type === type : true) && (status ? activity.status === status : true))
+      .map(a => ({
+        ...a,
+        ...({
+          name: a.name || a.nameOne,
+        }),
+      }))
   }
 
   async signByCourse(course: CX.Course) {
@@ -379,8 +385,14 @@ export class Cx {
   async handleSign(course: CX.Course, activity: CX.Activity) {
     await this.preSign(course, activity)
 
-    switch (activity.otherId) {
+    switch (Number(activity.otherId)) {
       case SignTypeEnum.General:
+        if (activity.ifphoto === 1)
+          return await this.signGeneral(activity)
+
+        else
+          return await this.signGeneral(activity)
+
       case SignTypeEnum.Gesture:
       case SignTypeEnum.Code:
         return await this.signGeneral(activity)
