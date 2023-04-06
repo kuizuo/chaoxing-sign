@@ -6,8 +6,8 @@
           <span animate-pulse>Loading...</span>
         </div>
       </template>
-      <div flex justify-center>
-        <div max-w-6xl>
+      <div class="flex justify-center">
+        <div class="w-1024px">
           <Hero />
           <AccountList />
           <Operation />

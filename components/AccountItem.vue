@@ -49,11 +49,16 @@ async function handleUnMonitor() {
 </script>
 
 <template>
-  <n-card hoverable class="group cursor-pointer" :class="{ 'n-card-checked': selected }" :content-style="{ width: '300px' }">
+  <n-card hoverable class="group cursor-pointer" :class="{ 'n-card-checked': selected }">
     <template #header>
       <div class="flex items-center gap-2">
         <n-avatar :src="info.avatar" />
-        <span>{{ info.siteName }}</span>
+        <n-popover trigger="hover">
+          <template #trigger>
+            <span class="truncate max-w-[10ch]">{{ info.siteName }}</span>
+          </template>
+          <span>{{ info.siteName }}</span>
+        </n-popover>
         <span>{{ info.realname }}</span>
         <n-popover v-if="setting?.monitor" trigger="hover">
           <template #trigger>

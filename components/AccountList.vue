@@ -40,7 +40,7 @@ async function selectAccount(account: API.Account) {
 
     <ClientOnly>
       <template #fallback>
-        <div class="text-left grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 ">
+        <div class="text-left grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
           <n-card v-for="i in 3" :key="i">
             <template #header>
               <n-space :size="10">

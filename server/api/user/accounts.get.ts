@@ -18,6 +18,9 @@ export default defineEventHandler(async (event) => {
       lastLoginTime: true,
       signlogs: true,
     },
+    orderBy: {
+      lastLoginTime: 'desc',
+    },
   })
 
   return ResOp.success(accounts)
