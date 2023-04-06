@@ -1,26 +1,10 @@
 <script setup lang="ts">
+import { activityTypeMap } from '~~/constants/cx'
+
 const props = defineProps<{
   account: CX.Account
   courses: API.Course[]
 }>()
-
-enum ActivityTypeEnum {
-  Sign = 2, // 签到
-  Answer = 4, // 抢答
-  Talk = 5, // 主题谈论
-  Question = 6, // 投票
-  Pick = 11, // 选人
-  Homework = 19, // 作业
-}
-
-const activityTypeMap: Record<number, string> = {
-  [ActivityTypeEnum.Sign]: '签到',
-  [ActivityTypeEnum.Answer]: '抢答',
-  [ActivityTypeEnum.Talk]: '主题谈论',
-  [ActivityTypeEnum.Question]: '投票',
-  [ActivityTypeEnum.Pick]: '选人',
-  [ActivityTypeEnum.Homework]: '作业',
-}
 
 const message = useMessage()
 const accountStore = useAccountStore()

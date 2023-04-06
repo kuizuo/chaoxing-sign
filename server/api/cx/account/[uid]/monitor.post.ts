@@ -1,5 +1,6 @@
 import type { EasemobChat } from 'easemob-websdk'
-import { ActivityTypeEnum, Cx } from '~~/server/protocol/cx'
+import { ActivityTypeEnum } from '~~/constants/cx'
+import { Cx } from '~~/server/protocol/cx'
 
 import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
 

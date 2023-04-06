@@ -4,28 +4,7 @@ import type { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
 import * as cheerio from 'cheerio'
 import got from 'got'
-
-export enum ActivityStatusEnum {
-  Doing = 1,
-  Done = 2,
-}
-
-export enum ActivityTypeEnum {
-  Sign = 2, // 签到
-  Answer = 4, // 抢答
-  Talk = 5, // 主题谈论
-  Question = 6, // 投票
-  Pick = 11, // 选人
-  Homework = 19, // 作业
-}
-
-export enum SignTypeEnum {
-  General = 0, // 普通签到/拍照签到
-  QrCode = 2, // 二维码签到
-  Gesture = 3, // 手势签到
-  Location = 4, // 位置签到
-  Code = 5, // 签到码签到
-}
+import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from '~~/constants/cx'
 
 export class Cx {
   public http: Got
@@ -198,7 +177,7 @@ export class Cx {
         courseId: course.courseId,
         classId: course.classId,
         activePrimaryId: activity.id,
-        general: '1',
+        Normal: '1',
         sys: '1',
         ls: '1',
         appType: '15',
@@ -224,7 +203,7 @@ export class Cx {
           uid: this.user.uid,
           courseId: null,
           classId: '0',
-          general: '0',
+          Normal: '0',
           // chatId: activity.chatId,
           appType: '0',
           tid: '',
@@ -253,7 +232,7 @@ export class Cx {
     return data
   }
 
-  async signGeneral(activity: CX.Activity) {
+  async signNormal(activity: CX.Activity) {
     const query = qsStringify({
       activeId: activity.id,
       uid: this.user.uid,
@@ -386,21 +365,21 @@ export class Cx {
     await this.preSign(course, activity)
 
     switch (Number(activity.otherId)) {
-      case SignTypeEnum.General:
+      case SignTypeEnum.Normal:
         if (activity.ifphoto === 1)
-          return await this.signGeneral(activity)
+          return await this.signNormal(activity)
 
         else
-          return await this.signGeneral(activity)
+          return await this.signNormal(activity)
 
       case SignTypeEnum.Gesture:
       case SignTypeEnum.Code:
-        return await this.signGeneral(activity)
+        return await this.signNormal(activity)
 
       case SignTypeEnum.Location:
         return await this.signLocation(activity)
 
-      case SignTypeEnum.QrCode:
+      case SignTypeEnum.QRCode:
         return '请扫码签到'
 
       default:
