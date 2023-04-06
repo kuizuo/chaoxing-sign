@@ -57,7 +57,6 @@ export default defineNuxtConfig({
   routeRules: {
     '/changelog': { static: true },
     '/help': { static: true },
-    '/admin/**': { ssr: false },
     '/api/**': { cors: true },
   },
   auth: {
@@ -69,6 +68,9 @@ export default defineNuxtConfig({
   },
   typescript: {
     shim: false,
+  },
+  build: {
+    transpile: ['punycode', 'easemob-websdk'],
   },
   devtools: {
     enabled: true,

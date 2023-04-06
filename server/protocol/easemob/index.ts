@@ -29,7 +29,7 @@ export const createIMConnection = async () => {
   globalThis.SVGElement = window.SVGElement
   globalThis.XMLHttpRequest = window.XMLHttpRequest
 
-  const Easemob = await (await import('easemob-websdk')).default as any
+  const Easemob = await import('easemob-websdk').then(lib => lib.default || lib) as any
 
   const { connection } = Easemob?.default as EasemobChatStatic
 
