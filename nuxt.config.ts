@@ -70,7 +70,7 @@ export default defineNuxtConfig({
     shim: false,
   },
   build: {
-    transpile: ['punycode', 'easemob-websdk'],
+    transpile: ['punycode'],
   },
   devtools: {
     enabled: true,

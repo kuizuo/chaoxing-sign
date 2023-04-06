@@ -94,6 +94,12 @@ function handleClose() {
   showScan.value = false
   camera.value = 'off'
 }
+
+function handleUpload() {
+  const fileInput = document.querySelector('input[type="file"]')! as HTMLInputElement
+
+  fileInput.click()
+}
 </script>
 
 <template>
@@ -113,29 +119,27 @@ function handleClose() {
       <n-button type="info" :disabled="!!errorMessage" @click="handleScan">
         {{ showScan ? '关闭' : '扫一扫' }}
       </n-button>
-      <!-- <n-button>
-        <QrCapture class="w-150px" @decode="onDecode" />
-      </n-button> -->
       <n-button v-if="qrcode" type="error" @click="text = ''">
         清除
       </n-button>
     </n-space>
-    <div class="w-full aspect-1 border-1">
+    <div class="w-full aspect-1 border-1 transition hover:(border-1 border-green border-dotted)">
       <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
       <template v-else>
-        <QrStream v-if="showScan" class="stream" :camera="camera" @init="onInit" @decode="onDecode" />
-        <QrDropzone v-else class="flex justify-center items-center h-full w-full" @decode="onDecode">
+        <QrStream v-if="showScan && !qrcode" class="stream" :camera="camera" @init="onInit" @decode="onDecode" />
+        <QrDropzone v-else class="flex flex-col justify-center items-center h-full w-full cursor-pointer " @decode="onDecode" @click="handleUpload()">
           <div style="padding-top: 16px;margin-bottom: 12px">
             <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
           </div>
           <n-text>
-            将二维码图片拖拽至此
+            点击或者拖动文件到该区域来上传
           </n-text>
         </QrDropzone>
+        <QrCapture class="hidden" @decode="onDecode" />
       </template>
     </div>
-    <span>若有签到链接，请在下方输入</span>
+    <span>若有签到链接，可直接在下方输入</span>
     <n-input-group>
       <n-input v-model:value="text" placeholder="签到链接" clearable />
       <n-button type="primary" :loading="qrCodeSigning" @click="handleQrCode(text)">
