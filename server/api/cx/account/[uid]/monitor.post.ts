@@ -83,7 +83,7 @@ async function initIMConnection() {
 
     const { uid, token } = await cx.getWebIM()
 
-    const client = createIMConnection()
+    const client = await createIMConnection()
     await client.open({
       user: uid,
       accessToken: token,
@@ -117,7 +117,7 @@ export default defineEventHandler(async (event) => {
 
   const { uid, token } = await event.context.cx.getWebIM()
 
-  const client = createIMConnection()
+  const client = await createIMConnection()
 
   await client.open({
     user: uid,

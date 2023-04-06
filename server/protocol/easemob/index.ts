@@ -1,4 +1,3 @@
-import { createRequire } from 'module'
 import type { EasemobChat, EasemobChatStatic } from 'easemob-websdk'
 import WebSocket from 'ws'
 import { JSDOM } from 'jsdom'
@@ -18,10 +17,8 @@ export interface OpenOptions {
 
 const previousGlobalThis = { ...globalThis }
 
-export const createIMConnection = () => {
+export const createIMConnection = async () => {
   const { window } = new JSDOM('', { url: 'https://im.chaoxing.com/webim/me' })
-
-  const require = createRequire(import.meta.url)
 
   globalThis.window = window as unknown as typeof globalThis.window
   globalThis.navigator = window.navigator
@@ -32,10 +29,9 @@ export const createIMConnection = () => {
   globalThis.SVGElement = window.SVGElement
   globalThis.XMLHttpRequest = window.XMLHttpRequest
 
-  // 不能使用 import，因为 easemob-websdk 会直接使用 window，因此需要在 globalThis.window 之后导入
-  const Easemob = require('easemob-websdk')
+  const Easemob = await (await import('easemob-websdk')).default as any
 
-  const { connection } = Easemob.default as EasemobChatStatic
+  const { connection } = Easemob?.default as EasemobChatStatic
 
   const conn: EasemobChat.Connection = new connection({
     url: 'https://im-api-vip6-v2.easecdn.com/ws',
