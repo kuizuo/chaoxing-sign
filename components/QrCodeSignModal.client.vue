@@ -30,6 +30,9 @@ const errorMessage = ref('')
 const camera = ref<'auto' | 'off'>('off')
 
 async function handleScan() {
+  if (errorMessage)
+    return message.error(errorMessage.value)
+
   if (showScan.value) {
     showScan.value = false
     camera.value = 'off'
@@ -40,34 +43,28 @@ async function handleScan() {
   }
 }
 
-async function onInit(promise: any) {
+async function onInit(promise: Promise<any>) {
   try {
     await promise
   }
   catch (error: any) {
-    if (error.name === 'NotAllowedError')
-      errorMessage.value = '错误：您需要授予相机访问权限！'
+    const errorMessages = {
+      NotAllowedError: '您需要授予相机访问权限！',
+      NotFoundError: '此设备上没有摄像头！',
+      NotSupportedError: '需要安全上下文（HTTPS，本地主机）！',
+      NotReadableError: '相机是否已经在使用？',
+      OverconstrainedError: '安装的摄像头不合适！',
+      StreamApiNotSupportedError: '此浏览器不支持 Stream API！',
+      InsecureContextError: '仅在安全上下文中允许访问相机。使用 HTTPS 或 localhost 而不是 HTTP！',
+    } as const
 
-    else if (error.name === 'NotFoundError')
-      errorMessage.value = '错误：此设备上没有摄像头！'
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    errorMessage.value = errorMessages[error.name] ? errorMessages[error.name] : `相机错误（${error.name}）！`
 
-    else if (error.name === 'NotSupportedError')
-      errorMessage.value = '错误：需要安全上下文（HTTPS，本地主机）！'
-
-    else if (error.name === 'NotReadableError')
-      errorMessage.value = '错误：相机是否已经在使用？'
-
-    else if (error.name === 'OverconstrainedError')
-      errorMessage.value = '错误：安装的摄像头不合适！'
-
-    else if (error.name === 'StreamApiNotSupportedError')
-      errorMessage.value = '错误：此浏览器不支持 Stream API！'
-
-    else if (error.name === 'InsecureContextError')
-      errorMessage.value = '错误：仅在安全上下文中允许访问相机。使用 HTTPS 或 localhost 而不是 HTTP！'
-
-    else
-      errorMessage.value = `错误：相机错误（${error.name}）！`
+    message.error(errorMessage.value)
+    showScan.value = false
+    camera.value = 'off'
   }
 }
 
@@ -88,6 +85,11 @@ async function onDecode(res: string) {
   }
 }
 
+function handleOpen() {
+  showScan.value = true
+  camera.value = 'auto'
+}
+
 function handleClose() {
   showScan.value = false
   camera.value = 'off'
@@ -104,13 +106,11 @@ function handleClose() {
     :closable="true"
     :style="{ 'max-width': '360px' }"
     transform-origin="center"
+    @after-enter="handleOpen"
     @after-leave="handleClose"
   >
-    <n-alert v-show="errorMessage" class="mb-2">
-      {{ errorMessage }}
-    </n-alert>
     <n-space class="mb-2">
-      <n-button type="info" @click="handleScan">
+      <n-button type="info" :disabled="!!errorMessage" @click="handleScan">
         {{ showScan ? '关闭' : '扫一扫' }}
       </n-button>
       <!-- <n-button>
@@ -124,7 +124,7 @@ function handleClose() {
       <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
       <template v-else>
-        <QrStream v-if="showScan" class="stream" :camera="camera" @onInit="onInit" @decode="onDecode" />
+        <QrStream v-if="showScan" class="stream" :camera="camera" @init="onInit" @decode="onDecode" />
         <QrDropzone v-else class="flex justify-center items-center h-full w-full" @decode="onDecode">
           <div style="padding-top: 16px;margin-bottom: 12px">
             <Icon name="material-symbols:unarchive-outline-sharp" size="48" />

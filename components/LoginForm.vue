@@ -7,7 +7,6 @@ const { signIn, getProviders } = useSession()
 const providers = await getProviders()
 const { message } = createDiscreteApi(['message'])
 
-const accountStore = useAccountStore()
 const loading = ref(false)
 const form = ref({
   username: '',
@@ -29,15 +28,13 @@ async function login() {
 
   message.success('登录成功')
 
-  await accountStore.syncAccounts()
-
-  emit('success')
-
   if (url)
-    return navigateTo(url, { external: true })
+    navigateTo(url, { replace: true, external: true })
 
   else
-    return navigateTo('/', { external: true })
+    navigateTo('/', { replace: true, external: true })
+
+  emit('success', url)
 }
 </script>
 
@@ -90,7 +87,3 @@ async function login() {
     </n-spin>
   </div>
 </template>
-
-<style scoped>
-
-</style>

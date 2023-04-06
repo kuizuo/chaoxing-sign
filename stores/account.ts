@@ -138,10 +138,11 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid, activityId, enc },
     })
 
-    log(`二维码签到结果: ${data.result}`, { type: data.result === '签到成功' ? 'success' : 'error' })
+    log(`二维码签到结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
+
   /*
     一键签到
   */

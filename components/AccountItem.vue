@@ -49,7 +49,7 @@ async function handleUnMonitor() {
 </script>
 
 <template>
-  <n-card hoverable class="group cursor-pointer " :class="{ 'n-card-checked': selected }">
+  <n-card hoverable class="group cursor-pointer" :class="{ 'n-card-checked': selected }" :content-style="{ width: '300px' }">
     <template #header>
       <div class="flex items-center gap-2">
         <n-avatar :src="info.avatar" />

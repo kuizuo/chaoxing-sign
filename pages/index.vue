@@ -7,7 +7,7 @@
         </div>
       </template>
       <div flex justify-center>
-        <div min-w-sm>
+        <div max-w-6xl>
           <Hero />
           <AccountList />
           <Operation />

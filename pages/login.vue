@@ -6,6 +6,12 @@ const { status } = useSession()
 if (status.value === 'authenticated')
   router.push({ path: '/' })
 
+const accountStore = useAccountStore()
+
+async function handleSuccess() {
+  await accountStore.syncAccounts()
+}
+
 definePageMeta({
   auth: false,
 })
@@ -13,6 +19,6 @@ definePageMeta({
 
 <template>
   <div>
-    <LoginForm />
+    <LoginForm @success="handleSuccess" />
   </div>
 </template>

@@ -389,7 +389,7 @@ export class Cx {
         return await this.signLocation(activity)
 
       case SignTypeEnum.QrCode:
-        return '请扫码/或填写 Enc 签到'
+        return '请扫码签到'
 
       default:
         return '未知签到类型'
