@@ -28,13 +28,6 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   async function login(form: API.LoginForm) {
-    if (accounts.value.some(a => a.username === form.username)) {
-      message.warning('账号已存在,无需添加')
-      return
-    }
-
-    loading.value = true
-
     try {
       const { code, message, data } = await request('/api/cx/login', { method: 'POST', body: form })
       if (code === 200) {
@@ -49,9 +42,6 @@ export const useAccountStore = defineStore('account', () => {
       return data
     }
     catch (error) {
-    }
-    finally {
-      loading.value = false
     }
   }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const emit = defineEmits(['success'])
 
+const message = useMessage()
 const accountStore = useAccountStore()
 const loading = ref(false)
 
@@ -10,12 +11,26 @@ const form = reactive({
 })
 
 async function addAccount() {
-  const data = await accountStore.login(form)
-
-  if (!data)
+  if (accountStore.accounts.some(a => a.username === form.username)) {
+    message.warning('账号已存在,无需添加')
     return
+  }
 
-  emit('success')
+  loading.value = true
+  try {
+    const data = await accountStore.login(form)
+
+    if (!data)
+      return
+
+    emit('success')
+  }
+  catch (error) {
+
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -26,13 +41,14 @@ async function addAccount() {
     size="large"
     :bordered="false"
     :closable="false"
+    content-style="padding: 4px 20px;"
     :style="{ 'max-width': '300px' }"
     transform-origin="center"
   >
     <n-spin :show="loading">
       <n-form ref="formRef" :model="form" :show-label="false">
-        <div class="text-center text-sm text-gray-400 mt-3 mb-6">
-          Cx Login
+        <div class="text-sm text-gray-400 my-4 flex justify-center">
+          <img src="/img/cx.png" alt="cx">
         </div>
         <n-form-item label="账号" path="form.username">
           <n-input v-model:value="form.username" placeholder="账号">
