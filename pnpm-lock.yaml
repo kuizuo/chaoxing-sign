@@ -37,6 +37,7 @@ specifiers:
   prisma: ^4.11.0
   qrcode: ^1.5.1
   sass: ^1.59.2
+  tough-cookie: ^4.1.2
   typescript: ^4.9.5
   vitest: ^0.24.5
   vue3-qr-reader: ^1.0.0
@@ -46,6 +47,7 @@ dependencies:
   '@prisma/client': 4.11.0_prisma@4.11.0
   easemob-websdk: 4.1.4
   next-auth: 4.20.1
+  tough-cookie: 4.1.2
 
 devDependencies:
   '@huntersofbook/naive-ui-nuxt': 0.7.1
@@ -55,7 +57,7 @@ devDependencies:
   '@kuizuo/eslint-config': 1.0.1_ycpbpc6yetojsgtrx3mwntkhsu
   '@kuizuo/utils': 0.2.0
   '@nuxt/content': 2.5.2
-  '@nuxt/devtools': /@nuxt/devtools-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3
+  '@nuxt/devtools': /@nuxt/devtools-edge/0.3.1-28012903.26ee4a4_nuxt@3.2.3
   '@nuxtjs/color-mode': 3.2.0
   '@pinia-plugin-persistedstate/nuxt': 1.1.1_@pinia+nuxt@0.4.7
   '@pinia/nuxt': 0.4.7_typescript@4.9.5
@@ -1794,14 +1796,14 @@ packages:
     resolution: {integrity: sha512-YBI/6o2EBz02tdEJRBK8xkt3zvOFOWlLBf7WKYGBsSYSRtjjgrqPe2skp6VLLmKx5WbHHDNcW+6oACaurxGzeA==}
     dev: true
 
-  /@nuxt/devtools-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3:
-    resolution: {integrity: sha512-wU8/ioRRYzg5ZfeaKKbMb7nYJO2VRGuljnTt4erWRgKH0BpEsDAH9VM3FJ24oBPfaLVQjzZrrIO23xlY8xIuJA==}
+  /@nuxt/devtools-edge/0.3.1-28012903.26ee4a4_nuxt@3.2.3:
+    resolution: {integrity: sha512-7h5xlmE7xRyHOrNfPiVcZY7yEiRkbsgVsOLAG+mOwEOxJwvaeisgvOhrRJqNh5nrljB1rJ1I8XyVJS4YzNnLNQ==}
     hasBin: true
     peerDependencies:
       nuxt: ^3.3.1
       vite: '*'
     dependencies:
-      '@nuxt/devtools-kit': /@nuxt/devtools-kit-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3
+      '@nuxt/devtools-kit': /@nuxt/devtools-kit-edge/0.3.1-28012903.26ee4a4_nuxt@3.2.3
       '@nuxt/kit': 3.3.2
       birpc: 0.2.10
       consola: 2.15.3
@@ -1827,8 +1829,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/devtools-kit-edge/0.3.1-28008815.e1af4a0_nuxt@3.2.3:
-    resolution: {integrity: sha512-tQeydN+WO0W3MS/skdG1w9FSgejbAff7xN5NXktODkUKYLrzQkvnvPnR3FBJk0IiP+XA5B+0EaNtFebNMy37PA==}
+  /@nuxt/devtools-kit-edge/0.3.1-28012903.26ee4a4_nuxt@3.2.3:
+    resolution: {integrity: sha512-M2d7gIYIm+VMzPHLbwB+VH3jYkW8WakKrwyh++3kI6i6SsSs983V0IXZGYGJIT2Fy3f3bFuBuUI2g8UhqAzZsg==}
     peerDependencies:
       nuxt: ^3.3.1
       vite: '*'
@@ -9121,12 +9123,10 @@ packages:
 
   /psl/1.9.0:
     resolution: {integrity: sha512-E/ZsdU4HLs/68gYzgGTkMicWTLPdAftJLfJFlLUAAKZGkStNU72sZjT66SnMDVOfOWY/YAoiD7Jxa9iHvngcag==}
-    dev: true
 
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
     engines: {node: '>=6'}
-    dev: true
 
   /qrcode/1.5.1:
     resolution: {integrity: sha512-nS8NJ1Z3md8uTjKtP+SGGhfqmTCs5flU/xR623oI0JX+Wepz9R8UrRVCTBTJm3qGw3rH6jJ6MUHjkDx15cxSSg==}
@@ -9141,7 +9141,6 @@ packages:
 
   /querystringify/2.2.0:
     resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
-    dev: true
 
   /queue-microtask/1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -9417,7 +9416,6 @@ packages:
 
   /requires-port/1.0.0:
     resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
-    dev: true
 
   /requrl/3.0.2:
     resolution: {integrity: sha512-f3gjR6d8MhOpn46PP+DSJywbmxi95fxQm3coXBFwognjFLla9X6tr8BdNyaIKNOEkaRbRcm0/zYAqN19N1oyhg==}
@@ -10162,7 +10160,6 @@ packages:
       punycode: 2.3.0
       universalify: 0.2.0
       url-parse: 1.5.10
-    dev: true
 
   /tr46/0.0.3:
     resolution: {integrity: sha512-N3WMsuqV66lT30CrXNbEjx4GEwlow3v6rr4mCcv6prnfwhS01rkgyFdjPNBYd9br7LpXV1+Emh01fHnq2Gdgrw==}
@@ -10526,7 +10523,6 @@ packages:
   /universalify/0.2.0:
     resolution: {integrity: sha512-CJ1QgKmNg3CwvAv/kOFmtnEN05f0D/cn9QntgNOQlQF9dgvVTHj3t+8JPdjqawCHk7V/KA+fbUqzZ9XWhcqPUg==}
     engines: {node: '>= 4.0.0'}
-    dev: true
 
   /universalify/2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
@@ -10685,7 +10681,6 @@ packages:
     dependencies:
       querystringify: 2.2.0
       requires-port: 1.0.0
-    dev: true
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
