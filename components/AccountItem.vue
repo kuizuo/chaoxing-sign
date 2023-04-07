@@ -149,7 +149,7 @@ async function handleUnMonitor() {
       </n-space>
     </template>
     <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
-    <SettingModal v-model:show="showSettingModal" :uid="uid" :setting="setting" />
+    <SettingModal v-if="showSettingModal" v-model:visible="showSettingModal" :uid="uid" :setting="setting" />
   </n-card>
 </template>
 

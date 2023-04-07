@@ -31,7 +31,9 @@ export default eventHandler(async (event) => {
     else {
       const account = await prisma.cxAccount.findUnique({ where: { uid } })
 
-      const cx = new Cx(account!.info as unknown as CX.AccountInfo)
+      const cx = new Cx(account!.info as unknown as CX.User)
+      cx.setting = account?.setting as unknown as CX.Setting
+
       for (const cookieStr of account!.cookies) {
         const cookie = Cookie.fromJSON(cookieStr as object)
         if (cookie) {

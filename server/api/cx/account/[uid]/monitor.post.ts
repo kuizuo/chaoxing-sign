@@ -1,3 +1,4 @@
+import { sleep } from '@kuizuo/utils'
 import type { EasemobChat } from 'easemob-websdk'
 import { ActivityTypeEnum } from '~~/constants/cx'
 import { Cx } from '~~/server/protocol/cx'
@@ -22,7 +23,9 @@ const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) => {
       teacher: chatCourse.courseInfo.teacherfactor,
     } as any
 
-    const result = await cx.handleSign(course, activity)
+    await sleep(cx.setting?.delay || Math.floor(Math.random() * (8000 - 3000 + 1) + 3000))
+
+    const result = await cx.handleSign(course, activity, cx.setting?.signType.map(t => Number(t)))
 
     console.log(`课程: ${course.name} 活动: ${activity.name} 签到结果: ${result}`)
   }

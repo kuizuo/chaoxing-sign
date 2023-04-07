@@ -151,7 +151,10 @@ export const useAccountStore = defineStore('account', () => {
 
     const { data } = await request(`/api/cx/account/${uid}/sign_all`, {
       method: 'POST',
-      body: { uid },
+      body: {
+        uid,
+        signType: account.setting.signType,
+      },
     })
 
     ms.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
@@ -217,21 +220,7 @@ export const useAccountStore = defineStore('account', () => {
     log(`${account.info.realname} 保存成功`, { type: 'success' })
 
     const index = accounts.value.findIndex(a => a.uid === uid)
-    accounts.value[index].setting = data.data.setting
-  }
-
-  async function resetSetting(uid: string) {
-    const account = getAccount(uid)
-
-    const { data } = await request(`/api/cx/account/${uid}/reset_setting`, {
-      method: 'GET',
-      body: { uid },
-    })
-
-    const index = accounts.value.findIndex(a => a.uid === uid)
-    accounts.value[index].setting = data.data.setting
-
-    log(`${account.info.realname}重置成功`, { type: 'success' })
+    accounts.value[index].setting = data?.data.setting
   }
 
   return {
@@ -251,7 +240,6 @@ export const useAccountStore = defineStore('account', () => {
     monitorAccount,
     unMonitorAccount,
     updateSetting,
-    resetSetting,
   }
 })
 

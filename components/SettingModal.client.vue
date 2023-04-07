@@ -2,30 +2,59 @@
 import _ from 'lodash'
 
 interface Props {
+  visible: boolean
   uid: string
   setting: API.Setting
 }
 
+interface Emit {
+  (e: 'update:visible', visible: boolean): void
+}
+
 const props = defineProps<Props>()
+
+const emit = defineEmits<Emit>()
 
 const accountStore = useAccountStore()
 
-const form = ref<API.Setting>(_.cloneDeep({
-  ...defaultSetting,
-  ...props.setting,
-}))
+const show = computed({
+  get() {
+    return props.visible
+  },
+  set(visible: boolean) {
+    emit('update:visible', visible)
+  },
+})
+
+const form = ref<API.Setting>(props.setting)
 
 async function handleSave() {
   await accountStore.updateSetting(props.uid, unref(form))
 }
 
 function handleReset() {
-  accountStore.resetSetting(props.uid)
+  form.value = defaultSetting
 }
+
+watch(show, (value) => {
+  if (value)
+    form.value = props.setting
+})
 </script>
 
 <template>
-  <n-modal title="设置" :auto-focus="false" preset="card" style="max-width: 300px">
+  <n-modal
+    v-model:show="show"
+    :mask-closable="false"
+    title="设置"
+    preset="card"
+    :auto-focus="false"
+    :closable="false"
+    style="max-width: 300px"
+  >
+    <template #header-extra>
+      <Icon name="ant-design:close-circle-outlined" class="cursor-pointer transition hover:text-red" @click="show = false" />
+    </template>
     <n-form
       ref="formRef"
       :model="form"

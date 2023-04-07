@@ -345,13 +345,13 @@ export class Cx {
   /*
   * 一键签到 (检测所有课程, 所有签到活动, 比较耗时)
   */
-  async oneClickSign() {
+  async oneClickSign(allowedSignTypes?: number[]) {
     const signActivityList = await this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
 
     const signResult = []
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
-        const result = await this.handleSign(activity.course, activity)
+        const result = await this.handleSign(activity.course, activity, allowedSignTypes)
 
         signResult.push({
           activity,
@@ -362,8 +362,11 @@ export class Cx {
     return signResult
   }
 
-  async handleSign(course: CX.Course, activity: CX.Activity) {
+  async handleSign(course: CX.Course, activity: CX.Activity, allowedSignTypes?: number[]) {
     await this.preSign(course, activity)
+
+    if (allowedSignTypes && !allowedSignTypes.includes(activity.otherId))
+      return '该签到类型不在账号签到范围内'
 
     switch (Number(activity.otherId)) {
       case SignTypeEnum.Normal:
