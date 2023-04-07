@@ -1,7 +1,3 @@
-<script lang="ts" setup>
-
-</script>
-
 <template>
   <h2 class="font-semibold text-2xl flex justify-center items-center space-x-2">
     <Icon name="majesticons:shooting-star-line" size="30" color="#e70012" />

@@ -1,7 +1,11 @@
 <script setup lang="ts">
-const emit = defineEmits(['success'])
+interface Emit {
+  (e: 'success'): void
+}
 
-const message = useMessage()
+const emit = defineEmits<Emit>()
+
+const ms = useMessage()
 const accountStore = useAccountStore()
 const loading = ref(false)
 
@@ -12,7 +16,7 @@ const form = reactive({
 
 async function addAccount() {
   if (accountStore.accounts.some(a => a.username === form.username)) {
-    message.warning('账号已存在,无需添加')
+    ms.warning('账号已存在,无需添加')
     return
   }
 

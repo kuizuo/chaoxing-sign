@@ -4,7 +4,7 @@ import type { MessageOptions } from 'naive-ui'
 export const useLogStore = defineStore('log', () => {
   const logList = useLocalStorage<string[]>('log', []) // reactive<string[]>([])
   const showLog = ref(true)
-  const message = useMessage()
+  const ms = useMessage()
 
   function log(content: string, options: MessageOptions) {
     const formatted = useDateFormat(useNow(), 'HH:mm:ss').value
@@ -13,7 +13,7 @@ export const useLogStore = defineStore('log', () => {
     console.log(`${formatted} ${info}`)
 
     if (options)
-      message.create(content, options)
+      ms.create(content, options)
 
     logList.value.push(info)
   }

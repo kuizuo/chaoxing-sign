@@ -6,7 +6,7 @@ export const useAccountStore = defineStore('account', () => {
   const selectAccounts = computed(() => accounts.value.filter(a => a.selected === true))
 
   const loading = ref(false)
-  const message = useMessage()
+  const ms = useMessage()
 
   const { log } = useLogStore()
 
@@ -14,7 +14,7 @@ export const useAccountStore = defineStore('account', () => {
     const account = accounts.value.find(a => a.uid === uid)
 
     if (!account) {
-      message.error('账号不存在')
+      ms.error('账号不存在')
       throw new Error('账号不存在')
     }
 
@@ -93,7 +93,7 @@ export const useAccountStore = defineStore('account', () => {
       log(`课程: ${course.name} 无签到活动`, { type: 'warning' })
     }
     else {
-      message.success(`${course.name} 共有${data.length}个正在的签到活动`)
+      ms.success(`${course.name} 共有${data.length}个正在的签到活动`)
       data.forEach(({ activity, result }) => {
         const signType = signTypeMap[activity.otherId] ?? '未知'
         const activityName = activity.name || signType
@@ -115,7 +115,7 @@ export const useAccountStore = defineStore('account', () => {
 
     const signType = signTypeMap[activity.otherId] ?? '未知'
     const activityName = activity.name || signType
-    log(`课程: ${course.name} 活动: ${activityName} [${signType}]结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+    log(`课程: ${course.name} 活动: ${activityName} [${signType}]结果: ${data?.result || ms}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
@@ -138,7 +138,7 @@ export const useAccountStore = defineStore('account', () => {
     const { activity } = data!
     const signType = signTypeMap[activity.otherId] ?? '未知'
     const activityName = activity.name || signType
-    log(`活动: ${activityName} [${signType}]结果: ${data?.result || message}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+    log(`活动: ${activityName} [${signType}]结果: ${data?.result || ms}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
 
     return data
   }
@@ -154,7 +154,7 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid },
     })
 
-    message.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
+    ms.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
     data.forEach(({ activity, result }) => {
       const signType = signTypeMap[activity.otherId] ?? '未知'
       const activityName = activity.name || signType
@@ -206,6 +206,34 @@ export const useAccountStore = defineStore('account', () => {
     }
   }
 
+  async function updateSetting(uid: string, setting: API.Setting) {
+    const account = getAccount(uid)
+
+    const { data } = await request(`/api/cx/account/${uid}/update_setting`, {
+      method: 'POST',
+      body: { uid, setting },
+    })
+
+    log(`${account.info.realname} 保存成功`, { type: 'success' })
+
+    const index = accounts.value.findIndex(a => a.uid === uid)
+    accounts.value[index].setting = data.data.setting
+  }
+
+  async function resetSetting(uid: string) {
+    const account = getAccount(uid)
+
+    const { data } = await request(`/api/cx/account/${uid}/reset_setting`, {
+      method: 'GET',
+      body: { uid },
+    })
+
+    const index = accounts.value.findIndex(a => a.uid === uid)
+    accounts.value[index].setting = data.data.setting
+
+    log(`${account.info.realname}重置成功`, { type: 'success' })
+  }
+
   return {
     accounts: skipHydrate(accounts),
     selectAccounts,
@@ -222,6 +250,8 @@ export const useAccountStore = defineStore('account', () => {
     oneClickSign,
     monitorAccount,
     unMonitorAccount,
+    updateSetting,
+    resetSetting,
   }
 })
 

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { createDiscreteApi } from 'naive-ui'
-const emit = defineEmits(['success'])
+
+interface Emit {
+  (e: 'success', url: string): void
+}
+
+const emit = defineEmits<Emit>()
 
 const { signIn, getProviders } = useSession()
 
 const providers = await getProviders()
-const { message } = createDiscreteApi(['message'])
+const { message: ms } = createDiscreteApi(['message'])
 
 const loading = ref(false)
 const form = ref({
@@ -22,17 +27,17 @@ async function login() {
   loading.value = false
 
   if (error) {
-    message.error(error)
+    ms.error(error)
     return
   }
 
-  message.success('登录成功')
+  ms.success('登录成功')
 
   if (url)
-    navigateTo(url, { replace: true, external: true })
+    navigateTo(url, { replace: true })
 
   else
-    navigateTo('/', { replace: true, external: true })
+    navigateTo('/', { replace: true })
 
   emit('success', url)
 }

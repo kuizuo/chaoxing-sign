@@ -4,9 +4,13 @@ import { useQRCode } from '@vueuse/integrations/useQRCode'
 // @ts-expect-error
 import { QrCapture, QrDropzone, QrStream } from 'vue3-qr-reader'
 
-const emit = defineEmits(['success'])
+interface Emit {
+  (e: 'success', text: string): void
+}
 
-const message = useMessage()
+const emit = defineEmits<Emit>()
+
+const ms = useMessage()
 const text = ref('')
 const qrcode = useQRCode(text, {
   errorCorrectionLevel: 'H',
@@ -30,8 +34,8 @@ const errorMessage = ref('')
 const camera = ref<'auto' | 'off'>('off')
 
 async function handleScan() {
-  if (errorMessage)
-    return message.error(errorMessage.value)
+  if (errorMessage.value)
+    return ms.error(errorMessage.value)
 
   if (showScan.value) {
     showScan.value = false
@@ -62,7 +66,7 @@ async function onInit(promise: Promise<any>) {
     // @ts-expect-error
     errorMessage.value = errorMessages[error.name] ? errorMessages[error.name] : `相机错误（${error.name}）！`
 
-    message.error(errorMessage.value)
+    ms.error(errorMessage.value)
     showScan.value = false
     camera.value = 'off'
   }
@@ -70,7 +74,7 @@ async function onInit(promise: Promise<any>) {
 
 async function onDecode(res: string) {
   if (res) {
-    message.success('二维码识别成功,正在签到...')
+    ms.success('二维码识别成功,正在签到...')
     text.value = res
     showScan.value = false
     camera.value = 'off'
@@ -81,7 +85,7 @@ async function onDecode(res: string) {
     })
   }
   else {
-    message.error('二维码识别失败')
+    ms.error('二维码识别失败')
   }
 }
 

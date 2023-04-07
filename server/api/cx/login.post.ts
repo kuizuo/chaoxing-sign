@@ -2,12 +2,6 @@ import _ from 'lodash'
 import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
 
-const defaultSetting: API.Setting = {
-  monitor: false,
-  latitude: '0',
-  longitude: '0',
-}
-
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
 
@@ -22,7 +16,9 @@ export default defineEventHandler(async (event) => {
   CXMap.set(cx.user.username, cx)
 
   const account = await event.context.prisma.cxAccount.upsert({
-    where: { uid: cx.user.uid },
+    where: {
+      uid: cx.user.uid,
+    },
     update: { cookies: cx.getCookie('', 'json'), info: cx.user as any, lastLoginTime: new Date() },
     create: {
       uid: cx.user.uid,

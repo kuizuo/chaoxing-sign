@@ -2,7 +2,6 @@
 const router = useRouter()
 const route = useRoute()
 
-const uid = computed(() => route.params.uid as string)
 const accountStore = useAccountStore()
 
 const account = computed(() => accountStore.accounts.find(account => account.uid === route.params.uid))
@@ -29,7 +28,3 @@ function handleBack() {
     </div>
   </n-card>
 </template>
-
-<style scoped>
-
-</style>

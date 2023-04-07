@@ -1,28 +1,5 @@
-
 declare namespace CX {
-
-  interface Setting {
-    monitor: boolean
-    // signType: Array<>
-    longitude: string
-    latitude: string
-  }
-
-  interface Account {
-    uid: string
-    username: string
-    password: string
-    info: AccountInfo
-    cookies: Record<string, any>[]
-    setting: Setting
-    lastLoginTime: string
-    courses: Course[]
-    activities: Activity[]
-  }
-
-  interface AccountWithoutPassword extends Omit<Account, 'password'> { }
-
-  interface AccountInfo {
+  interface User {
     username: string
     password: string
     logged?: boolean
@@ -32,6 +9,17 @@ declare namespace CX {
     schoolid?: string
     avatar?: string
     siteName?: string
+  }
+
+  interface Setting {
+    signType: (string | number)[]
+    // courseIds: string[]
+    location: {
+      latitude: string
+      longitude: string
+    }
+    monitor: boolean
+    delay: number
   }
 
   interface LoginResult {
@@ -86,7 +74,7 @@ declare namespace CX {
     endTime: number
     status: number
   }
-  
+
   interface AttChatCourse {
     aid: number
     atype: number
@@ -121,7 +109,7 @@ declare namespace CX {
     }
     readingDuration: number
     activeList: Activity[]
-  }> {}
+  }> { }
 
   interface Response<T> {
     result: number

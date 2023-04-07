@@ -1,17 +1,21 @@
 <script setup lang="ts">
-const props = defineProps<{
+interface Prop {
   uid: string
-  info: API.AccountInfo
+  username: string
+  info: CX.User
   setting: API.Setting
-  lastLoginTime?: string
-  selected?: boolean
-}>()
+  selected: boolean
+  lastLoginTime: string
+}
 
-const message = useMessage()
+const props = defineProps<Prop>()
+
+const ms = useMessage()
 const accountStore = useAccountStore()
 
 const loading = ref(false)
 const showQrCodeModal = ref(false)
+const showSettingModal = ref(false)
 
 async function oneClickSign(uid: string) {
   loading.value = true
@@ -22,7 +26,7 @@ async function oneClickSign(uid: string) {
     const hasQrCodeSign = data.some(({ activity }) => activity.activeType === 2)
 
     if (hasQrCodeSign) {
-      message.warning('检测到有二维码签到的课程,请扫码签到')
+      ms.warning('检测到有二维码签到的课程,请扫码签到')
       showQrCodeModal.value = true
     }
   }
@@ -53,12 +57,9 @@ async function handleUnMonitor() {
     <template #header>
       <div class="flex items-center gap-2">
         <n-avatar :src="info.avatar" />
-        <n-popover trigger="hover">
-          <template #trigger>
-            <span class="truncate max-w-[10ch]">{{ info.siteName }}</span>
-          </template>
-          <span>{{ info.siteName }}</span>
-        </n-popover>
+        <n-ellipsis class="!max-w-[10ch]">
+          {{ info.siteName }}
+        </n-ellipsis>
         <span>{{ info.realname }}</span>
         <n-popover v-if="setting?.monitor" trigger="hover">
           <template #trigger>
@@ -134,20 +135,21 @@ async function handleUnMonitor() {
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:history-rounded" @click.stop="message.warning('敬请期待')" />
+            <Icon name="material-symbols:history-rounded" @click.stop="ms.warning('敬请期待')" />
           </template>
           签到记录
         </n-tooltip>
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:settings-outline" @click.stop="message.warning('敬请期待')" />
+            <Icon name="material-symbols:settings-outline" @click.stop="showSettingModal = true" />
           </template>
           签到设置
         </n-tooltip>
       </n-space>
     </template>
     <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
+    <SettingModal v-model:show="showSettingModal" :uid="uid" :setting="setting" />
   </n-card>
 </template>
 

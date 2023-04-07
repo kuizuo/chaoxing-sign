@@ -7,14 +7,15 @@ import got from 'got'
 import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from '~~/constants/cx'
 
 export class Cx {
-  public http: Got
+  public http!: Got
   public cookieJar: CookieJar
   public currentUrl = ''
 
-  public user: CX.AccountInfo
+  public user!: CX.User
+  public setting!: CX.Setting
   public courseList: CX.Course[] = []
 
-  constructor(user: Partial<CX.AccountInfo>) {
+  constructor(user: Partial<CX.User>) {
     this.cookieJar = new CookieJar()
 
     this.http = got.extend({
@@ -30,7 +31,7 @@ export class Cx {
       },
     })
 
-    this.user = user as CX.AccountInfo
+    this.user = user as CX.User
     return this
   }
 
@@ -84,7 +85,7 @@ export class Cx {
   }
 
   async logout() {
-    this.user = {} as CX.AccountInfo
+    this.user = {} as CX.User
     this.courseList = []
     this.cookieJar.removeAllCookiesSync()
   }
@@ -94,7 +95,7 @@ export class Cx {
       ...this.user,
       ...data,
       uid: String(data.uid),
-    } as unknown as CX.AccountInfo
+    } as unknown as CX.User
 
     const { body: html } = await this.http.get(`http://i.chaoxing.com/base?t=${timestamp()}`, { responseType: 'text' })
 

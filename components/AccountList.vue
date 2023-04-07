@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { pick } from 'lodash'
+
 const accountStore = useAccountStore()
 
 const isSyncing = ref(false)
@@ -62,7 +64,7 @@ async function selectAccount(account: API.Account) {
       </template>
       <template v-if="accountStore.accounts?.length! > 0">
         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-          <AccountItem v-for="account in accountStore.accounts" v-bind="account" :key="account.uid" @click="selectAccount(account)" />
+          <AccountItem v-for="account in accountStore.accounts" v-bind="pick(account, ['uid', 'info', 'lastLoginTime', 'selected', 'setting'])" :key="account.uid" @click="selectAccount(account)" />
           <n-card
             cursor-pointer
             @click="showLoginModal = true"

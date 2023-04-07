@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { activityTypeMap } from '~~/constants/cx'
 
-const props = defineProps<{
-  account: CX.Account
+interface Props {
+  account: API.Account
   courses: API.Course[]
-}>()
+}
+const props = defineProps<Props>()
 
-const message = useMessage()
 const accountStore = useAccountStore()
 
 const isSyncLoading = ref(false)
@@ -96,13 +96,6 @@ async function signByActivity(course: API.Course, activity: API.Activity) {
                   <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click="signByCourse(course)" />
                 </template>
                 一键签到
-              </n-tooltip>
-
-              <n-tooltip trigger="hover">
-                <template #trigger>
-                  <Icon name="material-symbols:alarm-outline" class="hover:animate-swing" @click="message.warning('敬请期待')" />
-                </template>
-                后台签到
               </n-tooltip>
             </n-space>
           </template>
