@@ -37,7 +37,13 @@ async function oneClickSign(uid: string) {
 }
 
 async function handleLogout() {
-  await accountStore.logout(props.uid)
+  loading.value = true
+  try {
+    await accountStore.logout(props.uid)
+  }
+  finally {
+    loading.value = false
+  }
 }
 
 async function handleSuccess(result: string) {
@@ -45,114 +51,130 @@ async function handleSuccess(result: string) {
 }
 
 async function handleMonitor() {
-  await accountStore.monitorAccount(props.uid)
+  loading.value = true
+  try {
+    await accountStore.monitorAccount(props.uid)
+  }
+  finally {
+    loading.value = false
+  }
 }
 
 async function handleUnMonitor() {
-  await accountStore.unMonitorAccount(props.uid)
+  loading.value = true
+  try {
+    await accountStore.unMonitorAccount(props.uid)
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 
 <template>
-  <n-card hoverable class="group cursor-pointer" :class="{ 'n-card-checked': selected }">
-    <template #header>
-      <div class="flex items-center gap-2">
-        <n-avatar :src="info.avatar" />
-        <n-ellipsis class="!max-w-[10ch]">
-          {{ info.siteName }}
-        </n-ellipsis>
-        <span>{{ info.realname }}</span>
-        <n-popover v-if="setting?.monitor" trigger="hover">
+  <n-spin :show="loading">
+    <n-card hoverable class="group cursor-pointer" :class="{ 'n-card-checked': selected }">
+      <template #header>
+        <div class="flex items-center gap-2">
+          <n-avatar :src="info.avatar" />
+          <n-ellipsis class="!max-w-[10ch]">
+            {{ info.siteName }}
+          </n-ellipsis>
+          <span>{{ info.realname }}</span>
+          <n-popover v-if="setting?.monitor" trigger="hover">
+            <template #trigger>
+              <n-popconfirm
+                :negative-text="null"
+                @positive-click="handleUnMonitor()"
+              >
+                <template #trigger>
+                  <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" @click.stop="" />
+                </template>
+                确认取消监听该账号签到任务?
+              </n-popconfirm>
+            </template>
+            监听中...
+          </n-popover>
+        </div>
+      </template>
+
+      <template #header-extra>
+        <n-popconfirm
+          :negative-text="null"
+          @positive-click.stop="handleLogout()"
+        >
           <template #trigger>
-            <n-popconfirm
-              :negative-text="null"
-              @positive-click="handleUnMonitor()"
-            >
-              <template #trigger>
-                <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" @click.stop="" />
-              </template>
-              确认取消监听该账号签到任务?
-            </n-popconfirm>
+            <Icon
+              name="material-symbols:logout-sharp"
+              class="absolute -right-2 cursor-pointer transition opacity-0 hover:text-red-500 group-hover:(opacity-100 -translate-x-6)"
+            />
           </template>
-          监听中...
-        </n-popover>
-      </div>
-    </template>
+          确认退出? 这将会清空本系统该账号的所有信息
+        </n-popconfirm>
+      </template>
 
-    <template #header-extra>
-      <n-popconfirm
-        :negative-text="null"
-        @positive-click.stop="handleLogout()"
-      >
-        <template #trigger>
-          <Icon
-            name="material-symbols:logout-sharp"
-            class="absolute -right-2 cursor-pointer transition opacity-0 hover:text-red-500 group-hover:(opacity-100 -translate-x-6)"
-          />
-        </template>
-        确认退出? 这将会清空本系统该账号的所有信息
-      </n-popconfirm>
-    </template>
-
-    <!-- <div class="text-left">
+      <!-- <div class="text-left">
       <p>
         最近登录时间: {{ useDateFormat(lastLoginTime, 'YYYY-MM-DD HH:mm:ss').value }}
       </p>
     </div> -->
 
-    <template #action>
-      <n-space :size="20">
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <NuxtLink :to="`/account/${uid}`">
-              <Icon name="material-symbols:medical-information-outline-sharp" />
-            </NuxtLink>
-          </template>
-          账号详情
-        </n-tooltip>
+      <template #action>
+        <n-space :size="20">
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <NuxtLink :to="`/account/${uid}`">
+                <Icon name="material-symbols:medical-information-outline-sharp" />
+              </NuxtLink>
+            </template>
+            账号详情
+          </n-tooltip>
 
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <Icon v-if="loading" name="line-md:loading-loop" />
-            <Icon v-else name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click.stop="oneClickSign(uid)" />
-          </template>
-          手动一键签到(检测所有课程,可能会比较慢)
-        </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <Icon name="material-symbols:swipe-up-outline" class="hover:animate-bounce" @click.stop="oneClickSign(uid)" />
+            </template>
+            手动一键签到(检测所有课程,可能会比较慢)
+          </n-tooltip>
 
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click.stop="showQrCodeModal = true" />
-          </template>
-          二维码扫码签到
-        </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <Icon name="mdi:qrcode-scan" class="hover:scale-125" @click.stop="showQrCodeModal = true" />
+            </template>
+            二维码扫码签到
+          </n-tooltip>
 
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <Icon v-if="setting?.monitor" name="material-symbols:notifications-off-outline" class="hover:animate-swing" @click.stop="handleUnMonitor()" />
-            <Icon v-else name="material-symbols:notifications-active-outline" class="hover:animate-swing" @click.stop="handleMonitor()" />
-          </template>
-          {{ setting?.monitor ? '正在监听...' : '自动监听签到任务' }}
-        </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <Icon v-if="setting?.monitor" name="material-symbols:notifications-off-outline" class="hover:animate-swing" @click.stop="handleUnMonitor()" />
+              <Icon v-else name="material-symbols:notifications-active-outline" class="hover:animate-swing" @click.stop="handleMonitor()" />
+            </template>
+            {{ setting?.monitor ? '正在监听...' : '自动监听签到任务' }}
+          </n-tooltip>
 
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <Icon name="material-symbols:history-rounded" @click.stop="showSignHistory = true" />
-          </template>
-          签到记录
-        </n-tooltip>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <Icon name="material-symbols:history-rounded" @click.stop="showSignHistory = true" />
+            </template>
+            签到记录
+          </n-tooltip>
 
-        <n-tooltip trigger="hover">
-          <template #trigger>
-            <Icon name="material-symbols:settings-outline" @click.stop="showSettingModal = true" />
-          </template>
-          签到设置
-        </n-tooltip>
-      </n-space>
+          <n-tooltip trigger="hover">
+            <template #trigger>
+              <Icon class="hover:(animate-spin animate-count-1)" name="material-symbols:settings-outline" @click.stop="showSettingModal = true" />
+            </template>
+            签到设置
+          </n-tooltip>
+        </n-space>
+      </template>
+      <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
+      <SignHistory v-model:show="showSignHistory" :uid="uid" />
+      <SettingModal v-if="showSettingModal" v-model:show="showSettingModal" :uid="uid" :setting="setting" />
+    </n-card>
+    <template #description>
+      马上就好...
     </template>
-    <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
-    <SignHistory v-model:show="showSignHistory" :uid="uid" />
-    <SettingModal v-if="showSettingModal" v-model:show="showSettingModal" :uid="uid" :setting="setting" />
-  </n-card>
+  </n-spin>
 </template>
 
 <style lang="scss" scoped>

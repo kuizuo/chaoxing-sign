@@ -157,7 +157,7 @@ export const useAccountStore = defineStore('account', () => {
       },
     })
 
-    ms.success(`${account.info.realname} 共有${data.length}个正在的签到活动`)
+    ms.success(`${account.info.realname} 共有${data.length}个正在的签到活动`, { type: 'warning' })
     data.forEach(({ activity, result }) => {
       const signType = signTypeMap[activity.otherId] ?? '未知'
       const activityName = activity.name || signType
