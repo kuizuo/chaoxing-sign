@@ -24,7 +24,7 @@ export const useAccountStore = defineStore('account', () => {
   async function syncAccounts() {
     const { data } = await request('/api/user/accounts')
     accounts.value = data as unknown as API.Account[]
-    log('同步成功', { type: 'success' })
+    // log('同步成功', { type: 'success' })
   }
 
   async function login(form: API.LoginForm) {
@@ -179,14 +179,11 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid },
     })
 
-    if (data.data?.isOpened) {
-      const index = accounts.value.findIndex(a => a.uid === uid)
-      accounts.value[index].setting.monitor = data.data.isOpened
+    if (data.data?.isOpened)
       log(`${account.info.realname} 监听成功`, { type: 'success' })
-    }
-    else {
+
+    else
       log(`${account.info.realname} 监听失败`, { type: 'error' })
-    }
   }
 
   /*
@@ -199,14 +196,11 @@ export const useAccountStore = defineStore('account', () => {
       body: { uid },
     })
 
-    if (!data.data?.isOpened) {
-      const index = accounts.value.findIndex(a => a.uid === uid)
-      accounts.value[index].setting.monitor = data.data.isOpened
+    if (!data.data?.isOpened)
       log(`${account.info.realname} 取消监听成功`, { type: 'success' })
-    }
-    else {
+
+    else
       log(`${account.info.realname} 取消监听失败`, { type: 'error' })
-    }
   }
 
   async function updateSetting(uid: string, setting: API.Setting) {
@@ -220,7 +214,7 @@ export const useAccountStore = defineStore('account', () => {
     log(`${account.info.realname} 保存成功`, { type: 'success' })
 
     const index = accounts.value.findIndex(a => a.uid === uid)
-    accounts.value[index].setting = data?.data.setting
+    accounts.value[index].setting = data!
   }
 
   return {

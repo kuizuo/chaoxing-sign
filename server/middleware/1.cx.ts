@@ -31,6 +31,9 @@ export default eventHandler(async (event) => {
     else {
       const account = await prisma.cxAccount.findUnique({ where: { uid } })
 
+      if (!account)
+        return createError({ statusCode: 400, message: '请求账号不存在' })
+
       const cx = new Cx(account!.info as unknown as CX.User)
       cx.setting = account?.setting as unknown as CX.Setting
 

@@ -24,5 +24,5 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  return ResOp.success(result.setting)
+  return ResOp.success(result.setting as unknown as API.Setting)
 })

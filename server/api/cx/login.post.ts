@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
+import { defaultSetting } from '~~/constants/setting'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)

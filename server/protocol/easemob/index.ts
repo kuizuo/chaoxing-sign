@@ -16,22 +16,21 @@ export interface OpenOptions {
 }
 
 const previousGlobalThis = { ...globalThis }
-
 export const createIMConnection = async () => {
   const { window } = new JSDOM('', { url: 'https://im.chaoxing.com/webim/me' })
 
-  globalThis.window = window as unknown as typeof globalThis.window
-  globalThis.navigator = window.navigator
-  globalThis.document = window.document
-  globalThis.WebSocket = WebSocket as unknown as typeof globalThis.WebSocket
-  globalThis.Image = window.Image
-  globalThis.history = window.history
-  globalThis.SVGElement = window.SVGElement
-  globalThis.XMLHttpRequest = window.XMLHttpRequest
+  global.window = window as unknown as typeof global.window
+  global.navigator = window.navigator
+  global.document = window.document
+  global.WebSocket = WebSocket as unknown as typeof global.WebSocket
+  global.Image = window.Image
+  global.history = window.history
+  global.SVGElement = window.SVGElement
+  global.XMLHttpRequest = window.XMLHttpRequest
 
   const Easemob = await import('easemob-websdk').then(lib => lib.default || lib) as any
 
-  const { connection } = Easemob?.default as EasemobChatStatic
+  const { connection } = Easemob.default as EasemobChatStatic
 
   const conn: EasemobChat.Connection = new connection({
     url: 'https://im-api-vip6-v2.easecdn.com/ws',
@@ -42,9 +41,7 @@ export const createIMConnection = async () => {
     autoReconnectNumMax: 2,
   })
 
-  // globalThis.window = previousGlobalThis.window
-  // globalThis.navigator = previousGlobalThis.navigator
-  globalThis.document = previousGlobalThis.document
+  global.document = previousGlobalThis.document
 
   return conn
 }

@@ -18,32 +18,30 @@ const showQrCodeModal = ref(false)
 const showSettingModal = ref(false)
 const showSignHistory = ref(false)
 
+const monitor = ref(props.setting.monitor)
+
 async function oneClickSign(uid: string) {
   loading.value = true
-  try {
-    const data = await accountStore.oneClickSign(uid)
 
-    // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
-    const hasQrCodeSign = data.some(({ activity }) => activity.otherId === SignTypeEnum.QRCode)
-
-    if (hasQrCodeSign) {
-      ms.warning('检测到有二维码签到的课程,请扫码签到')
-      showQrCodeModal.value = true
-    }
-  }
-  finally {
+  const data = await accountStore.oneClickSign(uid).finally(() => {
     loading.value = false
+  })
+
+  // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
+  const hasQrCodeSign = data.some(({ activity }) => activity.otherId === SignTypeEnum.QRCode)
+
+  if (hasQrCodeSign) {
+    ms.warning('检测到有二维码签到的课程,请扫码签到')
+    showQrCodeModal.value = true
   }
 }
 
 async function handleLogout() {
   loading.value = true
-  try {
-    await accountStore.logout(props.uid)
-  }
-  finally {
+
+  await accountStore.logout(props.uid).finally(() => {
     loading.value = false
-  }
+  })
 }
 
 async function handleSuccess(result: string) {
@@ -52,22 +50,22 @@ async function handleSuccess(result: string) {
 
 async function handleMonitor() {
   loading.value = true
-  try {
-    await accountStore.monitorAccount(props.uid)
-  }
-  finally {
+
+  await accountStore.monitorAccount(props.uid).finally(() => {
     loading.value = false
-  }
+  })
+
+  monitor.value = true
 }
 
 async function handleUnMonitor() {
   loading.value = true
-  try {
-    await accountStore.unMonitorAccount(props.uid)
-  }
-  finally {
+
+  await accountStore.unMonitorAccount(props.uid).finally(() => {
     loading.value = false
-  }
+  })
+
+  monitor.value = false
 }
 </script>
 
@@ -81,7 +79,7 @@ async function handleUnMonitor() {
             {{ info.siteName }}
           </n-ellipsis>
           <span>{{ info.realname }}</span>
-          <n-popover v-if="setting?.monitor" trigger="hover">
+          <n-popover v-if="monitor" trigger="hover">
             <template #trigger>
               <n-popconfirm
                 :negative-text="null"
@@ -146,10 +144,10 @@ async function handleUnMonitor() {
 
           <n-tooltip trigger="hover">
             <template #trigger>
-              <Icon v-if="setting?.monitor" name="material-symbols:notifications-off-outline" class="hover:animate-swing" @click.stop="handleUnMonitor()" />
+              <Icon v-if="monitor" name="material-symbols:notifications-off-outline" class="hover:animate-swing" @click.stop="handleUnMonitor()" />
               <Icon v-else name="material-symbols:notifications-active-outline" class="hover:animate-swing" @click.stop="handleMonitor()" />
             </template>
-            {{ setting?.monitor ? '正在监听...' : '自动监听签到任务' }}
+            {{ monitor ? '正在监听...' : '自动监听签到任务' }}
           </n-tooltip>
 
           <n-tooltip trigger="hover">
