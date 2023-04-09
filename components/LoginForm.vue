@@ -2,13 +2,13 @@
 import { createDiscreteApi } from 'naive-ui'
 
 interface Emit {
-  (e: 'success', url: string): void
+  (e: 'success', url?: string): void
 }
 
 const emit = defineEmits<Emit>()
 
 const { signIn, getProviders } = useSession()
-
+const router = useRouter()
 const providers = await getProviders()
 const { message: ms } = createDiscreteApi(['message'])
 
@@ -33,13 +33,13 @@ async function login() {
 
   ms.success('登录成功')
 
-  if (url)
-    navigateTo(url, { replace: true })
-
-  else
-    navigateTo('/', { replace: true })
-
   emit('success', url)
+  await navigateTo(url, { external: true, replace: true })
+}
+
+async function goToRegister() {
+  emit('success')
+  await navigateTo('/register', { external: true })
 }
 </script>
 
@@ -85,6 +85,10 @@ async function login() {
             <n-button v-if="providers.github" class="w-full flex" @click="signIn('github')">
               <i i-ri-github-line text-lg mr-1 />
               Sign in with Github
+            </n-button>
+            <n-button class="w-full flex" @click="goToRegister()">
+              <i i-ri-login-box-line text-md mr-1 />
+              注册
             </n-button>
           </div>
         </div>

@@ -1,8 +1,11 @@
 <script  setup lang="ts">
+import { createDiscreteApi } from 'naive-ui'
+
 const { status, data, signOut } = useSession()
 const router = useRouter()
 
 const showModal = ref(false)
+const { message: ms } = createDiscreteApi(['message'])
 const user = computed(() => data.value?.user)
 
 const options = [
@@ -25,6 +28,7 @@ function handleSelect(key: string) {
       break
     case 'logout':
       signOut()
+      ms.success('退出成功')
       break
   }
 }
