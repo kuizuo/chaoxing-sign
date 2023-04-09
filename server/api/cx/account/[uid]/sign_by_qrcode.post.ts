@@ -19,6 +19,18 @@ export default defineEventHandler(async (event) => {
   await event.context.cx.preSign(course as unknown as CX.Course, activity)
   const result = await event.context.cx.signQrCode(activity, enc)
 
+  await event.context.prisma.signLog.create({
+    data: {
+      activityId: String(activity.id),
+      activityName: activity.name,
+      type: activity.otherId,
+      mode: SignMode.Manual,
+      result,
+      time: new Date(),
+      accountId: event.context.cx.user.uid,
+    },
+  })
+
   return ResOp.success({
     activity,
     result,

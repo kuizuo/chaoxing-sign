@@ -140,7 +140,7 @@ function handleUpload() {
             点击或者拖动文件到该区域来上传
           </n-text>
         </QrDropzone>
-        <QrCapture class="hidden" @decode="onDecode" />
+        <QrCapture class="hidden" capture="false" @decode="onDecode" />
       </template>
     </div>
     <span>若有签到链接，可直接在下方输入</span>

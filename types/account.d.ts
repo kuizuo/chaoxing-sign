@@ -26,4 +26,10 @@ declare namespace API {
   interface Activity extends CX.Activity {
     result?: string
   }
+
+  interface History {
+    id: string
+    activityName: string
+    type: number
+  }
 }

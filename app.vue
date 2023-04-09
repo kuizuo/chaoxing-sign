@@ -32,7 +32,7 @@ useHead({
   <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme">
     <n-global-style />
     <NuxtLayout>
-      <n-message-provider>
+      <n-message-provider keep-alive-on-hover>
         <NuxtLoadingIndicator />
         <NuxtPage />
       </n-message-provider>

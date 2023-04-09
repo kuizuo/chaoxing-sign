@@ -28,6 +28,18 @@ const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) => {
     const result = await cx.handleSign(course, activity, cx.setting?.signType.map(t => Number(t)))
 
     console.log(`课程: ${course.name} 活动: ${activity.name} 签到结果: ${result}`)
+
+    await prisma.signLog.create({
+      data: {
+        activityId: String(activity.id),
+        activityName: activity.name,
+        type: activity.otherId,
+        result,
+        time: new Date(),
+        mode: SignMode.Manual,
+        accountId: cx.user.uid,
+      },
+    })
   }
 }
 

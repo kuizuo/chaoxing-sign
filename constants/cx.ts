@@ -45,3 +45,12 @@ export const signTypeMap: Record<number, string> = {
   5: '签到码签到',
 } as const
 
+export enum SignMode {
+  Manual = 1,
+  Auto = 2,
+}
+
+export const signModeMap = {
+  1: '手动',
+  2: '自动',
+} as const

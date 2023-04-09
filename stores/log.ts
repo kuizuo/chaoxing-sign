@@ -30,7 +30,7 @@ export const useLogStore = defineStore('log', () => {
     cleanLog,
   }
 }, {
-  persist: true,
+  persist: false,
 })
 
 if (import.meta.hot) {

@@ -16,6 +16,7 @@ const accountStore = useAccountStore()
 const loading = ref(false)
 const showQrCodeModal = ref(false)
 const showSettingModal = ref(false)
+const showSignHistory = ref(false)
 
 async function oneClickSign(uid: string) {
   loading.value = true
@@ -23,7 +24,7 @@ async function oneClickSign(uid: string) {
     const data = await accountStore.oneClickSign(uid)
 
     // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
-    const hasQrCodeSign = data.some(({ activity }) => activity.activeType === 2)
+    const hasQrCodeSign = data.some(({ activity }) => activity.otherId === SignTypeEnum.QRCode)
 
     if (hasQrCodeSign) {
       ms.warning('检测到有二维码签到的课程,请扫码签到')
@@ -93,11 +94,11 @@ async function handleUnMonitor() {
       </n-popconfirm>
     </template>
 
-    <div class="text-left">
+    <!-- <div class="text-left">
       <p>
         最近登录时间: {{ useDateFormat(lastLoginTime, 'YYYY-MM-DD HH:mm:ss').value }}
       </p>
-    </div>
+    </div> -->
 
     <template #action>
       <n-space :size="20">
@@ -135,7 +136,7 @@ async function handleUnMonitor() {
 
         <n-tooltip trigger="hover">
           <template #trigger>
-            <Icon name="material-symbols:history-rounded" @click.stop="ms.warning('敬请期待')" />
+            <Icon name="material-symbols:history-rounded" @click.stop="showSignHistory = true" />
           </template>
           签到记录
         </n-tooltip>
@@ -149,7 +150,8 @@ async function handleUnMonitor() {
       </n-space>
     </template>
     <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
-    <SettingModal v-if="showSettingModal" v-model:visible="showSettingModal" :uid="uid" :setting="setting" />
+    <SignHistory v-model:show="showSignHistory" :uid="uid" />
+    <SettingModal v-if="showSettingModal" v-model:show="showSettingModal" :uid="uid" :setting="setting" />
   </n-card>
 </template>
 

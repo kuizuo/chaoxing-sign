@@ -2,13 +2,13 @@
 import _ from 'lodash'
 
 interface Props {
-  visible: boolean
+  show: boolean
   uid: string
   setting: API.Setting
 }
 
 interface Emit {
-  (e: 'update:visible', visible: boolean): void
+  (e: 'update:show', show: boolean): void
 }
 
 const props = defineProps<Props>()
@@ -19,10 +19,10 @@ const accountStore = useAccountStore()
 
 const show = computed({
   get() {
-    return props.visible
+    return props.show
   },
-  set(visible: boolean) {
-    emit('update:visible', visible)
+  set(show: boolean) {
+    emit('update:show', show)
   },
 })
 
