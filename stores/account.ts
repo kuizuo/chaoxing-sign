@@ -33,7 +33,11 @@ export const useAccountStore = defineStore('account', () => {
       if (code === 200) {
         log(`${data?.info?.username} ${message}`, { type: 'success' })
 
-        accounts.value.push(data as unknown as API.Account)
+        accounts.value.push({
+          ...data,
+          courses: [],
+          selected: true,
+        } as unknown as API.Account)
       }
       else {
         log(`${form.username} ${message}`, { type: 'error' })
@@ -47,9 +51,10 @@ export const useAccountStore = defineStore('account', () => {
 
   async function logout(uid: string) {
     const account = getAccount(uid)
-    accounts.value = accounts.value.filter(a => a.uid !== uid)
 
     await request('/api/cx/logout', { method: 'POST', body: { uid } })
+
+    accounts.value = accounts.value.filter(a => a.uid !== uid)
 
     log(`${account.info.realname} 退出成功`, { type: 'success' })
   }
@@ -216,6 +221,10 @@ export const useAccountStore = defineStore('account', () => {
     const index = accounts.value.findIndex(a => a.uid === uid)
     accounts.value[index].setting = data!
   }
+
+  watch(accounts, (accounts) => {
+    localStorage.setItem('accounts', JSON.stringify(accounts))
+  })
 
   return {
     accounts: skipHydrate(accounts),

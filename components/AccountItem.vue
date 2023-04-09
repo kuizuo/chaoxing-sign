@@ -111,11 +111,11 @@ async function handleUnMonitor() {
         </n-popconfirm>
       </template>
 
-      <!-- <div class="text-left">
-      <p>
-        最近登录时间: {{ useDateFormat(lastLoginTime, 'YYYY-MM-DD HH:mm:ss').value }}
-      </p>
-    </div> -->
+      <div class="text-left">
+        <p>
+          最近登录时间: {{ useDateFormat(lastLoginTime, 'YYYY-MM-DD HH:mm:ss').value }}
+        </p>
+      </div>
 
       <template #action>
         <n-space :size="20">

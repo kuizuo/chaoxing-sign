@@ -97,6 +97,15 @@ export async function initIMConnection() {
 
     await cx.login()
 
+    await prisma.cxAccount.update({
+      where: {
+        uid: cx.user.uid,
+      },
+      data: {
+        lastLoginTime: new Date(),
+      },
+    })
+
     const { uid, token } = await cx.getWebIM()
 
     const client = await createIMConnection()
