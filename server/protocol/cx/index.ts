@@ -175,7 +175,7 @@ export class Cx {
   async preSign(course: CX.Course, activity: CX.Activity) {
     const { body: data } = await this.http.get('https://mobilelearn.chaoxing.com/newsign/preSign', {
       searchParams: {
-        courseId: course.courseId,
+        courseId: course.courseId || '',
         classId: course.classId,
         activePrimaryId: activity.id,
         Normal: '1',

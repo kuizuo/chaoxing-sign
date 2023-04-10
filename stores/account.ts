@@ -30,6 +30,7 @@ export const useAccountStore = defineStore('account', () => {
   async function syncAccounts() {
     const { data } = await request('/api/user/accounts')
     accounts.value = data as unknown as API.Account[]
+
     // log('同步成功', { type: 'success' })
   }
 
@@ -138,7 +139,7 @@ export const useAccountStore = defineStore('account', () => {
     // 提取 activityId 和 enc
     // https://mobilelearn.chaoxing.com/widget/sign/e?id=8000063022220&c=529773&enc=A5BC081D895B41540E129437F6B4180F&DB_STRATEGY=PRIMARY_KEY&STRATEGY_PARA=id
 
-    const activityId = link.match(/id=(\d+)/)?.[1]
+    const activityId = link.match(/id=(\w+)\&/)?.[1]
     const enc = link.match(/enc=(\w+)/)?.[1]
 
     const { data } = await request(`/api/cx/account/${uid}/sign_by_qrcode`, {

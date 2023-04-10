@@ -104,6 +104,11 @@ function handleUpload() {
 
   fileInput.click()
 }
+
+watch(text, () => {
+  if (!text.value)
+    qrcode.value = ''
+})
 </script>
 
 <template>

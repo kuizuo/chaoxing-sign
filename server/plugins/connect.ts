@@ -3,13 +3,17 @@ export default defineNitroPlugin((_nitroApp) => {
 
   if (runtimeConfig?.im?.initConnect) {
     const previousGlobalThis: any = { ...globalThis }
-    initIMConnection().then(() => {
-      Object.keys(global).forEach((k) => {
-        if (previousGlobalThis[k])
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          global[k] = previousGlobalThis[k]
-      })
+    initIMConnection().then((result) => {
+      if (result?.length > 0) {
+        global.window = previousGlobalThis.window
+        global.navigator = previousGlobalThis.navigator
+        global.document = previousGlobalThis.document
+        // global.WebSocket = previousGlobalThis.WebSocket
+        // global.Image = previousGlobalThis.Image
+        // global.history = previousGlobalThis.history
+        // global.SVGElement = previousGlobalThis.SVGElement
+        // global.XMLHttpRequest = previousGlobalThis.XMLHttpRequest
+      }
     })
   }
 })

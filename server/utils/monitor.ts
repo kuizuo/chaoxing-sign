@@ -90,7 +90,8 @@ export async function initIMConnection() {
   const toMonitorAccounts = await prisma.cxAccount.findMany({
     where: {
       setting: {
-        equals: { monitor: true },
+        path: ['monitor'],
+        equals: true,
       },
     },
   })
@@ -119,4 +120,6 @@ export async function initIMConnection() {
 
     await handleListen(client, cx, account)
   }
+
+  return toMonitorAccounts
 }

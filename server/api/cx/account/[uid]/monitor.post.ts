@@ -1,20 +1,20 @@
-import { createIMConnection } from '~~/server/protocol/easemob'
+import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
 import { handleListen } from '~~/server/utils/monitor'
 
 export default defineEventHandler(async (event) => {
-  const account = await event.context.prisma.cxAccount.findUnique({
-    where: {
-      uid: event.context.cx.user.uid,
-    },
-  })
-
-  if ((account?.setting as unknown as API.Setting)?.monitor) {
+  if (IMConnectionMap.has(event.context.cx.user.uid)) {
     return ResOp.success({
       data: {
         isOpened: true,
       },
     }, '已监听')
   }
+
+  const account = await event.context.prisma.cxAccount.findUnique({
+    where: {
+      uid: event.context.cx.user.uid,
+    },
+  })
 
   const { uid, token } = await event.context.cx.getWebIM()
 
