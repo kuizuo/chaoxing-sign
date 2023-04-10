@@ -8,6 +8,14 @@ declare module '#app' {
   }
 }
 
+declare module '@nuxt/schema' {
+  interface RuntimeConfig {
+    im: {
+      initConnect: boolean
+    }
+  }
+}
+
 // vue
 declare type PropType<T> = VuePropType<T>;
 declare type VueNode = VNodeChild | JSX.Element;
