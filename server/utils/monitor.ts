@@ -37,7 +37,7 @@ export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) =>
         type: activity.otherId,
         result,
         time: new Date(),
-        mode: SignMode.Manual,
+        mode: SignMode.Auto,
         accountId: cx.user.uid,
       },
     })
