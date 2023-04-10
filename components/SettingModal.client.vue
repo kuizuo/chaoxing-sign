@@ -116,6 +116,9 @@ watch(show, (value) => {
         <div />
       </n-form-item> -->
         <n-divider />
+        <!-- <n-form-item label="自动监控" path="monitor">
+          <n-switch v-model:value="form.monitor" />
+        </n-form-item> -->
         <n-form-item label="签到类型" path="signType">
           <n-checkbox-group v-model:value="form.signType" name="signType">
             <n-space>

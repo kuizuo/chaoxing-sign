@@ -46,4 +46,4 @@ jobs:
           host: ${{ secrets.REMOTE_HOST }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.PRIVATE_KEY }}
-          script: pm2 restart Protocol
+          script: pm2 restart chaoxing-sign

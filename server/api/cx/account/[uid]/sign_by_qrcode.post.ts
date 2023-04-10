@@ -1,3 +1,5 @@
+import { SignMode } from '~~/constants/cx'
+
 interface Body {
   uid: string
   activityId: number

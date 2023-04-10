@@ -60,7 +60,7 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
   },
   auth: {
-    origin: process.env.ORIGIN,
+    origin: process.env.AUTH_ORIGIN,
     enableGlobalAppMiddleware: true,
     globalMiddlewareOptions: {
       allow404WithoutAuth: true,

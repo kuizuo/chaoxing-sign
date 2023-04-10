@@ -1,6 +1,7 @@
 import { sleep } from '@kuizuo/utils'
+import type { CxAccount } from '@prisma/client'
 import type { EasemobChat } from 'easemob-websdk'
-import { ActivityTypeEnum } from '~~/constants/cx'
+import { ActivityTypeEnum, SignMode } from '~~/constants/cx'
 import { Cx } from '~~/server/protocol/cx'
 
 import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
@@ -43,7 +44,7 @@ export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) =>
   }
 }
 
-export const handleListen = async (client: EasemobChat.Connection, cx: Cx): Promise<void> => {
+export const handleListen = async (client: EasemobChat.Connection, cx: Cx, account: CxAccount): Promise<void> => {
   await new Promise((resolve, reject) => {
     client.listen({
       onOpened: async () => {
@@ -53,6 +54,7 @@ export const handleListen = async (client: EasemobChat.Connection, cx: Cx): Prom
           },
           data: {
             setting: {
+              ...(account.setting as any),
               monitor: true,
             },
           },
@@ -67,6 +69,7 @@ export const handleListen = async (client: EasemobChat.Connection, cx: Cx): Prom
           },
           data: {
             setting: {
+              ...(account.setting as any),
               monitor: false,
             },
           },
@@ -114,7 +117,7 @@ export async function initIMConnection() {
       accessToken: token,
     })
 
-    await handleListen(client, cx)
+    await handleListen(client, cx, account)
   }
 }
 

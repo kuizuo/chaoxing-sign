@@ -21,6 +21,12 @@ export const useAccountStore = defineStore('account', () => {
     return account
   }
 
+  function setAccount(uid: string, setting: API.Setting) {
+    const index = accounts.value.findIndex(a => a.uid === uid)
+    if (index !== -1)
+      accounts.value[index].setting = setting
+  }
+
   async function syncAccounts() {
     const { data } = await request('/api/user/accounts')
     accounts.value = data as unknown as API.Account[]
@@ -234,6 +240,7 @@ export const useAccountStore = defineStore('account', () => {
     logout,
     syncAccounts,
     getAccount,
+    setAccount,
     getCourses,
     getActivityList,
     signByCourse,

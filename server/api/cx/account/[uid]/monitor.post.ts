@@ -2,18 +2,13 @@ import { createIMConnection } from '~~/server/protocol/easemob'
 import { handleListen } from '~~/server/utils/monitor'
 
 export default defineEventHandler(async (event) => {
-  const hasMonitor = await event.context.prisma.cxAccount.findFirst({
+  const account = await event.context.prisma.cxAccount.findUnique({
     where: {
       uid: event.context.cx.user.uid,
-      setting: {
-        equals: {
-          monitor: true,
-        },
-      },
     },
   })
 
-  if (hasMonitor) {
+  if ((account?.setting as unknown as API.Setting)?.monitor) {
     return ResOp.success({
       data: {
         isOpened: true,
@@ -30,7 +25,7 @@ export default defineEventHandler(async (event) => {
     accessToken: token,
   })
 
-  await handleListen(client, event.context.cx)
+  await handleListen(client, event.context.cx, account!)
 
   const isOpened = client.isOpened()
 

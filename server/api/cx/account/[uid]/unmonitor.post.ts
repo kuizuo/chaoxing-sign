@@ -7,17 +7,19 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  await event.context.prisma.cxAccount.update({
-    where: {
-      uid: event.context.cx.user.uid,
-    },
-    data: {
-      setting: {
-        ...(account?.setting as any),
-        monitor: false,
+  if ((account?.setting as any)?.monitor) {
+    await event.context.prisma.cxAccount.update({
+      where: {
+        uid: event.context.cx.user.uid,
       },
-    },
-  })
+      data: {
+        setting: {
+          ...(account?.setting as any),
+          monitor: false,
+        },
+      },
+    })
+  }
 
   if (IMConnectionMap.has(event.context.cx.user.uid)) {
     const client = IMConnectionMap.get(event.context.cx.user.uid)!
