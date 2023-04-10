@@ -7,5 +7,5 @@ export const defaultSetting: API.Setting = {
   },
   monitor: false,
   signType: [...Object.keys(signTypeMap)],
-  delay: 3000,
+  delay: 2000,
 }

@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     im: {
-      initConnect: true,
+      initConnect: false,
     },
   },
   modules: [
