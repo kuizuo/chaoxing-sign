@@ -51,28 +51,85 @@ declare namespace CX {
     link: string
   }
 
-  interface Activity {
-    activityList: any
-    userStatus: number
-    otherId: number
-    groupId: number
-    source: number
-    isLook: number
-    ifphoto: number
-    type: number
-    releaseNum: number
-    attendNum: number
-    activeType: number
-    logo: string
-    name: string
-    nameOne: string
-    nameTwo: string
-    nameFour: string
-    clazzid: number
-    startTime: number
-    id: number
-    endTime: number
-    status: number
+  interface Time {
+    date: number;
+    day: number;
+    hours: number;
+    minutes: number;
+    month: number;
+    seconds: number;
+    time: number;
+    timezoneOffset: number;
+    year: number;
+  }
+
+  interface ActivityDetail {
+    activeSort: number;
+    activeType: number;
+    activityTranMode: number;
+    attendNum: number;
+    bsid: number;
+    chartId: string;
+    clazzId: number;
+    configJson: string;
+    content: string;
+    courseId: string;
+    createTime: Time;
+    createUid: string;
+    createxxuid: string;
+    credit: string;
+    currentVersion: number;
+    currentstatus: number;
+    dpurl: string;
+    editconfig: string;
+    endTime: Time;
+    endtimes: string;
+    groupType: number;
+    id: number;
+    ifGetRange: number;
+    ifPhoto: number;
+    ifRefreshEwm: number;
+    ifSendMessage: number;
+    ifaveraged: number;
+    ifcommit: number;
+    iphoneContent: string;
+    isAnony: number;
+    isBegins: number;
+    isClone: number;
+    isDelete: number;
+    isResult: number;
+    isbackfill: number;
+    isnorm: number;
+    isold: number;
+    jurl: string;
+    jwCourseId: string;
+    latitude: number;
+    longitude: number;
+    name: string;
+    newOld: number;
+    normScore: string;
+    otherId: number;
+    parentId: number;
+    pptPlanId: number;
+    pptnum: number;
+    releaseNum: number;
+    setEndTimeNull: number;
+    sfdp: number;
+    sffxs: number;
+    showhide: number;
+    signCode: string;
+    source: number;
+    startTime: Time;
+    starttimes: string;
+    status: number;
+    sxs: number;
+    timeLong: number;
+    updateTime: null;
+    url: string;
+    viewPicPath: string;
+    zhjsid: number;
+    enc: string
+    code: string
   }
 
   interface AttChatCourse {
@@ -103,12 +160,31 @@ declare namespace CX {
     longitude: string
   }
 
+  interface ActivityItem extends ActivityDetail{
+    userStatus: number;
+    name: string;
+    nameTwo: string;
+    otherId: number;
+    groupId: number;
+    source: number;
+    isLook: number;
+    type: number;
+    releaseNum: number;
+    attendNum: number;
+    activeType: number;
+    logo: string;
+    nameOne: string;
+    id: number;
+    status: number;
+    nameFour: string;
+  }
+
   interface ActivityListResponse extends Response<{
     ext: {
       _from_: string
     }
     readingDuration: number
-    activeList: Activity[]
+    activeList: ActivityItem[]
   }> { }
 
   interface Response<T> {

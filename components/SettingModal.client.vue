@@ -89,11 +89,16 @@ watch(show, (value) => {
               placeholder=""
             >
               <template #prefix>
+                纬度
+              </template>
+              <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    经度: {{ }}
+                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                      <Icon name="material-symbols:add-location-outline-rounded" />
+                    </a>
                   </template>
-                  经度: 默认 -1
+                  拾取坐标系统
                 </n-tooltip>
               </template>
             </n-input>
@@ -102,11 +107,16 @@ watch(show, (value) => {
               placeholder=""
             >
               <template #prefix>
+                经度
+              </template>
+              <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    纬度: {{ }}
+                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                      <Icon name="material-symbols:add-location-outline-rounded" />
+                    </a>
                   </template>
-                  纬度: 默认 -1
+                  拾取坐标系统
                 </n-tooltip>
               </template>
             </n-input>

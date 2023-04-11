@@ -140,11 +140,12 @@ export const useAccountStore = defineStore('account', () => {
     // https://mobilelearn.chaoxing.com/widget/sign/e?id=8000063022220&c=529773&enc=A5BC081D895B41540E129437F6B4180F&DB_STRATEGY=PRIMARY_KEY&STRATEGY_PARA=id
 
     const activityId = link.match(/id=(\w+)\&/)?.[1]
+    const code = link.match(/&c=(\w+)\&/)?.[1]
     const enc = link.match(/enc=(\w+)/)?.[1]
 
     const { data } = await request(`/api/cx/account/${uid}/sign_by_qrcode`, {
       method: 'POST',
-      body: { uid, activityId, enc },
+      body: { uid, activityId, enc, code, url: link },
     })
 
     const { activity } = data!

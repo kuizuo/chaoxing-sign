@@ -11,7 +11,7 @@ const testAccount: Pick<CX.Account, 'username' | 'password'> = {
 
 describe('cx', async () => {
   const cx = new Cx(testAccount)
-  let activityList: CX.Activity[] = []
+  let activityList: CX.ActivityDetail[] = []
 
   it('login', async () => {
     const result = await cx.login()

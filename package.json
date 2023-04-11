@@ -2,7 +2,7 @@
   "name": "chaoxing-sign",
   "version": "0.2.1",
   "private": true,
-  "packageManager": "pnpm@7.14.0",
+  "packageManager": "pnpm@8.2.0",
   "author": {
     "url": "https://kuizuo.cn",
     "name": "Kuizuo"
@@ -14,7 +14,9 @@
   },
   "keywords": [
     "chaoxing",
-    "sign"
+    "sign",
+    "nuxt",
+    "http"
   ],
   "scripts": {
     "build": "nuxi build",

@@ -23,7 +23,7 @@ declare namespace API {
     isLoadActivity?: boolean
   }
 
-  interface Activity extends CX.Activity {
+  interface Activity extends CX.ActivityDetail {
     result?: string
   }
 

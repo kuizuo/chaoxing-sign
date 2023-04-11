@@ -4,22 +4,39 @@ interface Body {
   uid: string
   activityId: number
   enc: string
+  code: string
+  url: string
 }
 
 export default defineEventHandler(async (event) => {
-  const { activityId, enc } = await readBody<Body>(event)
+  const { activityId, code, enc } = await readBody<Body>(event)
 
-  const activity = await event.context.cx.getActiveInfo(activityId)
+  const activity = await event.context.cx.getActivityDetail(activityId)
 
   if (!activity)
     return ResOp.error(204, '活动不存在')
 
-  const course = {
-    classId: activity.clazzid,
+  if (!(activity.activeType === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)) {
+    return {
+      activity,
+      result: '不是签到活动或活动已结束',
+    }
   }
 
-  await event.context.cx.preSign(course as unknown as CX.Course, activity)
-  const result = await event.context.cx.signQrCode(activity, enc)
+  const course = {
+    classId: activity.clazzId,
+  }
+  activity.code = code
+  activity.enc = enc
+
+  const status = await event.context.cx.preSign(course as unknown as CX.Course, activity)
+
+  let result = ''
+  if (status)
+    result = status
+
+  else
+    result = await event.context.cx.signQrCode(activity, enc)
 
   await event.context.prisma.signLog.create({
     data: {

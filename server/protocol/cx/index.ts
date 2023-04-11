@@ -159,42 +159,49 @@ export class Cx {
   /*
     根据 aid 获取活动详情
   */
-  async getActiveInfo(activeId: string | number) {
-    const { body: data } = await this.http.get<CX.Response<CX.Activity>>('https://mobilelearn.chaoxing.com/v2/apis/active/getPPTActiveInfo', {
+  async getActivityDetail(activeId: string | number) {
+    const { body: data } = await this.http.get<CX.ActivityDetail>('https://mobilelearn.chaoxing.com/newsign/signDetail', {
       searchParams: {
-        activeId,
+        activePrimaryId: activeId,
+        type: 1,
       },
     })
 
-    return data.data
+    return data
   }
 
   /*
     需要先发送预签到请求 才能够正常记录签到记录
   */
-  async preSign(course: CX.Course, activity: CX.Activity) {
-    const { body: data } = await this.http.get('https://mobilelearn.chaoxing.com/newsign/preSign', {
+  async preSign(course: CX.Course, activity: CX.ActivityDetail) {
+    const { body: html } = await this.http.get('https://mobilelearn.chaoxing.com/newsign/preSign', {
       searchParams: {
         courseId: course.courseId || '',
         classId: course.classId,
         activePrimaryId: activity.id,
-        Normal: '1',
+        general: '1',
         sys: '1',
         ls: '1',
         appType: '15',
-        tid: '',
         uid: this.user.uid,
-        ut: 's',
+        // 是否为刷新二维码的
+        ...((activity.ifRefreshEwm) && { rcode: encodeURIComponent(`SIGNIN:aid=${activity.id}&source=15&Code=${activity.code}&enc=${activity.enc}`) }),
       },
       responseType: 'text',
     })
-    return data
+
+    const $ = cheerio.load(html)
+
+    const status = $('#statuscontent').text().trim().replaceAll(/[\n\s]/g, '')
+    console.log('statuscontent', status)
+    if (status)
+      return status
   }
 
   /*
     群聊预签到
   */
-  async preSign_chat(activity: CX.Activity) {
+  async preSign_chat(activity: CX.ActivityDetail) {
     const { body: data } = await this.http.get(
       'https://mobilelearn.chaoxing.com/sign/preStuSign',
       {
@@ -233,7 +240,7 @@ export class Cx {
     return data
   }
 
-  async signNormal(activity: CX.Activity) {
+  async signNormal(activity: CX.ActivityDetail) {
     const query = qsStringify({
       activeId: activity.id,
       uid: this.user.uid,
@@ -248,7 +255,7 @@ export class Cx {
     return this.stuSign(query)
   }
 
-  async signLocation(activity: CX.Activity,
+  async signLocation(activity: CX.ActivityDetail,
     location: CX.SignLocation = {
       latitude: '-1',
       longitude: '-1',
@@ -270,9 +277,10 @@ export class Cx {
     return this.stuSign(query)
   }
 
-  async signQrCode(activity: CX.Activity, enc: string) {
+  async signQrCode(activity: CX.ActivityDetail, enc: string) {
     const query = qsStringify({
       enc,
+      name: this.user.realname,
       activeId: activity.id,
       uid: this.user.uid,
       clientip: '',
@@ -281,7 +289,6 @@ export class Cx {
       longitude: '-1',
       fid: this.user.schoolid,
       appType: '15',
-      name: this.user.realname,
     }, '', '', { encodeURIComponent: s => s })
 
     return this.stuSign(query)
@@ -307,7 +314,7 @@ export class Cx {
 
     const signActivityList = activityList.filter(activity => activity.type === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)
 
-    const signResult: { activity: CX.Activity; result: string }[] = []
+    const signResult: { activity: CX.ActivityDetail; result: string }[] = []
 
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
@@ -325,8 +332,8 @@ export class Cx {
     return signResult
   }
 
-  async signByActivity(course: CX.Course, activity: CX.Activity) {
-    if (!(activity.type === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)) {
+  async signByActivity(course: CX.Course, activity: CX.ActivityDetail) {
+    if (!(activity.activeType === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)) {
       return {
         activity,
         result: '不是签到活动或活动已结束',
@@ -345,13 +352,13 @@ export class Cx {
   /*
   * 一键签到 (检测所有课程, 所有签到活动, 比较耗时)
   */
-  async oneClickSign(allowedSignTypes?: number[]) {
+  async oneClickSign(setting?: CX.Setting) {
     const signActivityList = await this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
 
     const signResult = []
     for await (const activity of signActivityList) {
       if (activity.type === ActivityTypeEnum.Sign) {
-        const result = await this.handleSign(activity.course, activity, allowedSignTypes)
+        const result = await this.handleSign(activity.course, activity, setting)
 
         signResult.push({
           activity,
@@ -362,15 +369,15 @@ export class Cx {
     return signResult
   }
 
-  async handleSign(course: CX.Course, activity: CX.Activity, allowedSignTypes?: number[]) {
+  async handleSign(course: CX.Course, activity: CX.ActivityDetail, setting?: CX.Setting) {
     await this.preSign(course, activity)
 
-    if (allowedSignTypes && !allowedSignTypes.includes(activity.otherId))
+    if (setting?.signType && !setting?.signType?.includes(activity.otherId))
       return '该签到类型不在账号签到范围内'
 
     switch (Number(activity.otherId)) {
       case SignTypeEnum.Normal:
-        if (activity.ifphoto === 1)
+        if (activity.ifPhoto === 1)
           return await this.signNormal(activity)
 
         else
@@ -381,7 +388,7 @@ export class Cx {
         return await this.signNormal(activity)
 
       case SignTypeEnum.Location:
-        return await this.signLocation(activity)
+        return await this.signLocation(activity, setting?.location)
 
       case SignTypeEnum.QRCode:
         return '请扫码签到'

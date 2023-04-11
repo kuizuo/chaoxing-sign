@@ -14,7 +14,7 @@ export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) =>
 
   // 如果是签到任务，则进行处理
   if (chatCourse.atype === ActivityTypeEnum.Sign) {
-    const activity = await cx.getActiveInfo(chatCourse.aid)
+    const activity = await cx.getActivityDetail(chatCourse.aid)
     // const activity = { id: chatCourse.aid }
     const course = {
       courseId: chatCourse.courseInfo.courseid,
