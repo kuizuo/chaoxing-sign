@@ -4,7 +4,7 @@ import type { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
 import * as cheerio from 'cheerio'
 import got from 'got'
-import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from '~~/constants/cx'
+import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from './constant'
 
 export class Cx {
   public http!: Got
@@ -255,6 +255,22 @@ export class Cx {
     return this.stuSign(query)
   }
 
+  async signPhoto(activity: CX.ActivityDetail, photo?: CX.YunPanFile) {
+    const query = qsStringify({
+      activeId: activity.id,
+      uid: this.user.uid,
+      clientip: '',
+      latitude: '-1',
+      longitude: '-1',
+      appType: '15',
+      fid: this.user.schoolid,
+      objectId: photo?.objectId ?? '',
+      name: this.user.realname,
+    }, '', '', { encodeURIComponent: s => s })
+
+    return this.stuSign(query)
+  }
+
   async signLocation(activity: CX.ActivityDetail,
     location: CX.SignLocation = {
       latitude: '-1',
@@ -316,14 +332,18 @@ export class Cx {
 
     const signResult: { activity: CX.ActivityDetail; result: string }[] = []
 
-    for await (const activity of signActivityList) {
-      if (activity.type === ActivityTypeEnum.Sign) {
+    for await (const a of signActivityList) {
+      if (a.type === ActivityTypeEnum.Sign) {
+        const activity = await this.getActivityDetail(a.id)
         const result = await this.handleSign(course, activity)
 
         console.log(`课程: ${course.name} 签到结果: ${result}`)
 
         signResult.push({
-          activity,
+          activity: {
+            ...a,
+            ...activity,
+          },
           result,
         })
       }
@@ -356,12 +376,16 @@ export class Cx {
     const signActivityList = await this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
 
     const signResult = []
-    for await (const activity of signActivityList) {
-      if (activity.type === ActivityTypeEnum.Sign) {
-        const result = await this.handleSign(activity.course, activity, setting)
+    for await (const a of signActivityList) {
+      if (a.type === ActivityTypeEnum.Sign) {
+        const activity = await this.getActivityDetail(a.id)
+        const result = await this.handleSign(a.course, activity, setting)
 
         signResult.push({
-          activity,
+          activity: {
+            ...a,
+            ...activity,
+          },
           result,
         })
       }
@@ -377,11 +401,11 @@ export class Cx {
 
     switch (Number(activity.otherId)) {
       case SignTypeEnum.Normal:
-        if (activity.ifPhoto === 1)
-          return await this.signNormal(activity)
-
-        else
-          return await this.signNormal(activity)
+        if (activity.ifPhoto === 1) {
+          const file = await this.getPhotoFile()
+          return await this.signPhoto(activity, file)
+        }
+        else { return await this.signNormal(activity) }
 
       case SignTypeEnum.Gesture:
       case SignTypeEnum.Code:
@@ -410,6 +434,12 @@ export class Cx {
       uid: $('#myTuid').text(),
       name: $('#myName').text(),
     }
+  }
+
+  async getPhotoFile() {
+    const { body: { data } } = await this.http.get<CX.Response<CX.YunPanFile[]>>('https://pan-yz.chaoxing.com/api/getMyDirAndFiles?puid=42736002&fldid=&page=1&size=100&addrec=0&showCollect=1&_token=3d44eb8928f52b391398035f530c4155m', {})
+
+    return data.find(d => d.name === '0.png' || d.name === '0.jpg')
   }
 }
 

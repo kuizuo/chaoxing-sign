@@ -187,6 +187,34 @@ declare namespace CX {
     activeList: ActivityItem[]
   }> { }
 
+  interface YunPanFile {
+    disableOpt: boolean;
+    resid: number;
+    crc: string;
+    puid: number;
+    isfile: boolean;
+    pantype: string;
+    size: number;
+    name: string;
+    objectId: string;
+    restype: string;
+    uploadDate: number;
+    modifyDate: number;
+    uploadDateFormat: string;
+    residstr: string;
+    suffix: string;
+    preview: string;
+    thumbnail: string;
+    creator: number;
+    duration: number;
+    filetype: string;
+    filepath: string;
+    sort: number;
+    topsort: number;
+    resTypeValue: number;
+    extinfo: string;
+    }
+    
   interface Response<T> {
     result: number
     msg: any

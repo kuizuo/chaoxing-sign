@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
+import { ActivityStatusEnum, ActivityTypeEnum } from './constant'
 import { Cx } from '.'
-import { ActivityStatusEnum, ActivityTypeEnum } from '~~/constants/cx'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
@@ -35,8 +35,8 @@ describe('cx', async () => {
     console.log(activityList.length)
   })
 
-  it.skip('signGeneral', async () => {
-    const result = await cx.signGeneral(activityList[0])
+  it.skip('signNormal', async () => {
+    const result = await cx.signNormal(activityList[0])
     console.log(result)
   })
 
