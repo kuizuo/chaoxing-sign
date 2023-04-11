@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'Chaoxing-sign',
+      name: 'chaoxing-sign',
       script: './.output/server/index.mjs',
       exec_mode: 'cluster',
       instances: '1',
