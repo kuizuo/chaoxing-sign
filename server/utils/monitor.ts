@@ -26,7 +26,7 @@ export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) =>
 
     await sleep(cx.setting?.delay || Math.floor(Math.random() * (8000 - 3000 + 1) + 3000))
 
-    const result = await cx.handleSign(course, activity, cx.setting?.signType.map(t => Number(t)))
+    const result = await cx.handleSign(course, activity, cx.setting)
 
     console.log(`课程: ${course.name} 活动: ${activity.name} 签到结果: ${result}`)
 

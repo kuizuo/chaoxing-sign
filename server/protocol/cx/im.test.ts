@@ -7,7 +7,7 @@ import { Cx } from '.'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
-const testAccount: Pick<CX.Account, 'username' | 'password'> = {
+const testAccount: Pick<CX.User, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,
   password: process.env.CX_PASSWORD!,
 }
@@ -38,7 +38,7 @@ describe('cx-im', async () => {
   })
 
   it('conn', async () => {
-    client = createIMConnection()
+    client = await createIMConnection()
 
     console.log(client)
     expect(client.appKey).toBe('cx-dev#cxstudy')

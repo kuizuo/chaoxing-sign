@@ -1,17 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { ActivityStatusEnum, ActivityTypeEnum, Cx } from '.'
+import { Cx } from '.'
+import { ActivityStatusEnum, ActivityTypeEnum } from '~~/constants/cx'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
-const testAccount: Pick<CX.Account, 'username' | 'password'> = {
+const testAccount: Pick<CX.User, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,
   password: process.env.CX_PASSWORD!,
 }
 
 describe('cx', async () => {
   const cx = new Cx(testAccount)
-  let activityList: CX.ActivityDetail[] = []
+  let activityList: CX.ActivityItem[] = []
 
   it('login', async () => {
     const result = await cx.login()
