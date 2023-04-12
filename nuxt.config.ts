@@ -74,7 +74,7 @@ export default defineNuxtConfig({
     shim: false,
   },
   build: {
-    transpile: ['punycode', 'consola'],
+    transpile: ['punycode'],
   },
   devtools: {
     enabled: true,

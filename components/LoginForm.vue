@@ -7,7 +7,7 @@ interface Emit {
 
 const emit = defineEmits<Emit>()
 
-const { signIn, getProviders } = useAuth()
+const { signIn, getProviders } = useSession()
 
 const providers = await getProviders()
 const { message: ms } = createDiscreteApi(['message'])

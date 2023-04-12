@@ -35,13 +35,6 @@ export default NuxtAuthHandler({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: Credentials) {
-        if (!credentials.username || !credentials.password) {
-          throw createError({
-            statusCode: 403,
-            statusMessage: '账号或密码错误',
-          })
-        }
-
         const user = await prisma.user.findFirst({
           where: {
             name: credentials.username,

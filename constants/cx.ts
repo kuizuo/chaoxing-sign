@@ -40,7 +40,7 @@ export enum SignTypeEnum {
 export const signTypeMap: Record<number, string> = {
   0: '普通签到',
   2: '二维码签到',
-  3: '手势签到',
+  3: '手势签到 ',
   4: '位置签到',
   5: '签到码签到',
 } as const
