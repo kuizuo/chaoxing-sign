@@ -7,7 +7,7 @@ definePageMeta({
 
 <template>
   <div>
-    <ContentDoc class="prose text-left" path="/help" />
+    <ContentDoc />
   </div>
 </template>
 

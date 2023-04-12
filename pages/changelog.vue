@@ -7,7 +7,7 @@ definePageMeta({
 
 <template>
   <div>
-    <ContentDoc class="prose text-left" path="/changelog" />
+    <ContentDoc />
   </div>
 </template>
 

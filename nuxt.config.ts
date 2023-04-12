@@ -60,8 +60,8 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    '/changelog': { static: true },
-    '/help': { static: true },
+    // '/changelog': { static: true },
+    // '/help': { static: true },
     '/api/**': { cors: true },
   },
   auth: {
@@ -75,6 +75,9 @@ export default defineNuxtConfig({
   },
   build: {
     transpile: ['punycode'],
+  },
+  experimental: {
+    renderJsonPayloads: true,
   },
   devtools: {
     enabled: true,
