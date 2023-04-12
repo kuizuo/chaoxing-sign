@@ -1,7 +1,7 @@
 <script  setup lang="ts">
 import { createDiscreteApi } from 'naive-ui'
 
-const { status, data, signOut } = useSession()
+const { status, data, signOut } = useAuth()
 const router = useRouter()
 
 const showModal = ref(false)
