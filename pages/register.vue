@@ -3,7 +3,7 @@ import { c, createDiscreteApi } from 'naive-ui'
 
 const router = useRouter()
 
-const { status } = useSession()
+const { status } = useAuth()
 
 if (status.value === 'authenticated')
   router.push({ path: '/' })
