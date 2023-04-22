@@ -63,18 +63,24 @@ export const handleListen = async (client: EasemobChat.Connection, cx: Cx, accou
         resolve(true)
       },
       onClosed: async () => {
-        await prisma.cxAccount.update({
-          where: {
-            uid: cx.user.uid,
-          },
-          data: {
-            setting: {
-              ...(account.setting as any),
-              monitor: false,
+        // retry connect
+        try {
+          await handleListen(client, cx, account)
+        }
+        catch (error) {
+          await prisma.cxAccount.update({
+            where: {
+              uid: cx.user.uid,
             },
-          },
-        })
-        IMConnectionMap.delete(cx.user.uid)
+            data: {
+              setting: {
+                ...(account.setting as any),
+                monitor: false,
+              },
+            },
+          })
+          IMConnectionMap.delete(cx.user.uid)
+        }
       },
       onError: (error) => {
         reject(error)

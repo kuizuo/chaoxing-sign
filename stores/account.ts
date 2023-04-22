@@ -166,7 +166,7 @@ export const useAccountStore = defineStore('account', () => {
       method: 'POST',
       body: {
         uid,
-        signType: account.setting.signType,
+        setting: account.setting,
       },
     })
 

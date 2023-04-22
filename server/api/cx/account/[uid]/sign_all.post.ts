@@ -2,13 +2,13 @@ import { SignMode } from '~~/constants/cx'
 
 interface Body {
   uid: string
-  signType: number[]
+  setting: CX.Setting
 }
 
 export default defineEventHandler(async (event) => {
-  const { signType } = await readBody<Body>(event)
+  const { setting } = await readBody<Body>(event)
 
-  const signResult = await event.context.cx.oneClickSign(signType)
+  const signResult = await event.context.cx.oneClickSign(setting)
 
   for (const data of signResult) {
     const { activity, result } = data
