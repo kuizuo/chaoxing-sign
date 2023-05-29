@@ -1,4 +1,4 @@
-import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
+// import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
 
 interface Body {
   uid: string
@@ -26,27 +26,27 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  if (setting.monitor) {
-    if (!IMConnectionMap.has(event.context.cx.user.uid)) {
-      const { uid, token } = await event.context.cx.getWebIM()
+  // if (setting.monitor) {
+  //   if (!IMConnectionMap.has(event.context.cx.user.uid)) {
+  //     const { uid, token } = await event.context.cx.getWebIM()
 
-      const client = await createIMConnection()
+  //     const client = await createIMConnection()
 
-      await client.open({
-        user: uid,
-        accessToken: token,
-      })
+  //     await client.open({
+  //       user: uid,
+  //       accessToken: token,
+  //     })
 
-      await handleListen(client, event.context.cx, account!)
-    }
-  }
-  else {
-    if (IMConnectionMap.has(event.context.cx.user.uid)) {
-      const client = IMConnectionMap.get(event.context.cx.user.uid)!
+  //     await handleListen(client, event.context.cx, account!)
+  //   }
+  // }
+  // else {
+  //   if (IMConnectionMap.has(event.context.cx.user.uid)) {
+  //     const client = IMConnectionMap.get(event.context.cx.user.uid)!
 
-      client.close()
-    }
-  }
+  //     client.close()
+  //   }
+  // }
 
   return ResOp.success(result.setting as unknown as API.Setting)
 })

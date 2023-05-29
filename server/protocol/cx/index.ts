@@ -396,8 +396,8 @@ export class Cx {
   async handleSign(course: CX.Course, activity: CX.ActivityDetail, setting?: CX.Setting) {
     await this.preSign(course, activity)
 
-    if (setting?.signType && !setting?.signType?.includes(activity.otherId))
-      return '该签到类型不在账号签到范围内'
+    if (setting?.signType && !setting?.signType?.map(type => Number(type))?.includes(activity.otherId))
+      return '该账号不支持此签到类型'
 
     switch (Number(activity.otherId)) {
       case SignTypeEnum.Normal:

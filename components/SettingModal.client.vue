@@ -82,11 +82,11 @@ watch(show, (value) => {
         <n-form-item label="签到位置" path="location">
           <n-space>
             <n-input
-              v-model:value="form.location.latitude"
+              v-model:value="form.location.longitude"
               placeholder=""
             >
               <template #prefix>
-                纬度
+                经度
               </template>
               <template #suffix>
                 <n-tooltip trigger="hover">
@@ -100,11 +100,11 @@ watch(show, (value) => {
               </template>
             </n-input>
             <n-input
-              v-model:value="form.location.longitude"
+              v-model:value="form.location.latitude"
               placeholder=""
             >
               <template #prefix>
-                经度
+                纬度
               </template>
               <template #suffix>
                 <n-tooltip trigger="hover">
