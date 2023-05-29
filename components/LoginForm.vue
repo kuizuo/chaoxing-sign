@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { createDiscreteApi } from 'naive-ui'
 
-interface Emit {
+const emit = defineEmits<{
   (e: 'success', url?: string): void
-}
-
-const emit = defineEmits<Emit>()
+}>()
 
 const { signIn, getProviders } = useAuth()
 

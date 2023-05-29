@@ -4,7 +4,7 @@ import type { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
 import * as cheerio from 'cheerio'
 import got from 'got'
-import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from './constant'
+import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from '~/constants/cx'
 
 export class Cx {
   public http!: Got

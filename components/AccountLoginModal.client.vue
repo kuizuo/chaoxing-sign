@@ -1,9 +1,7 @@
 <script setup lang="ts">
-interface Emit {
+const emit = defineEmits< {
   (e: 'success'): void
-}
-
-const emit = defineEmits<Emit>()
+}>()
 
 const ms = useMessage()
 const accountStore = useAccountStore()

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-interface Props {
+import { useDateFormat } from '@vueuse/core'
+import { signModeMap, signTypeMap } from '~/constants/cx'
+const props = defineProps<{
   show: boolean
   uid: string
-}
+}>()
 
-interface Emit {
+const emit = defineEmits<{
   (e: 'update:show', show: boolean): void
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits<Emit>()
+}>()
 
 const active = computed({
   get() {

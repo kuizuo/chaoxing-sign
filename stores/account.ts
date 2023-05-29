@@ -255,8 +255,6 @@ export const useAccountStore = defineStore('account', () => {
   }
 })
 
-if (import.meta.hot) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
+if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useAccountStore, import.meta.hot))
-}
+

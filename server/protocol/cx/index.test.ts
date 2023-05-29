@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ActivityStatusEnum, ActivityTypeEnum } from './constant'
+import { ActivityStatusEnum, ActivityTypeEnum } from '../../../constants/cx'
 import { Cx } from '.'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import _ from 'lodash'
+import { signTypeMap } from '~~/constants/cx'
 
-interface Props {
+const props = defineProps<{
   show: boolean
   uid: string
   setting: API.Setting
-}
+}>()
 
-interface Emit {
+const emit = defineEmits<{
   (e: 'update:show', show: boolean): void
-}
-
-const props = defineProps<Props>()
-
-const emit = defineEmits<Emit>()
+}>()
 
 const saving = ref(false)
 const accountStore = useAccountStore()

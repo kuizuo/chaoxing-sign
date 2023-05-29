@@ -17,10 +17,10 @@ export default defineEventHandler(async (event) => {
     return ResOp.error(204, '活动不存在')
 
   if (!(activity.activeType === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)) {
-    return {
+    return ResOp.success({
       activity,
       result: '不是签到活动或活动已结束',
-    }
+    })
   }
 
   const course = {

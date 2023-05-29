@@ -130,6 +130,11 @@ declare namespace CX {
     zhjsid: number;
     enc: string
     code: string
+
+    logo: string
+    nameOne: string
+    nameFour: string
+    type: number
   }
 
   interface AttChatCourse {

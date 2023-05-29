@@ -1,14 +1,14 @@
 <script setup lang="ts">
-interface Prop {
+import { useDateFormat } from '@vueuse/core'
+
+const props = defineProps<{
   uid: string
   username: string
   info: CX.User
   setting: API.Setting
   selected: boolean
   lastLoginTime: string
-}
-
-const props = defineProps<Prop>()
+}>()
 
 const ms = useMessage()
 const accountStore = useAccountStore()
