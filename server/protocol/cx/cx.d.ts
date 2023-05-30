@@ -15,6 +15,7 @@ declare namespace CX {
     signType: (string | number)[]
     // courseIds: string[]
     location: {
+      text: string
       latitude: string
       longitude: string
     }
@@ -161,6 +162,7 @@ declare namespace CX {
   }
 
   interface SignLocation {
+    text: string
     latitude: string
     longitude: string
   }

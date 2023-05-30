@@ -273,13 +273,14 @@ export class Cx {
 
   async signLocation(activity: CX.ActivityDetail,
     location: CX.SignLocation = {
+      text: '',
       latitude: '-1',
       longitude: '-1',
     }) {
     // 位置 https://api.map.baidu.com/lbsapi/getpoint/index.html
     const query = qsStringify({
       activeId: activity.id,
-      address: '',
+      address: location.text,
       uid: this.user.uid,
       clientip: '',
       latitude: location.latitude,

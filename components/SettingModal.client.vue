@@ -82,6 +82,24 @@ watch(show, (value) => {
         <n-form-item label="签到位置" path="location">
           <n-space>
             <n-input
+              v-model:value="form.location.text"
+              placeholder=""
+            >
+              <template #prefix>
+                位置
+              </template>
+              <template #suffix>
+                <n-tooltip trigger="hover">
+                  <template #trigger>
+                    <a class="flex" href="javascript:void(0);">
+                      <Icon name="material-symbols:info-outline-rounded" />
+                    </a>
+                  </template>
+                  <span>填写你的学校名称即可</span>
+                </n-tooltip>
+              </template>
+            </n-input>
+            <n-input
               v-model:value="form.location.longitude"
               placeholder=""
             >

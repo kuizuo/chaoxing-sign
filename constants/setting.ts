@@ -2,6 +2,7 @@ import { signTypeMap } from './cx'
 
 export const defaultSetting: API.Setting = {
   location: {
+    text: '',
     latitude: '-1',
     longitude: '-1',
   },
