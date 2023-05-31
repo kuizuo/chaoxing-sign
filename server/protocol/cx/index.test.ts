@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import { ActivityStatusEnum, ActivityTypeEnum } from '../../../constants/cx'
 import { Cx } from '.'
+import { ActivityStatusEnum, ActivityTypeEnum } from '~~/constants/cx'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()

@@ -1,4 +1,4 @@
-import { ActivityTypeEnum, SignMode } from '~~/constants/cx'
+import { ActivityStatusEnum, ActivityTypeEnum, SignMode } from '~~/constants/cx'
 
 interface Body {
   uid: string
