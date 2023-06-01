@@ -64,9 +64,11 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
   },
   auth: {
+    isEnabled: true,
     enableGlobalAppMiddleware: true,
     globalMiddlewareOptions: {
       allow404WithoutAuth: true,
+      addDefaultCallbackUrl: true,
     },
   },
   typescript: {
