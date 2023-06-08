@@ -1,4 +1,5 @@
 import { acceptHMRUpdate, skipHydrate } from 'pinia'
+import { signTypeMap } from '~~/constants/cx'
 
 export const useAccountStore = defineStore('account', () => {
   const accounts = useLocalStorage<API.Account[]>('account', []) // ref<API.Account[]>([])
