@@ -21,6 +21,9 @@ devDependencies:
   '@huntersofbook/naive-ui-nuxt':
     specifier: ^1.2.0
     version: 1.2.0(rollup@3.28.1)(vue@3.3.4)
+  '@iconify/json':
+    specifier: ^2.2.107
+    version: 2.2.107
   '@kuizuo/utils':
     specifier: ^0.2.0
     version: 0.2.0
@@ -29,7 +32,7 @@ devDependencies:
     version: 0.11.0(postcss@8.4.28)(rollup@3.28.1)(sass@1.66.1)(vue@3.3.4)
   '@nuxt/content':
     specifier: npm:@nuxt/content-edge@latest
-    version: /@nuxt/content-edge@2.7.2-28220730.9720a33(rollup@3.28.1)(vue@3.3.4)
+    version: /@nuxt/content-edge@2.7.2-28221757.ff11497(rollup@3.28.1)(vue@3.3.4)
   '@nuxt/devtools':
     specifier: ^0.8.2
     version: 0.8.2(nuxt@3.7.0)(rollup@3.28.1)(vite@4.4.9)
@@ -1295,6 +1298,13 @@ packages:
       - supports-color
     dev: true
 
+  /@iconify/json@2.2.107:
+    resolution: {integrity: sha512-NJZ8vhPmO6/EzNNWbuzvMl8K2hgcIw93dBMryjrOv+gHnU9okkcyM6dYQc0S6jeYDQjbnriNSxDoiFdGQDVbtw==}
+    dependencies:
+      '@iconify/types': 2.0.0
+      pathe: 1.1.1
+    dev: true
+
   /@iconify/types@2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
@@ -1622,11 +1632,11 @@ packages:
       - vue
     dev: true
 
-  /@nuxt/content-edge@2.7.2-28220730.9720a33(rollup@3.28.1)(vue@3.3.4):
-    resolution: {integrity: sha512-Y8e/8ksSE2G7gdXC1f6pGt4r2vUc53NsYpvDJgHdKgr5mG9zDKW/Wxt2eYilzwkTWAmNgtngNTmU0Xg9K4VC0Q==}
+  /@nuxt/content-edge@2.7.2-28221757.ff11497(rollup@3.28.1)(vue@3.3.4):
+    resolution: {integrity: sha512-bcWnOgQNrxmU9f8VkZxP8X+PrKtSSGuA0y7XqvQ8PJdSeUEzws1tpwW3TMMis1RYVUKAymtseGPJrwHZPiTZnA==}
     dependencies:
       '@nuxt/kit': 3.7.0(rollup@3.28.1)
-      '@nuxtjs/mdc': 0.1.0(rollup@3.28.1)
+      '@nuxtjs/mdc': 0.1.1(rollup@3.28.1)
       '@vueuse/head': 1.3.1(vue@3.3.4)
       consola: 3.2.3
       defu: 6.1.2
@@ -1911,8 +1921,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxtjs/mdc@0.1.0(rollup@3.28.1):
-    resolution: {integrity: sha512-FY0aPlGWxCKsJU7KmtzndApH9z5+DON3BJpOEWTYayFZhCxIOxX0pdrd8CTuA2f7B/82iTKpHYVinRs2y10cYQ==}
+  /@nuxtjs/mdc@0.1.1(rollup@3.28.1):
+    resolution: {integrity: sha512-3dgciTXCUJedpvFTdg1BQdAKjGW4KoiTMg/rzx7aZ9MS55v1f8p7OQXdak4F9ogpnidEtUCJT2DofGKAbGjEug==}
     dependencies:
       '@nuxt/kit': 3.7.0(rollup@3.28.1)
       '@types/hast': 3.0.0
@@ -1934,7 +1944,7 @@ packages:
       rehype-sort-attributes: 4.0.0
       remark-emoji: 4.0.0
       remark-gfm: 3.0.1
-      remark-mdc: 1.2.0
+      remark-mdc: 2.0.0
       remark-parse: 10.0.2
       remark-rehype: 10.1.0
       scule: 1.0.0
@@ -10066,8 +10076,8 @@ packages:
       - supports-color
     dev: true
 
-  /remark-mdc@1.2.0:
-    resolution: {integrity: sha512-zK0GYvlhl9fw5gg1TYA2BmC06+wQaeQ0QewhJZI/6rocsP0Rfw3s2kbC5yeIyu9//kpBAwh6kJPFSDLiQbcFQQ==}
+  /remark-mdc@2.0.0:
+    resolution: {integrity: sha512-zBonqJya1254h84GRLjJc1fU4aXng2cKaie5qk0T1edUIkP4lVY1kJD4TP+uoFaUziTeyR6LSvkmRcHDZiWtoA==}
     dependencies:
       '@types/mdast': 4.0.0
       '@types/unist': 3.0.0

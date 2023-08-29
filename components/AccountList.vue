@@ -87,4 +87,3 @@ async function selectAccount(account: API.Account) {
     <AccountLoginModal v-model:show="showLoginModal" @success="showLoginModal = false" />
   </div>
 </template>
-

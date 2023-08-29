@@ -68,4 +68,3 @@ function handleSuccess() {
     </div>
   </div>
 </template>
-

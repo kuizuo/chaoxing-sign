@@ -87,7 +87,7 @@ async function handleUnMonitor() {
                 @positive-click="handleUnMonitor()"
               >
                 <template #trigger>
-                  <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-green-600" @click.stop="" />
+                  <Icon name="material-symbols:ecg-heart-outline-sharp" class="animate-pulse text-primary" @click.stop="" />
                 </template>
                 确认取消监听该账号签到任务?
               </n-popconfirm>

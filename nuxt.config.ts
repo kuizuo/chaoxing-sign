@@ -45,6 +45,7 @@ export default defineNuxtConfig({
     attributify: true,
     preflight: false,
   },
+  css: ['~/assets/css/main.css'],
   content: {
     documentDriven: false,
     markdown: {
