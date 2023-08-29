@@ -1,5 +1,5 @@
 {
-  "extends": "@kuizuo",
+  "extends": "@antfu",
   "rules": {
     "no-console": "off",
     "new-cap": "off",
