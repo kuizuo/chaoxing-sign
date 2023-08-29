@@ -1,10 +1,25 @@
 <script setup lang="ts">
 import 'assets/css/preflight.css'
-
 import { darkTheme, dateZhCN, lightTheme, zhCN } from 'naive-ui'
 
 const colorMode = useColorMode()
 const { title, keywords, description } = useAppConfig()
+
+const themeColor = ref('#e70012')
+
+const themeOverrides = computed(() => {
+  const theme = unref(themeColor)
+  const lightenStr = lighten(theme, 6)
+
+  return {
+    common: {
+      primaryColor: theme,
+      primaryColorHover: lightenStr,
+      primaryColorPressed: lightenStr,
+      primaryColorSuppl: theme,
+    },
+  }
+})
 
 useHead({
   title,
@@ -29,7 +44,7 @@ useHead({
 </script>
 
 <template>
-  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme">
+  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme" :theme-overrides="themeOverrides">
     <n-global-style />
     <NuxtLayout>
       <n-message-provider keep-alive-on-hover>

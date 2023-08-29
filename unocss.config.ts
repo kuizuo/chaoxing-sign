@@ -11,6 +11,11 @@ import {
 
 export default defineConfig({
   shortcuts: [],
+  theme: {
+    colors: {
+      primary: '#e70012',
+    },
+  },
   presets: [
     presetUno(),
     presetAttributify(),

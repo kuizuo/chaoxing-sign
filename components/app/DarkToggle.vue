@@ -1,13 +1,15 @@
 <script setup lang="ts">
-const color = useColorMode()
+const colorMode = useColorMode()
+
+const isDark = computed(() => colorMode.preference === 'dark')
 
 function toggleDark() {
-  color.preference = color.value === 'dark' ? 'light' : 'dark'
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
 </script>
 
 <template>
   <button class="!outline-none" @click="toggleDark">
-    <div class="dark:i-ri-moon-line i-ri-sun-line" />
+    <Icon :name="isDark ? 'ri:moon-line' : 'ri:sun-line'" />
   </button>
 </template>
