@@ -30,13 +30,15 @@ export default defineNuxtConfig({
   },
   components: [
     {
+      path: '~/components/global',
+      global: true,
+    },
+    {
       path: '~/components',
       extensions: ['vue'],
     },
   ],
   colorMode: {
-    preference: 'system',
-    fallback: 'dark',
     classSuffix: '',
   },
   unocss: {
@@ -47,10 +49,6 @@ export default defineNuxtConfig({
   },
   css: ['~/assets/css/main.css'],
   content: {
-    documentDriven: false,
-    markdown: {
-      mdc: true,
-    },
     highlight: {
       theme: {
         default: 'github-light',

@@ -3,7 +3,7 @@ import { NuxtAuthHandler } from '#auth'
 import { prisma } from '~~/server/utils/db'
 
 interface Credentials {
-  username: string
+  email: string
   password: string
 }
 
@@ -31,11 +31,11 @@ export default NuxtAuthHandler({
     CredentialsProvider.default({
       name: 'Credentials',
       credentials: {
-        username: { label: 'Username', type: 'text' },
+        email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: Credentials) {
-        if (!credentials.username || !credentials.password) {
+        if (!credentials.email || !credentials.password) {
           throw createError({
             statusCode: 403,
             statusMessage: '账号或密码错误',
@@ -44,7 +44,7 @@ export default NuxtAuthHandler({
 
         const user = await prisma.user.findFirst({
           where: {
-            name: credentials.username,
+            email: credentials.email,
             password: credentials.password,
           },
         })
@@ -52,7 +52,7 @@ export default NuxtAuthHandler({
         if (!user) {
           throw createError({
             statusCode: 403,
-            statusMessage: '账号或密码错误',
+            statusMessage: '邮箱或密码错误',
           })
         }
 
@@ -61,6 +61,6 @@ export default NuxtAuthHandler({
     }),
   ],
   pages: {
-    signIn: '/login',
+    signIn: '/auth/login',
   },
 })

@@ -2,8 +2,8 @@
   <div>
     <Suspense>
       <template #fallback>
-        <div op50 italic>
-          <span animate-pulse>Loading...</span>
+        <div class="op50 italic">
+          <span class="animate-pulse">Loading...</span>
         </div>
       </template>
       <div class="flex justify-center">

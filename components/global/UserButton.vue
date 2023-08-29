@@ -24,7 +24,7 @@ const options = [
 function handleSelect(key: string) {
   switch (key) {
     case 'profile':
-      router.push({ name: 'me' })
+      router.push({ name: 'profile' })
       break
     case 'logout':
       signOut()
@@ -62,7 +62,7 @@ function handleSuccess() {
           :style="{ 'max-width': '350px' }"
           transform-origin="center"
         >
-          <LoginForm @success="handleSuccess" />
+          <LoginCard @success="handleSuccess" />
         </n-modal>
       </ClientOnly>
     </div>

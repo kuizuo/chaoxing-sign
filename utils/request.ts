@@ -25,4 +25,3 @@ const _fetch = $fetch.create({
 const request = _fetch
 // export const request = (...args: Parameters<typeof _fetch>): ReturnType<typeof _fetch> => _fetch(...args)
 export default request
-
