@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useQRCode } from '@vueuse/integrations/useQRCode'
+
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 import { QrCapture, QrDropzone, QrStream } from 'vue3-qr-reader'

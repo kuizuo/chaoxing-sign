@@ -134,6 +134,40 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   /*
+    签到码签到
+  */
+  async function signByCode(uid: string, activityId: string, signCode: string) {
+    const { data } = await request(`/api/cx/account/${uid}/sign_by_code`, {
+      method: 'POST',
+      body: { uid, activityId, signCode },
+    })
+
+    const { activity } = data!
+    const signType = signTypeMap[activity.otherId] ?? '未知'
+    const activityName = activity.name || signType
+    log(`活动: ${activityName} [${signType}]结果: ${data?.result || ms}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+
+    return data
+  }
+
+  /*
+    手势签到
+  */
+  async function signByGesture(uid: string, activityId: string, signCode: string) {
+    const { data } = await request(`/api/cx/account/${uid}/sign_by_gesture`, {
+      method: 'POST',
+      body: { uid, activityId, signCode },
+    })
+
+    const { activity } = data!
+    const signType = signTypeMap[activity.otherId] ?? '未知'
+    const activityName = activity.name || signType
+    log(`活动: ${activityName} [${signType}]结果: ${data?.result || ms}`, { type: data?.result === '签到成功' ? 'success' : 'error' })
+
+    return data
+  }
+
+  /*
     二维码签到
   */
   async function signByQrCode(uid: string, link: string) {
@@ -248,6 +282,8 @@ export const useAccountStore = defineStore('account', () => {
     getActivityList,
     signByCourse,
     signByActivity,
+    signByCode,
+    signByGesture,
     signByQrCode,
     oneClickSign,
     monitorAccount,
@@ -258,4 +294,3 @@ export const useAccountStore = defineStore('account', () => {
 
 if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(useAccountStore, import.meta.hot))
-

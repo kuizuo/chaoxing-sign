@@ -16,8 +16,13 @@ const accountStore = useAccountStore()
 
 const loading = ref(false)
 const showQrCodeModal = ref(false)
+const showCodeOrGestureModal = ref(false)
+
 const showSettingModal = ref(false)
 const showSignHistory = ref(false)
+
+// 正在执行中的活动
+const doingActivity = ref<CX.ActivityItem | null>(null)
 
 const monitor = ref(props.setting.monitor)
 
@@ -26,14 +31,34 @@ async function oneClickSign(uid: string) {
 
   const data = await accountStore.oneClickSign(uid).finally(() => {
     loading.value = false
-  })
+  }) as CX.SignResult[]
 
-  // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
-  const hasQrCodeSign = data.some(({ activity }) => activity.otherId === SignTypeEnum.QRCode)
+  // // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
+  const QrCodeSignActivity = data.find(item => item.signType === SignTypeEnum.QRCode)?.activity
 
-  if (hasQrCodeSign) {
-    ms.warning('检测到有二维码签到的课程,请扫码签到')
+  if (QrCodeSignActivity) {
+    ms.warning(`检测到有二维码签到的课程[${QrCodeSignActivity.course?.name}],请扫码`, { duration: 20 * 1000, closable: true })
     showQrCodeModal.value = true
+    return
+  }
+
+  // 检测到签到码签到
+  const CodeSignActivity = data.find(item => item.signType === SignTypeEnum.Code)?.activity
+
+  if (CodeSignActivity) {
+    doingActivity.value = CodeSignActivity
+    ms.warning(`检测到有签到码签到的课程[${CodeSignActivity.course?.name}],请输入签到码, 如 1234`, { duration: 20 * 1000, closable: true })
+    showCodeOrGestureModal.value = true
+    return
+  }
+
+  // 检测到手势签到
+  const GestureSignActivity = data.find(item => item.signType === SignTypeEnum.Gesture)?.activity
+
+  if (GestureSignActivity) {
+    doingActivity.value = GestureSignActivity
+    ms.warning(`检测到有手势签到的课程[${GestureSignActivity.course?.name}],请输入手势轨迹, 如 123654789`, { duration: 20 * 1000, closable: true })
+    showCodeOrGestureModal.value = true
   }
 }
 
@@ -45,8 +70,28 @@ async function handleLogout() {
   })
 }
 
-async function handleSuccess(result: string) {
+async function handleQrCodeSignSuccess(result: string) {
   await accountStore.signByQrCode(props.uid, result)
+}
+
+async function handleCodeOrGestureSignSuccess(result: string) {
+  const activity = unref(doingActivity)
+
+  if (!activity)
+    return
+
+  loading.value = true
+
+  try {
+    if (activity.otherId === SignTypeEnum.Code)
+      await accountStore.signByCode(props.uid, String(activity.id), result)
+
+    else if (activity.otherId === SignTypeEnum.Gesture)
+      await accountStore.signByGesture(props.uid, String(activity.id), result)
+  }
+  finally {
+    loading.value = false
+  }
 }
 
 async function handleMonitor() {
@@ -166,7 +211,8 @@ async function handleUnMonitor() {
           </n-tooltip>
         </n-space>
       </template>
-      <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
+      <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleQrCodeSignSuccess" />
+      <CodeOrGestureSignModal v-model:show="showCodeOrGestureModal" :loading="loading" @success="handleCodeOrGestureSignSuccess" />
       <SignHistory v-model:show="showSignHistory" :uid="uid" />
       <SettingModal v-if="showSettingModal" v-model:show="showSettingModal" :uid="uid" :setting="setting" />
     </n-card>
@@ -189,8 +235,8 @@ async function handleUnMonitor() {
   :deep(:is(.n-card-header, .n-card__content)) {
     --at-apply: bg-[var(--checked-color)];
   }
-
 }
+
 .n-card-checked:after {
     position: absolute;
     inset-block-start: 2px;

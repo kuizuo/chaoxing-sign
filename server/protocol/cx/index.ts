@@ -255,6 +255,39 @@ export class Cx {
     return this.stuSign(query)
   }
 
+  async signCode(activity: CX.ActivityDetail, signCode: string) {
+    const query = qsStringify({
+      activeId: activity.id,
+      uid: this.user.uid,
+      clientip: '',
+      latitude: '-1',
+      longitude: '-1',
+      appType: '15',
+      fid: this.user.schoolid,
+      name: this.user.realname,
+      signCode,
+    }, '', '', { encodeURIComponent: s => s })
+
+    return this.stuSign(query)
+  }
+
+  async signGesture(activity: CX.ActivityDetail, signCode: string) {
+    const query = qsStringify({
+      activeId: activity.id,
+      uid: this.user.uid,
+      clientip: '',
+      latitude: '-1',
+      longitude: '-1',
+      appType: '15',
+      fid: this.user.schoolid,
+      name: this.user.realname,
+      signCode,
+
+    }, '', '', { encodeURIComponent: s => s })
+
+    return this.stuSign(query)
+  }
+
   async signPhoto(activity: CX.ActivityDetail, photo?: CX.YunPanFile) {
     const query = qsStringify({
       activeId: activity.id,
@@ -331,7 +364,7 @@ export class Cx {
 
     const signActivityList = activityList.filter(activity => activity.type === ActivityTypeEnum.Sign && activity.status === ActivityStatusEnum.Doing)
 
-    const signResult: { activity: CX.ActivityDetail; result: string }[] = []
+    const signResults: CX.SignResult[] = []
 
     for await (const a of signActivityList) {
       if (a.type === ActivityTypeEnum.Sign) {
@@ -340,17 +373,18 @@ export class Cx {
 
         console.log(`课程: ${course.name} 签到结果: ${result}`)
 
-        signResult.push({
+        signResults.push({
           activity: {
             ...a,
             ...activity,
           },
+          signType: activity.otherId,
           result,
         })
       }
     }
 
-    return signResult
+    return signResults
   }
 
   async signByActivity(course: CX.Course, activity: CX.ActivityDetail) {
@@ -376,22 +410,23 @@ export class Cx {
   async oneClickSign(setting?: CX.Setting) {
     const signActivityList = await this.getAllActivity(ActivityTypeEnum.Sign, ActivityStatusEnum.Doing)
 
-    const signResult = []
+    const signResults: CX.SignResult[] = []
     for await (const a of signActivityList) {
       if (a.type === ActivityTypeEnum.Sign) {
         const activity = await this.getActivityDetail(a.id)
         const result = await this.handleSign(a.course, activity, setting)
 
-        signResult.push({
+        signResults.push({
           activity: {
             ...a,
             ...activity,
           },
+          signType: activity.otherId,
           result,
         })
       }
     }
-    return signResult
+    return signResults
   }
 
   async handleSign(course: CX.Course, activity: CX.ActivityDetail, setting?: CX.Setting) {
@@ -409,14 +444,16 @@ export class Cx {
         else { return await this.signNormal(activity) }
 
       case SignTypeEnum.Gesture:
+        return '失败'
+
       case SignTypeEnum.Code:
-        return await this.signNormal(activity)
+        return '失败'
 
       case SignTypeEnum.Location:
         return await this.signLocation(activity, setting?.location)
 
       case SignTypeEnum.QRCode:
-        return '请扫码签到'
+        return '失败'
 
       default:
         return '未知签到类型'

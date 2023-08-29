@@ -8,9 +8,9 @@ interface Body {
 export default defineEventHandler(async (event) => {
   const { setting } = await readBody<Body>(event)
 
-  const signResult = await event.context.cx.oneClickSign(setting)
+  const signResults = await event.context.cx.oneClickSign(setting)
 
-  for (const data of signResult) {
+  for (const data of signResults) {
     const { activity, result } = data
 
     await event.context.prisma.signLog.create({
@@ -26,5 +26,5 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  return ResOp.success(signResult)
+  return ResOp.success(signResults)
 })

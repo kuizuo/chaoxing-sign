@@ -184,6 +184,13 @@ declare namespace CX {
     id: number;
     status: number;
     nameFour: string;
+    course: any;
+  }
+
+  interface SignResult  {
+    activity: ActivityItem;
+    signType: (string | number)
+    result: string;
   }
 
   interface ActivityListResponse extends Response<{
