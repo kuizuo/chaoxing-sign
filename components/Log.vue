@@ -28,12 +28,12 @@ onMounted(() => {
       <div class="inline-flex justify-center items-center gap-2">
         <n-popconfirm @positive-click="logStore.cleanLog()">
           <template #trigger>
-            <Icon name="material-symbols:cleaning-services" class="cursor-pointer transition hover:text-blue-4" />
+            <Icon name="material-symbols:cleaning-services" class="cursor-pointer transition hover:text-primary" />
           </template>
           确认清除所有日志?
         </n-popconfirm>
 
-        <Icon :name="logStore.showLog ? 'tabler:layout-bottombar-collapse' : 'tabler:layout-navbar-collapse'" class="cursor-pointer transition hover:text-blue-4" @click="logStore.showLog = !logStore.showLog" />
+        <Icon :name="logStore.showLog ? 'tabler:layout-bottombar-collapse' : 'tabler:layout-navbar-collapse'" class="cursor-pointer transition hover:text-primary" @click="logStore.showLog = !logStore.showLog" />
       </div>
     </template>
     <n-collapse-transition :show="logStore.showLog">
