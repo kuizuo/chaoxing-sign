@@ -58,8 +58,7 @@ export default defineNuxtConfig({
     },
   },
   routeRules: {
-    // '/changelog': { static: true },
-    // '/help': { static: true },
+    '/help': { static: true },
     '/api/**': { cors: true },
   },
   auth: {
