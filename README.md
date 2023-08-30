@@ -44,9 +44,7 @@ npm run start
 
 ## 部署
 
-> 本项目不易部署，纯小白请跳过。
-
-### PM2 + Nginx
+### PM2 + Nginx (推荐)
 
 本项目已经编写好了 `ecosystem.config.js` 文件，具体请根据实际情况修改环境变量，你可以直接使用 PM2 来启动项目。
 
@@ -64,11 +62,23 @@ npm run start:pm2
 
 此外可能还需要配置 SSL 证书，因为要调用摄像头权限就必须是在安全环境下（即https下），否则你将无法使用扫一扫功能，这也是无奈之举。
 
+### Docker
+
+本项目已经编写好了 docker 相关文件，你可以直接使用 Docker 来启动项目。
+
+> ⚠️ 注意: 需要将 node_modules 复制到镜像内, 因为 prisma client 产物存在 node_modules 内.
+
+如果你有自己的 postgresql (远程)数据库，那么你需要在 Dockerfile 中修改 `DATABASE_URL` 环境变量为你的数据库地址，执行下方命令即可构建镜像。
+
+```shell
+docker buildx build . -t chaoxing-sign:latest
+```
+
 ### Vercel or Netlify（不推荐）
 
 由于采用 Nuxt.js 框架，所以非常容易部署在 Vercel 或 Netlify 等平台上，但还是不推荐部署，理由如下：
 
-Vercel 或 Netlify 的服务器设立在国外，用户需要通过一些特殊手段能够访问，并且由于某星的服务器设立在国内，即便使用 [Edge Functions](https://vercel.com/docs/concepts/functions/edge-functions) 也需要多一道障碍来访问，这将导致请求响应速度过慢，网站体验效果极其不佳，已亲测，因此不推荐使用（无奈之举）。
+Vercel 或 Netlify 的服务器设立在国外，用户需要通过一些特殊手段能够访问，并且由于某星的服务器设立在国内，数据请求需要多一道障碍来访问，将导致响应速度过慢，网站体验效果极其不佳，已亲测，因此不推荐使用（无奈之举）。
 
 ### 跨平台应用
 
