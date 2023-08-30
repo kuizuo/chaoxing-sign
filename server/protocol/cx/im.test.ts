@@ -3,9 +3,7 @@ import type { EasemobChat } from 'easemob-websdk'
 import type { OpenOptions } from '../easemob'
 import { createIMConnection } from '../easemob'
 import { Cx } from '.'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config()
+import 'dotenv/config'
 
 const testAccount: Pick<CX.User, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,

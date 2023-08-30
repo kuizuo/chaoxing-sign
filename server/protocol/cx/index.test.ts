@@ -1,9 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { Cx } from '.'
 import { ActivityStatusEnum, ActivityTypeEnum } from '~~/constants/cx'
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('dotenv').config()
+import 'dotenv/config'
 
 const testAccount: Pick<CX.User, 'username' | 'password'> = {
   username: process.env.CX_USERNAME!,
