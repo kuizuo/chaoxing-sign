@@ -144,19 +144,6 @@ async function signUp() {
   }
 }
 
-async function signInWithGithub() {
-  try {
-    loading.value = true
-    const { data, error } = await signIn('github')
-
-    if (error)
-      return message.error(error.message)
-  }
-  finally {
-    loading.value = false
-  }
-}
-
 async function goToResetPassword() {
   await navigateTo('/auth/reset-password', { external: true })
   emit('success')
@@ -208,7 +195,7 @@ async function goToResetPassword() {
                 </NButton>
               </NFormItem>
             </NForm>
-            <div
+            <!-- <div
               class="w-full flex mb-4 -mt-2 h-4 text-center truncate
             before:content-[''] before:relative before:top-1/2 before:w-1/2 before:translate-y-1/2 before:h-0 before:border-t-[1px] before:border-gray-200 before:dark:border-gray-700
             after:content-[''] after:relative after:top-1/2 after:w-1/2 after:translate-y-1/2 after:h-0 after:border-t-[1px] after:border-gray-200 after:dark:border-gray-700"
@@ -223,7 +210,7 @@ async function goToResetPassword() {
                 </template>
                 使用 Github 登录
               </NButton>
-            </div>
+            </div> -->
           </NTabPane>
           <NTabPane name="signup" tab="注册" display-directive="show">
             <NForm ref="signUpFormRef" :model="signUpModel" :show-label="false" :rules="signUpRules">
