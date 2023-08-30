@@ -19,7 +19,7 @@ export default defineEventHandler(async (event) => {
       signlogs: true,
     },
     orderBy: {
-      lastLoginTime: 'desc',
+      lastLoginTime: 'asc',
     },
   })
 

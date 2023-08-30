@@ -20,7 +20,12 @@ export default defineEventHandler(async (event) => {
     where: {
       uid: cx.user.uid,
     },
-    update: { cookies: cx.getCookie('', 'json'), info: cx.user as any, lastLoginTime: new Date() },
+    update: {
+      cookies: cx.getCookie('', 'json'),
+      info: cx.user as any,
+      lastLoginTime: new Date(),
+      userId: session!.uid,
+    },
     create: {
       uid: cx.user.uid,
       username: cx.user.username,
