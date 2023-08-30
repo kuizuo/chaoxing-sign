@@ -127,3 +127,8 @@ export function isUsername(str: string) {
   const reg = /^[a-zA-Z0-9_-]{4,16}$/
   return reg.test(str)
 }
+
+export function isPhone(str: string) {
+  const reg = /^1[3456789]\d{9}$/
+  return reg.test(str)
+}
