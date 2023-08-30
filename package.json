@@ -22,6 +22,7 @@
     "build": "nuxi build",
     "dev": "nuxi dev -o",
     "start": "node .output/server/index.mjs",
+    "start:pm2": "pm2 start",
     "preview": "nuxi preview --dotenv .env.production",
     "generate": "nuxi generate && prisma generate",
     "postinstall": "nuxi prepare && prisma generate",

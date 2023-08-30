@@ -1,20 +1,21 @@
 # 🌟某星签到
 
-<a href="https://www.npmjs.com/package/nuxt/v/rc"><img alt="size" src="https://img.shields.io/github/package-json/dependency-version/kuizuo/chaoxing-sign/dev/nuxt?style=flat&colorA=002438&colorB=28CF8D"></a> <a href="https://github.com/kuizuo/chaoxing-sign/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/workflow/status/kuizuo/chaoxing-sign/ci?label=ci&logo=github"></a>  <a href="https://github.com/kuizuo/chaoxing-sign/tree/HEAD/LICENSE"><img alt="License" src="https://img.shields.io/github/license/kuizuo/chaoxing-sign?style=flat&colorA=002438&colorB=28CF8D" /></a>
+<a href="https://www.npmjs.com/package/nuxt/v/rc"><img alt="size" src="https://img.shields.io/github/package-json/dependency-version/kuizuo/chaoxing-sign/dev/nuxt?style=flat&colorA=002438&colorB=28CF8D"></a> <a href="https://github.com/kuizuo/chaoxing-sign/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/kuizuo/chaoxing-sign/ci.yml?style=flat&colorA=002438&colorB=28CF8D"></a>  <a href="https://github.com/kuizuo/chaoxing-sign/tree/HEAD/LICENSED"><img alt="License" src="https://img.shields.io/github/license/kuizuo/chaoxing-sign?style=flat&colorA=002438&colorB=28CF8D" /></a>
 
 在这里你可以在摆脱客户端繁琐的签到流程，让签到不再是你的烦恼。
 
 ## ✨功能
 
-网页版在线签到
+网页~~版在线签到~~
 
 - [x] 普通签到
 - [x] 拍照签到
-- [x] 手势签到
 - [x] 位置签到
-- [x] 签到码签到
-- [x] 二维码签到（enc 已不在固定, 如果是刷新二维码, 签到必须在10秒完成）
+- [x] 手势签到 (检测到手势签到则弹窗输入手势轨迹签到)
+- [x] 签到码签到 (检测到签到码签到则弹窗输入签到码签到)
+- [x] 二维码签到（enc 已不在固定, 如果是刷新二维码, 签到必须在10秒完成
 - [x] 多用户凭据储存
+- [x] 同时签到多个账户
 
 ## 🛠 运行
 
@@ -28,18 +29,17 @@ pnpm install
 
 ```shell
 npx prisma db push
-npx prisma generate
 ```
 
 ```shell
-npm run dev
+pnpm run dev
 ```
 
 打包
 
 ```shell
-npm run build
-npm run start
+pnpm run build
+pnpm run preview
 ```
 
 ## 部署
