@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  chaoxing:
+    external: false
+
+services:
+  server:
+    image: kuizuo/chaoxing-sign:latest
+    restart: always
+    environment:
+      - DATABASE_URL="postgresql://postgres:password@psql:5432/chaoxing"
+    networks:
+      - chaoxing
+    ports:
+      - 8050:8050
+    depends_on:
+      - psql
+      
+  psql:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    networks:
+      - chaoxing
