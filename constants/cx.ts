@@ -50,7 +50,7 @@ export enum SignMode {
   Auto = 2,
 }
 
-export const signModeMap = {
+export const signModeMap: Record<number, string> = {
   1: '手动',
   2: '自动',
 } as const

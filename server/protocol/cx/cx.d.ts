@@ -167,7 +167,7 @@ declare namespace CX {
     longitude: string
   }
 
-  interface ActivityItem extends ActivityDetail{
+  interface ActivityItem extends ActivityDetail {
     userStatus: number;
     name: string;
     nameTwo: string;
@@ -184,11 +184,11 @@ declare namespace CX {
     id: number;
     status: number;
     nameFour: string;
-    course: any;
+    course: Course;
   }
 
-  interface SignResult  {
-    activity: ActivityItem;
+  interface SignResult {
+    activity: ActivityItem & Course;
     signType: (string | number)
     result: string;
   }
@@ -227,8 +227,8 @@ declare namespace CX {
     topsort: number;
     resTypeValue: number;
     extinfo: string;
-    }
-    
+  }
+
   interface Response<T> {
     result: number
     msg: any

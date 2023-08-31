@@ -69,11 +69,11 @@ export default defineNuxtConfig({
       addDefaultCallbackUrl: true,
     },
   },
-  typescript: {
-    shim: false,
-  },
   build: {
     transpile: ['punycode'],
+  },
+  typescript: {
+    shim: false,
   },
   experimental: {
     renderJsonPayloads: true,

@@ -8,10 +8,5 @@ export default defineEventHandler(async (event) => {
 
   const result = await event.context.cx.getActivityList(course)
 
-  return {
-    code: 200,
-    message: 'success',
-    data: result,
-  }
+  return ResOp.success(result)
 })
-

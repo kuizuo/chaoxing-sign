@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import _ from 'lodash'
+import { defaultSetting } from '~~/constants/setting'
 import { signTypeMap } from '~~/constants/cx'
 
 const props = defineProps<{
@@ -58,7 +58,6 @@ watch(show, (value) => {
     </template>
     <n-spin :show="saving">
       <n-form
-        ref="formRef"
         :model="form"
         label-placement="left"
         label-width="auto"

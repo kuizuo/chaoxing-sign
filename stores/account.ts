@@ -1,4 +1,4 @@
-import { acceptHMRUpdate, skipHydrate } from 'pinia'
+import { skipHydrate } from 'pinia'
 import { signTypeMap } from '~~/constants/cx'
 
 export const useAccountStore = defineStore('account', () => {
@@ -291,6 +291,3 @@ export const useAccountStore = defineStore('account', () => {
     updateSetting,
   }
 })
-
-if (import.meta.hot)
-  import.meta.hot.accept(acceptHMRUpdate(useAccountStore, import.meta.hot))

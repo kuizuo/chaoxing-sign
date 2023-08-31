@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
 import { signModeMap, signTypeMap } from '~/constants/cx'
+
 const props = defineProps<{
   show: boolean
   uid: string
