@@ -6,7 +6,7 @@ import { Cx } from '~~/server/protocol/cx'
 
 import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'
 
-export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) => {
+export async function handleMessage(message: EasemobChat.TextMsgBody, cx: Cx) {
   if (!message?.ext?.attachment)
     return
 
@@ -44,7 +44,7 @@ export const handleMessage = async (message: EasemobChat.TextMsgBody, cx: Cx) =>
   }
 }
 
-export const handleListen = async (client: EasemobChat.Connection, cx: Cx, account: CxAccount): Promise<void> => {
+export async function handleListen(client: EasemobChat.Connection, cx: Cx, account: CxAccount): Promise<void> {
   await new Promise((resolve, reject) => {
     client.listen({
       onOpened: async () => {

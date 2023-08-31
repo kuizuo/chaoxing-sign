@@ -16,7 +16,8 @@ export interface OpenOptions {
 }
 
 const previousGlobalThis = { ...globalThis }
-export const createIMConnection = async () => {
+
+export async function createIMConnection() {
   const { window } = new JSDOM('', { url: 'https://im.chaoxing.com/webim/me' })
 
   global.window = window as unknown as typeof global.window
