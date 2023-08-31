@@ -11,4 +11,3 @@ export default defineEventHandler(async (event) => {
 
   return ResOp.success(data)
 })
-

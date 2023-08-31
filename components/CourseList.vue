@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { activityTypeMap } from '~~/constants/cx'
 
-interface Props {
+const props = defineProps<{
   account: API.Account
   courses: API.Course[]
-}
-const props = defineProps<Props>()
+}>()
 
 const accountStore = useAccountStore()
 
@@ -22,7 +21,7 @@ function syncCourse() {
   })
 }
 
-const lookActivities = async (course: API.Course) => {
+async function lookActivities(course: API.Course) {
   course.isLoadActivity = true
   currentCourse.value = course
   activities.value = []

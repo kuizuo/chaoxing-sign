@@ -24,7 +24,7 @@ function handleBack() {
       </template>
     </n-page-header>
     <div>
-      <CourseList :account="account" :courses="account?.courses" />
+      <CourseList :account="account!" :courses="account?.courses!" />
     </div>
   </n-card>
 </template>

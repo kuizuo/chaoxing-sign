@@ -6,3 +6,10 @@ declare namespace API {
   }
 }
 
+declare module '@nuxt/schema' {
+  interface RuntimeConfig {
+    im: {
+      initConnect: boolean
+    }
+  }
+}

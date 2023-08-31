@@ -45,5 +45,6 @@ export default defineEventHandler(async (event) => {
     },
     lastLoginTime: account.lastLoginTime.toISOString(),
   }
+
   return ResOp.success(data, '登录成功')
 })

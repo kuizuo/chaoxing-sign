@@ -1,4 +1,3 @@
-import { acceptHMRUpdate } from 'pinia'
 import type { MessageOptions } from 'naive-ui'
 
 export const useLogStore = defineStore('log', () => {
@@ -32,10 +31,3 @@ export const useLogStore = defineStore('log', () => {
 }, {
   persist: false,
 })
-
-if (import.meta.hot) {
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  import.meta.hot.accept(acceptHMRUpdate(useLogStore, import.meta.hot))
-}
-
