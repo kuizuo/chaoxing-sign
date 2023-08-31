@@ -4,7 +4,32 @@ import type { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
 import * as cheerio from 'cheerio'
 import got from 'got'
-import { ActivityStatusEnum, ActivityTypeEnum, SignTypeEnum } from '~/constants/cx'
+
+export enum ActivityTypeEnum {
+  Sign = 2, // 签到
+  Answer = 4, // 抢答
+  Talk = 5, // 主题谈论
+  Question = 6, // 投票
+  Pick = 11, // 选人
+  Homework = 19, // 作业
+  Evaluation = 23, // 评分
+  Practice = 42, //  随堂练习
+  Vote = 43, // 投票
+  Notice = 45, // 通知
+}
+
+export enum ActivityStatusEnum {
+  Doing = 1,
+  Done = 2,
+}
+
+export enum SignTypeEnum {
+  Normal = 0, // 普通签到
+  QRCode = 2, // 二维码签到
+  Gesture = 3, // 手势签到
+  Location = 4, // 位置签到
+  Code = 5, // 签到码签到
+}
 
 export class Cx {
   public http!: Got

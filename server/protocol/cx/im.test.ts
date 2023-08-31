@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { describe, expect, it } from 'vitest'
 import type { EasemobChat } from 'easemob-websdk'
 import type { OpenOptions } from '../easemob'
@@ -65,6 +66,8 @@ describe('cx-im', async () => {
         },
       })
     })
+
+    await setTimeout(50 * 1000)
 
     expect(result).toBe(client)
   })
