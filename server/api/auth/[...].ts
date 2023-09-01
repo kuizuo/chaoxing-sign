@@ -8,7 +8,7 @@ interface Credentials {
 }
 
 export default NuxtAuthHandler({
-  secret: process.env.NUXT_SECRET,
+  secret: process.env.AUTH_SECRET || 'chaoxing-sing-123',
   callbacks: {
     jwt: async ({ token, user }) => {
       const isSignIn = !!user

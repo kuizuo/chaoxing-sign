@@ -8,7 +8,7 @@ module.exports = {
       script: './.output/server/index.mjs',
       instance_var: 'INSTANCE_ID',
       env: {
-        NUXT_SECRET: 'chaoxing-sign',
+        AUTH_SECRET: 'chaoxing-sign',
         AUTH_ORIGIN: 'http://localhost:8050',
         NEXTAUTH_URL: 'http://localhost:8050',
         DATABASE_URL: 'postgresql://username:password@localhost:5432/chaoxing',

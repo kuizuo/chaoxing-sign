@@ -1,9 +1,5 @@
 <script setup lang="ts">
-const { status, data, signOut, signIn } = useAuth()
-
-definePageMeta({
-  auth: true,
-})
+const { status, data } = useAuth()
 </script>
 
 <template>

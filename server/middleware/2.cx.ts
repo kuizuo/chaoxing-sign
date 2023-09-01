@@ -13,6 +13,9 @@ const exclude = ['/api/cx/login']
 export default eventHandler(async (event) => {
   const { context, node: { req } } = event
   try {
+    if (req.url?.startsWith('/api/auth'))
+      return
+
     if (!req.url?.startsWith('/api/cx'))
       return
 

@@ -1,9 +1,9 @@
-import type { MessageOptions } from 'naive-ui'
+import { type MessageOptions, createDiscreteApi } from 'naive-ui'
 
 export const useLogStore = defineStore('log', () => {
   const logList = useLocalStorage<string[]>('log', []) // reactive<string[]>([])
   const showLog = ref(true)
-  const ms = useMessage()
+  const { message: ms } = createDiscreteApi(['message'])
 
   function log(content: string, options: MessageOptions) {
     const formatted = useDateFormat(useNow(), 'HH:mm:ss').value

@@ -17,7 +17,7 @@ COPY --from=build-stage /app/.output /app/.output
 
 ENV NODE_ENV=production
 ENV PORT=8050
-ENV NUXT_SECRET="chaoxing-sign"
+ENV AUTH_SECRET="chaoxing-sign"
 ENV AUTH_ORIGIN="http://localhost:8050"
 ENV NEXTAUTH_URL="http://localhost:8050"
 

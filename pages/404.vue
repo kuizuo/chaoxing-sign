@@ -1,9 +1,9 @@
 <script setup lang="ts">
-const router = useRouter()
-
 definePageMeta({
   auth: false,
 })
+
+const router = useRouter()
 </script>
 
 <template>

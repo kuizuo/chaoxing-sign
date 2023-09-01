@@ -6,7 +6,7 @@ const emit = defineEmits<{
   (e: 'success'): void
 }>()
 
-const { message } = createDiscreteApi(['message'])
+const { message: ms } = createDiscreteApi(['message'])
 const { signIn } = useAuth()
 
 const loading = ref(false)
@@ -50,9 +50,9 @@ async function signInWithPassword() {
     })
 
     if (error)
-      return message.error(error)
+      return ms.error(error)
 
-    message.success('登录成功')
+    ms.success('登录成功')
 
     emit('success')
     return navigateTo(url, { external: true })
@@ -137,7 +137,7 @@ async function signUp() {
       },
     })
 
-    message.success('注册成功')
+    ms.success('注册成功')
   }
   finally {
     loading.value = false

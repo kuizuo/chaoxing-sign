@@ -1,4 +1,5 @@
 import { skipHydrate } from 'pinia'
+import { createDiscreteApi } from 'naive-ui'
 import { signTypeMap } from '~~/constants/cx'
 import type { Body as LoginForm } from '~/server/api/cx/login.post'
 
@@ -8,7 +9,7 @@ export const useAccountStore = defineStore('account', () => {
   const selectAccounts = computed(() => accounts.value.filter(a => a.selected === true))
 
   const loading = ref(false)
-  const ms = useMessage()
+  const { message: ms } = createDiscreteApi(['message'])
 
   const { log } = useLogStore()
 
@@ -30,10 +31,10 @@ export const useAccountStore = defineStore('account', () => {
   }
 
   async function syncAccounts() {
-    const { data } = await request('/api/user/accounts')
+    const { data } = await request('/api/cx/accounts')
     accounts.value = data as unknown as API.Account[]
 
-    // log('同步成功', { type: 'success' })
+    log('同步成功', { type: 'success' })
   }
 
   async function login(form: LoginForm) {

@@ -1,4 +1,4 @@
-import _ from 'lodash'
+import { omit } from 'lodash-es'
 import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
 import { defaultSetting } from '~~/constants/setting'
@@ -41,9 +41,9 @@ export default defineEventHandler(async (event) => {
   })
 
   const data = {
-    ..._.omit(account, 'password'),
+    ...omit(account, 'password'),
     info: {
-      ..._.omit(cx.user, 'password'),
+      ...omit(cx.user, 'password'),
     },
     lastLoginTime: account.lastLoginTime.toISOString(),
   }

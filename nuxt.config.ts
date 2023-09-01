@@ -94,11 +94,11 @@ export default defineNuxtConfig({
     },
   },
   auth: {
-    isEnabled: true,
-    enableGlobalAppMiddleware: true,
-    globalMiddlewareOptions: {
-      allow404WithoutAuth: true,
-      addDefaultCallbackUrl: true,
+    provider: {
+      type: 'authjs',
+    },
+    globalAppMiddleware: {
+      isEnabled: true,
     },
   },
   build: {

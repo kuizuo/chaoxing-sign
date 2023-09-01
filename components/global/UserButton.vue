@@ -1,11 +1,9 @@
 <script  setup lang="ts">
-import { createDiscreteApi } from 'naive-ui'
-
 const { status, data, signOut } = useAuth()
 const router = useRouter()
 
 const showModal = ref(false)
-const { message: ms } = createDiscreteApi(['message'])
+const ms = useMessage()
 const user = computed(() => data.value?.user)
 
 const options = [
@@ -21,19 +19,19 @@ const options = [
   },
 ]
 
-function handleSelect(key: string) {
+async function handleSelect(key: string) {
   switch (key) {
     case 'profile':
       router.push({ name: 'profile' })
       break
     case 'logout':
-      signOut()
+      await signOut()
       ms.success('退出成功')
       break
   }
 }
 
-function handleSuccess() {
+async function handleSuccess() {
   showModal.value = false
 }
 </script>
@@ -42,7 +40,7 @@ function handleSuccess() {
   <div>
     <div v-if="status === 'authenticated'" class="flex">
       <n-dropdown trigger="hover" :options="options" @select="handleSelect">
-        <n-avatar size="small" round :src="user?.image">
+        <n-avatar size="small" round :src="user?.image!">
           <span v-if="!user?.image">{{ user?.name }}</span>
         </n-avatar>
       </n-dropdown>

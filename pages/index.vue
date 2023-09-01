@@ -1,13 +1,3 @@
-<script lang="ts" setup>
-const accountStore = useAccountStore()
-
-onMounted(() => {
-  nextTick(() => {
-    accountStore.syncAccounts()
-  })
-})
-</script>
-
 <template>
   <div>
     <Suspense>

@@ -48,16 +48,23 @@ useHead({
 </script>
 
 <template>
-  <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme" :theme-overrides="themeOverrides">
-    <n-global-style />
-    <VitePwaManifest />
-    <NuxtLoadingIndicator />
-    <NuxtLayout>
+  <div>
+    <n-config-provider
+      :locale="zhCN" :date-locale="dateZhCN"
+      :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme"
+      :theme-overrides="themeOverrides"
+      :inline-theme-disabled="true"
+    >
+      <n-global-style />
+      <VitePwaManifest />
       <n-message-provider keep-alive-on-hover>
-        <NuxtPage />
+        <NuxtLayout>
+          <NuxtLoadingIndicator />
+          <NuxtPage />
+        </NuxtLayout>
       </n-message-provider>
-    </NuxtLayout>
-  </n-config-provider>
+    </n-config-provider>
+  </div>
 </template>
 
 <style>
