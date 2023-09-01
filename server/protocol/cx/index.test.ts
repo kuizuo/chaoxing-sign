@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { Cx } from '.'
-import { ActivityStatusEnum, ActivityTypeEnum } from '~~/constants/cx'
+import { ActivityStatusEnum, ActivityTypeEnum, Cx } from '.'
 import 'dotenv/config'
 
 const testAccount: Pick<CX.User, 'username' | 'password'> = {
