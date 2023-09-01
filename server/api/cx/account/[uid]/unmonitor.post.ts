@@ -25,6 +25,8 @@ export default defineEventHandler(async (event) => {
     const client = IMConnectionMap.get(event.context.cx.user.uid)!
 
     client.close()
+
+    IMConnectionMap.delete(event.context.cx.user.uid)
   }
 
   return ResOp.success({
