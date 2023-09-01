@@ -3,10 +3,12 @@ import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
 import { defaultSetting } from '~~/constants/setting'
 
+export interface Body extends Pick<CX.User, 'username' | 'password'> { }
+
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
 
-  const body = await readBody<API.LoginForm>(event)
+  const body = await readBody<Body>(event)
 
   const cx = new Cx(body)
   const result = await cx.login()

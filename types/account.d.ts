@@ -1,5 +1,4 @@
 declare namespace API {
-  interface LoginForm extends Pick<CX.User, 'username' | 'password'> { }
 
   interface Account {
     uid: string

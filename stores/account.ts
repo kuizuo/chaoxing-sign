@@ -1,5 +1,6 @@
 import { skipHydrate } from 'pinia'
 import { signTypeMap } from '~~/constants/cx'
+import type { Body as LoginForm } from '~/server/api/cx/login.post'
 
 export const useAccountStore = defineStore('account', () => {
   const accounts = ref<API.Account[]>([])
@@ -35,7 +36,7 @@ export const useAccountStore = defineStore('account', () => {
     // log('同步成功', { type: 'success' })
   }
 
-  async function login(form: API.LoginForm) {
+  async function login(form: LoginForm) {
     try {
       const { code, message, data } = await request('/api/cx/login', { method: 'POST', body: form })
       if (code === 200) {

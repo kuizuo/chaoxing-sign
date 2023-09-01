@@ -91,7 +91,7 @@ export class Cx {
       const { body: data } = await this.http.get<CX.LoginResult>('https://passport2.chaoxing.com/api/login', {
         searchParams: {
           name: this.user.username,
-          pwd: encodeURIComponent(this.user.password),
+          pwd: this.user.password,
           schoolid: '',
           verify: '',
         },
