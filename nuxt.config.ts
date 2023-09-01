@@ -110,6 +110,7 @@ export default defineNuxtConfig({
   pwa,
   experimental: {
     renderJsonPayloads: true,
+    asyncContext: true,
   },
   devtools: {
     enabled: true,

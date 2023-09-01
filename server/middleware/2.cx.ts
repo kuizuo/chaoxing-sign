@@ -8,7 +8,7 @@ declare module 'h3' {
   }
 }
 
-const exclude = ['/api/cx/login']
+const exclude = ['/api/cx/login', '/api/cx/logout', '/api/cx/accounts']
 
 export default eventHandler(async (event) => {
   const { context, node: { req } } = event
@@ -22,7 +22,14 @@ export default eventHandler(async (event) => {
     if (exclude.includes(req.url))
       return
 
-    const uid = (context.params?.uid || getQuery(event)?.uid || (await readBody(event))?.uid) as string
+    const method = req.method
+    let uid = 0
+
+    if (method === 'GET')
+      uid = context.params?.uid || getQuery(event)?.uid
+
+    else
+      uid = (await readBody(event))?.uid as string
 
     if (!uid)
       return createError({ statusCode: 400, message: '请求账号不存在' })

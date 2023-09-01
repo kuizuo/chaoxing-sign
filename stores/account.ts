@@ -139,7 +139,7 @@ export const useAccountStore = defineStore('account', () => {
     签到码签到
   */
   async function signByCode(uid: string, activityId: string, signCode: string) {
-    const { data } = await request(`/api/cx/account/${uid}/sign_by_code`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/sign_by_code`, {
       method: 'POST',
       body: { uid, activityId, signCode },
     })
@@ -156,7 +156,7 @@ export const useAccountStore = defineStore('account', () => {
     手势签到
   */
   async function signByGesture(uid: string, activityId: string, signCode: string) {
-    const { data } = await request(`/api/cx/account/${uid}/sign_by_gesture`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/sign_by_gesture`, {
       method: 'POST',
       body: { uid, activityId, signCode },
     })
@@ -180,7 +180,7 @@ export const useAccountStore = defineStore('account', () => {
     const code = link.match(/&c=(\w+)\&/)?.[1]
     const enc = link.match(/enc=(\w+)/)?.[1]
 
-    const { data } = await request(`/api/cx/account/${uid}/sign_by_qrcode`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/sign_by_qrcode`, {
       method: 'POST',
       body: { uid, activityId, enc, code, url: link },
     })
@@ -199,7 +199,7 @@ export const useAccountStore = defineStore('account', () => {
   async function oneClickSign(uid: string) {
     const account = getAccount(uid)
 
-    const { data } = await request(`/api/cx/account/${uid}/sign_all`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/sign_all`, {
       method: 'POST',
       body: {
         uid,
@@ -224,7 +224,7 @@ export const useAccountStore = defineStore('account', () => {
   */
   async function monitorAccount(uid: string) {
     const account = getAccount(uid)
-    const { data } = await request(`/api/cx/account/${uid}/monitor`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/monitor`, {
       method: 'POST',
       body: { uid },
     })
@@ -241,7 +241,7 @@ export const useAccountStore = defineStore('account', () => {
   */
   async function unMonitorAccount(uid: string) {
     const account = getAccount(uid)
-    const { data } = await request(`/api/cx/account/${uid}/unmonitor`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/unmonitor`, {
       method: 'POST',
       body: { uid },
     })
@@ -256,7 +256,7 @@ export const useAccountStore = defineStore('account', () => {
   async function updateSetting(uid: string, setting: API.Setting) {
     const account = getAccount(uid)
 
-    const { data } = await request(`/api/cx/account/${uid}/update_setting`, {
+    const { data } = await request(`/api/cx/accounts/${uid}/update_setting`, {
       method: 'POST',
       body: { uid, setting },
     })

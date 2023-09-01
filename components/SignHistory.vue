@@ -22,7 +22,7 @@ const active = computed({
 
 const { data: historyList, pending, refresh } = await useLazyAsyncData(`${props.uid}_sign_history`,
   async () => {
-    const { data } = await request(`/api/cx/account/${props.uid}/sign_history`, {
+    const { data } = await request(`/api/cx/accounts/${props.uid}/sign_history`, {
       method: 'POST',
       body: {
         uid: props.uid,
