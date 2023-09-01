@@ -35,7 +35,7 @@ export const pwa: ModuleOptions = {
     installPrompt: true,
   },
   devOptions: {
-    enabled: true,
+    enabled: process.env.VITE_DEV_PWA === 'true',
     suppressWarnings: true,
     navigateFallbackAllowlist: [/^\/$/],
     type: 'module',

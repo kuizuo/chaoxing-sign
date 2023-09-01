@@ -16,14 +16,14 @@ const themeVars = useThemeVars()
 
       <div class="flex-1" />
 
-      <div class="hidden md:inline-flex items-center gap-4">
+      <div class="inline-flex items-center gap-4">
         <AppNav />
-        <div class="md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
+        <div class="h-5 w-1px bg-zinc-900/10 dark:bg-white/30" />
         <AppThemeSwitcher />
         <UserButton />
       </div>
 
-      <div class="inline-flex md:hidden items-center gap-4">
+      <!-- <div class="inline-flex md:hidden items-center gap-4">
         <AppThemeSwitcher />
         <UserButton />
         <Icon name="ant-design:menu-outlined" @click="show = true" />
@@ -35,7 +35,7 @@ const themeVars = useThemeVars()
           </template>
           <AppNav class="flex-col w-full" />
         </NDrawerContent>
-      </NDrawer>
+      </NDrawer> -->
     </div>
   </header>
 </template>
