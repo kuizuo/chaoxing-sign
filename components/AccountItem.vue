@@ -4,10 +4,10 @@ import { SignTypeEnum } from '~~/constants/cx'
 
 const props = defineProps<{
   uid: string
-  username: string
+  username?: string
   info: CX.User
   setting: API.Setting
-  selected: boolean
+  selected?: boolean
   lastLoginTime: string
 }>()
 
