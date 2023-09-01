@@ -1,5 +1,30 @@
+import { pwa } from './config/pwa'
+
 export default defineNuxtConfig({
   app: {
+    keepalive: true,
+    head: {
+      viewport: 'width=device-width,initial-scale=1,viewport-fit=cover',
+      bodyAttrs: {
+        class: 'overflow-x-hidden',
+      },
+      link: [
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+      ],
+      meta: [
+        { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
+        // open graph social image
+        { property: 'og:title', content: '某星签到助手' },
+        { property: 'og:description', content: '摆脱客户端繁琐的签到流程，让签到不再是你的烦恼。' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:image', content: '/chaoxing-og.png' },
+        { property: 'og:image:width', content: '2000' },
+        { property: 'og:image:height', content: '1000' },
+        { property: 'og:site_name', content: '某星签到助手' },
+      ],
+    },
     pageTransition: { name: 'page', mode: 'out-in' },
     layoutTransition: { name: 'layout', mode: 'out-in' },
   },
@@ -20,6 +45,7 @@ export default defineNuxtConfig({
     '@sidebase/nuxt-auth',
     '@huntersofbook/naive-ui-nuxt',
     'nuxt-icon',
+    '@vite-pwa/nuxt',
     '@nuxt/devtools',
   ],
   imports: {
@@ -60,6 +86,12 @@ export default defineNuxtConfig({
   routeRules: {
     '/help': { static: true },
     '/api/**': { cors: true },
+    '/manifest.webmanifest': {
+      headers: {
+        'Content-Type': 'application/manifest+json',
+        'Cache-Control': 'public, max-age=0, must-revalidate',
+      },
+    },
   },
   auth: {
     isEnabled: true,
@@ -75,6 +107,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+  pwa,
   experimental: {
     renderJsonPayloads: true,
   },

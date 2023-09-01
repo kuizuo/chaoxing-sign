@@ -24,8 +24,12 @@ const themeOverrides = computed(() => {
 useHead({
   title,
   link: [
+    { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' },
+    { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
     {
-      rel: 'icon', type: 'image/svg+xml', href: '/logo.svg',
+      key: 'webmanifest',
+      rel: 'manifest',
+      href: '/manifest.webmanifest',
     },
   ],
   meta: [
@@ -46,9 +50,10 @@ useHead({
 <template>
   <n-config-provider :locale="zhCN" :date-locale="dateZhCN" :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme" :theme-overrides="themeOverrides">
     <n-global-style />
+    <VitePwaManifest />
+    <NuxtLoadingIndicator />
     <NuxtLayout>
       <n-message-provider keep-alive-on-hover>
-        <NuxtLoadingIndicator />
         <NuxtPage />
       </n-message-provider>
     </NuxtLayout>

@@ -1,7 +1,6 @@
 export default defineAppConfig({
-  logo: 'majesticons:shooting-star-line',
-  title: '',
-  description: '支持某星普通签到、拍照签到、手势签到、位置签到、签到码签到、二维码签到网页版',
+  title: '某星签到助手',
+  description: '摆脱客户端繁琐的签到流程，让签到不再是你的烦恼。',
   keywords:
     'chaoxing, sign, 超星, 签到, 拍照签到, 手势签到, 位置签到, 签到码签到, 二维码签到',
   author: {
