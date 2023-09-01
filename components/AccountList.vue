@@ -19,6 +19,10 @@ async function handleSync() {
 async function selectAccount(account: API.Account) {
   account.selected = !account.selected
 }
+
+tryOnMounted(() => {
+  accountStore.syncAccounts()
+})
 </script>
 
 <template>

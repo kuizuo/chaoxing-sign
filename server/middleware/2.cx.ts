@@ -16,10 +16,10 @@ export default eventHandler(async (event) => {
     if (req.url?.startsWith('/api/auth'))
       return
 
-    if (!req.url?.startsWith('/api/cx'))
+    if (exclude.includes(req.url))
       return
 
-    if (exclude.includes(req.url))
+    if (!req.url?.startsWith('/api/cx'))
       return
 
     const method = req.method

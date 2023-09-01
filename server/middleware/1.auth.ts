@@ -3,6 +3,7 @@ import { getServerSession } from '#auth'
 export default eventHandler(async (event) => {
   const { context, node: { req } } = event
 
+  // 只有 /api/cx 下文件夹需要身份效验
   if (!req.url?.startsWith('/api/cx'))
     return
 
