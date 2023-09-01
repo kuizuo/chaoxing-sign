@@ -9,7 +9,7 @@ function toggleDark() {
 </script>
 
 <template>
-  <button class="!outline-none" @click="toggleDark">
+  <i class="!outline-none cursor-pointer" @click="toggleDark">
     <Icon :name="isDark ? 'ri:moon-line' : 'ri:sun-line'" />
-  </button>
+  </i>
 </template>
