@@ -66,6 +66,8 @@ export default defineNuxtConfig({
   ],
   colorMode: {
     classSuffix: '',
+    preference: 'light',
+    fallback: 'light',
   },
   unocss: {
     uno: true,

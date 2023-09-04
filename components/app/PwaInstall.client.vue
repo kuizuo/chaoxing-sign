@@ -5,7 +5,7 @@ const { $pwa } = useNuxtApp()
 <template>
   <div
     v-if="$pwa?.showInstallPrompt && !$pwa?.needRefresh"
-    class="fixed right-0 bottom-[--app-footer-height] m-4 p-4 rounded-lg border-1 dark:border-gray-700 flex-col gap-3"
+    class="fixed right-0 bottom-[--app-footer-height] m-4 p-4 rounded-lg border-1 border-gray-200 dark:border-gray-700 flex-col gap-3"
   >
     <h2 class="mb-3 text-left text-base">
       某星签到助手
