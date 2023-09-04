@@ -48,56 +48,20 @@ useHead({
 </script>
 
 <template>
-  <div>
-    <n-config-provider
-      :locale="zhCN" :date-locale="dateZhCN"
-      :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme"
-      :theme-overrides="themeOverrides"
-      :inline-theme-disabled="true"
-    >
-      <n-global-style />
-      <VitePwaManifest />
-      <n-message-provider keep-alive-on-hover>
-        <NuxtLayout>
-          <NuxtLoadingIndicator />
-          <NuxtPage />
-        </NuxtLayout>
-      </n-message-provider>
-    </n-config-provider>
-  </div>
+  <n-config-provider
+    :locale="zhCN" :date-locale="dateZhCN"
+    :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme"
+    :theme-overrides="themeOverrides"
+    :inline-theme-disabled="true"
+  >
+    <n-global-style />
+    <VitePwaManifest />
+    <NuxtLoadingIndicator />
+
+    <n-message-provider keep-alive-on-hover>
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </n-message-provider>
+  </n-config-provider>
 </template>
-
-<style>
-html,
-body,
-#__nuxt {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-html.dark body {
-  --at-apply: duration-300 transition-colors text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-900;
-}
-
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.4s;
-}
-.page-enter-from,
-.page-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
-}
-
-.layout-enter-active ,
-.layout-leave-active {
-  transition: all 0.1s ease-out;
-  transition: all 0.4s;
-}
-.layout-enter-from,
-.layout-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
-</style>
