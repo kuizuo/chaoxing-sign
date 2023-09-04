@@ -1,9 +1,27 @@
 <script setup lang="ts">
 import { useQRCode } from '@vueuse/integrations/useQRCode'
+import { QrcodeCapture, QrcodeDropZone, QrcodeStream } from 'vue-qrcode-reader'
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-import { QrCapture, QrDropzone, QrStream } from 'vue3-qr-reader'
+export interface DetectedBarcode {
+  boundingBox: BoundingBox
+  rawValue: string
+  format: string
+  cornerPoints: {
+    x: number
+    y: number
+  }[]
+}
+
+export interface BoundingBox {
+  x: number
+  y: number
+  width: number
+  height: number
+  top: number
+  right: number
+  bottom: number
+  left: number
+}
 
 interface Emit {
   (e: 'success', text: string): void
@@ -32,56 +50,54 @@ const qrCodeSigning = ref(false)
 
 const showScan = ref(false)
 const errorMessage = ref('')
-const camera = ref<'auto' | 'off'>('off')
 
 async function handleScan() {
   if (errorMessage.value)
     return ms.error(errorMessage.value)
 
-  if (showScan.value) {
+  if (showScan.value)
     showScan.value = false
-    camera.value = 'off'
-  }
-  else {
+
+  else
     showScan.value = true
-    camera.value = 'auto'
-  }
 }
 
-async function onInit(promise: Promise<any>) {
-  try {
-    await promise
-  }
-  catch (error: any) {
-    const errorMessages = {
-      NotAllowedError: '您需要授予相机访问权限！',
-      NotFoundError: '此设备上没有摄像头！',
-      NotSupportedError: '需要安全上下文（HTTPS，本地主机）！',
-      NotReadableError: '相机是否已经在使用？',
-      OverconstrainedError: '安装的摄像头不合适！',
-      StreamApiNotSupportedError: '此浏览器不支持 Stream API！',
-      InsecureContextError: '仅在安全上下文中允许访问相机。使用 HTTPS 或 localhost 而不是 HTTP！',
-    } as const
-
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    errorMessage.value = errorMessages[error.name] ? errorMessages[error.name] : `相机错误（${error.name}）！`
-
-    ms.error(errorMessage.value)
-    showScan.value = false
-    camera.value = 'off'
-  }
+function onCameraOn(capabilities: any) {
+  // hide loading indicator
+  console.log(capabilities)
 }
 
-async function onDecode(res: string) {
-  if (res) {
+async function onError(error: any) {
+  const errorMessages = {
+    NotAllowedError: '您需要授予相机访问权限！',
+    NotFoundError: '此设备上没有摄像头！',
+    NotSupportedError: '需要安全上下文（HTTPS，本地主机）！',
+    NotReadableError: '相机是否已经在使用？',
+    OverconstrainedError: '安装的摄像头不合适！',
+    StreamApiNotSupportedError: '此浏览器不支持 Stream API！',
+    InsecureContextError: '仅在安全上下文中允许访问相机。使用 HTTPS 或 localhost 而不是 HTTP！',
+  } as any
+
+  errorMessage.value = errorMessages[error.name] ? errorMessages[error.name] : `相机错误（${error.name}）！`
+
+  ms.error(errorMessage.value)
+  showScan.value = false
+}
+
+async function onDetect(detectedCodes: DetectedBarcode[]) {
+  console.log('detectedCodes', detectedCodes)
+
+  const [firstCode] = detectedCodes
+
+  if (firstCode) {
+    const rawValue = firstCode.rawValue
+
     ms.success('二维码识别成功,正在签到...')
-    text.value = res
+    text.value = rawValue
     showScan.value = false
-    camera.value = 'off'
 
     qrCodeSigning.value = true
-    await handleQrCode(res).finally(() => {
+    await handleQrCode(rawValue).finally(() => {
       qrCodeSigning.value = false
     })
   }
@@ -92,12 +108,10 @@ async function onDecode(res: string) {
 
 function handleOpen() {
   showScan.value = true
-  camera.value = 'auto'
 }
 
 function handleClose() {
   showScan.value = false
-  camera.value = 'off'
 }
 
 function handleUpload() {
@@ -137,16 +151,16 @@ watch(text, () => {
       <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
       <template v-else>
-        <QrStream v-if="showScan && !qrcode" class="stream" :camera="camera" @init="onInit" @decode="onDecode" />
-        <QrDropzone v-else class="flex flex-col justify-center items-center h-full w-full cursor-pointer " @decode="onDecode" @click="handleUpload()">
+        <QrcodeStream v-if="showScan && !qrcode" :constraints="{ facingMode: '' }" class="bg-black/20" @camera-on="onCameraOn" @error="onError" @detect="onDetect" />
+        <QrcodeDropZone v-else class="flex flex-col justify-center items-center h-full w-full cursor-pointer " @detect="onDetect" @click="handleUpload()">
           <div style="padding-top: 16px;margin-bottom: 12px">
             <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
           </div>
           <n-text>
             点击或者拖动文件到该区域来上传
           </n-text>
-        </QrDropzone>
-        <QrCapture class="hidden" capture="false" @decode="onDecode" />
+        </QrcodeDropZone>
+        <QrcodeCapture :multiple="false" class="hidden" capture="environment" @detect="onDetect" />
       </template>
     </div>
     <span>若有签到链接，可直接在下方输入</span>
@@ -158,24 +172,3 @@ watch(text, () => {
     </n-input-group>
   </n-modal>
 </template>
-
-<style lang='scss' scoped>
-.stream {
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba(0, 0, 0, 0.5);
-}
-.scan-confirmation {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-
-  background-color: rgba(255, 255, 255, .8);
-
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-}
-</style>
