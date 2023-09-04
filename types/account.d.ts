@@ -1,34 +1,31 @@
-declare namespace API {
+export interface Account {
+  uid: string
+  username: string
+  password: string
+  info: CX.User
+  cookies: Record<string, any>[]
+  setting: Setting
+  lastLoginTime: string
+  courses: CX.Course[]
+  activities: Activity[]
+  selected: boolean
+}
 
-  interface Account {
-    uid: string
-    username: string
-    password: string
-    info: CX.User
-    cookies: Record<string, any>[]
-    setting: Setting
-    lastLoginTime: string
-    courses: CX.Course[]
-    activities: Activity[]
-    selected: boolean
-  }
+export interface Setting extends CX.Setting {
 
-  interface Setting extends CX.Setting {
+}
 
-  }
+export interface Course extends CX.Course {
+  isSigning?: boolean
+  isLoadActivity?: boolean
+}
 
-  interface Course extends CX.Course {
-    isSigning?: boolean
-    isLoadActivity?: boolean
-  }
+export interface Activity extends CX.ActivityDetail {
+  result?: string
+}
 
-  interface Activity extends CX.ActivityDetail {
-    result?: string
-  }
-
-  interface History {
-    id: string
-    activityName: string
-    type: number
-  }
+export interface History {
+  id: stringÏ
+  activityName: string
+  type: number
 }

@@ -1,5 +1,7 @@
+import type { Course } from '~/types/account'
+
 interface Body {
-  course: API.Course
+  course: Course
   uid: string
 }
 

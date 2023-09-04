@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { pick } from 'lodash'
+import type { Account } from '~/types/account'
 
 const accountStore = useAccountStore()
 
@@ -16,7 +17,7 @@ async function handleSync() {
   })
 }
 
-async function selectAccount(account: API.Account) {
+async function selectAccount(account: Account) {
   account.selected = !account.selected
 }
 

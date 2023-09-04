@@ -1,6 +1,7 @@
 import { signTypeMap } from './cx'
+import type { Setting } from '~/types/account'
 
-export const defaultSetting: API.Setting = {
+export const defaultSetting: Setting = {
   location: {
     text: '',
     latitude: '-1',

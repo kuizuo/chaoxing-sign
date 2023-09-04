@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useDateFormat } from '@vueuse/core'
-import { SignTypeEnum } from '~~/constants/cx'
+import { SignTypeEnum } from '~/constants/cx'
 
 const props = defineProps<{
   uid: string
   username?: string
   info: CX.User
-  setting: API.Setting
+  setting: CX.Setting
   selected?: boolean
   lastLoginTime: string
 }>()

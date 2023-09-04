@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { activityTypeMap } from '~~/constants/cx'
+import type { Account, Activity, Course } from '~/types/account'
+import { activityTypeMap } from '~/constants/cx'
 
 const props = defineProps<{
-  account: API.Account
-  courses: API.Course[]
+  account: Account
+  courses: Course[]
 }>()
 
 const accountStore = useAccountStore()
@@ -11,8 +12,8 @@ const accountStore = useAccountStore()
 const isSyncLoading = ref(false)
 const showModal = ref(false)
 
-const currentCourse = ref<API.Course>()
-const activities = ref<API.Activity[]>([])
+const currentCourse = ref<Course>()
+const activities = ref<Activity[]>([])
 
 function syncCourse() {
   isSyncLoading.value = true
@@ -21,7 +22,7 @@ function syncCourse() {
   })
 }
 
-async function lookActivities(course: API.Course) {
+async function lookActivities(course: Course) {
   course.isLoadActivity = true
   currentCourse.value = course
   activities.value = []
@@ -34,7 +35,7 @@ async function lookActivities(course: API.Course) {
   }
 }
 
-async function signByCourse(course: API.Course) {
+async function signByCourse(course: Course) {
   course.isSigning = true
   try {
     await accountStore.signByCourse(props.account.uid, course)
@@ -44,7 +45,7 @@ async function signByCourse(course: API.Course) {
   }
 }
 
-async function signByActivity(course: API.Course, activity: API.Activity) {
+async function signByActivity(course: Course, activity: Activity) {
   await accountStore.signByActivity(props.account.uid, course, activity)
 }
 </script>

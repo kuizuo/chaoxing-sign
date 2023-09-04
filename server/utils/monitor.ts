@@ -1,7 +1,7 @@
 import { sleep } from '@kuizuo/utils'
 import type { CxAccount } from '@prisma/client'
 import type { EasemobChat } from 'easemob-websdk'
-import { ActivityTypeEnum, SignMode } from '~~/constants/cx'
+import { ActivityTypeEnum, SignMode } from '~/constants/cx'
 import { Cx } from '~~/server/protocol/cx'
 
 import { IMConnectionMap, createIMConnection } from '~~/server/protocol/easemob'

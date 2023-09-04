@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SignTypeEnum } from '~~/constants/cx'
+import { SignTypeEnum } from '~/constants/cx'
 
 const accountStore = useAccountStore()
 const logStore = useLogStore()

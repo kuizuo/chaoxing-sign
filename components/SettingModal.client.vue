@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { defaultSetting } from '~~/constants/setting'
-import { signTypeMap } from '~~/constants/cx'
+import { defaultSetting } from '~/constants/setting'
+import { signTypeMap } from '~/constants/cx'
+import type { Setting } from '~/types/account'
 
 const props = defineProps<{
   show: boolean
   uid: string
-  setting: API.Setting
+  setting: Setting
 }>()
 
 const emit = defineEmits<{
@@ -24,7 +25,7 @@ const show = computed({
   },
 })
 
-const form = ref<API.Setting>(props.setting)
+const form = ref<Setting>(props.setting)
 
 async function handleSave() {
   saving.value = true
@@ -108,7 +109,7 @@ watch(show, (value) => {
               <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                    <a class="flex" href="https://map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
                       <Icon name="material-symbols:add-location-outline-rounded" />
                     </a>
                   </template>
@@ -126,7 +127,7 @@ watch(show, (value) => {
               <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                    <a class="flex" href="https://map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
                       <Icon name="material-symbols:add-location-outline-rounded" />
                     </a>
                   </template>

@@ -1,10 +1,11 @@
 import { skipHydrate } from 'pinia'
 import { createDiscreteApi } from 'naive-ui'
-import { signTypeMap } from '~~/constants/cx'
+import { signTypeMap } from '~/constants/cx'
 import type { Body as LoginForm } from '~/server/api/cx/login.post'
+import type { Account, Activity, Course, Setting } from '~/types/account'
 
 export const useAccountStore = defineStore('account', () => {
-  const accounts = ref<API.Account[]>([])
+  const accounts = ref<Account[]>([])
 
   const selectAccounts = computed(() => accounts.value.filter(a => a.selected === true))
 
@@ -24,7 +25,7 @@ export const useAccountStore = defineStore('account', () => {
     return account
   }
 
-  function setAccount(uid: string, setting: API.Setting) {
+  function setAccount(uid: string, setting: CX.Setting) {
     const index = accounts.value.findIndex(a => a.uid === uid)
     if (index !== -1)
       accounts.value[index].setting = setting
@@ -32,7 +33,7 @@ export const useAccountStore = defineStore('account', () => {
 
   async function syncAccounts() {
     const { data } = await request('/api/cx/accounts')
-    accounts.value = data as unknown as API.Account[]
+    accounts.value = data as unknown as Account[]
 
     log('同步成功', { type: 'success' })
   }
@@ -47,7 +48,7 @@ export const useAccountStore = defineStore('account', () => {
           ...data,
           courses: [],
           selected: true,
-        } as unknown as API.Account)
+        } as unknown as Account)
       }
       else {
         log(`${form.username} ${message}`, { type: 'error' })
@@ -86,7 +87,7 @@ export const useAccountStore = defineStore('account', () => {
   /*
     获取指定课程的所有活动
   */
-  async function getActivityList(uid: string, course: API.Course) {
+  async function getActivityList(uid: string, course: Course) {
     const { data } = await request(`/api/cx/courses/${course.courseId}/activities`, {
       method: 'POST',
       body: { uid, course },
@@ -98,7 +99,7 @@ export const useAccountStore = defineStore('account', () => {
   /*
     根据课程签到
   */
-  async function signByCourse(uid: string, course: API.Course) {
+  async function signByCourse(uid: string, course: Course) {
     const { data } = await request(`/api/cx/courses/${course.courseId}/sign`, {
       method: 'POST',
       body: { uid, course },
@@ -122,7 +123,7 @@ export const useAccountStore = defineStore('account', () => {
   /*
     根据指定(签到)活动签到
    */
-  async function signByActivity(uid: string, course: API.Course, activity: API.Activity) {
+  async function signByActivity(uid: string, course: Course, activity: Activity) {
     const { data } = await request(`/api/cx/courses/${course.courseId}/activities/${activity.id}/sign`, {
       method: 'POST',
       body: { uid, course, activity },
@@ -253,7 +254,7 @@ export const useAccountStore = defineStore('account', () => {
       log(`${account.info.realname} 取消监听失败`, { type: 'error' })
   }
 
-  async function updateSetting(uid: string, setting: API.Setting) {
+  async function updateSetting(uid: string, setting: Setting) {
     const account = getAccount(uid)
 
     const { data } = await request(`/api/cx/accounts/${uid}/update_setting`, {

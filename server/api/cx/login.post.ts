@@ -1,7 +1,7 @@
 import { omit } from 'lodash-es'
 import { getServerSession } from '#auth'
 import { CXMap, Cx } from '~~/server/protocol/cx'
-import { defaultSetting } from '~~/constants/setting'
+import { defaultSetting } from '~/constants/setting'
 
 export interface Body extends Pick<CX.User, 'username' | 'password'> { }
 
