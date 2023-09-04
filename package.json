@@ -73,7 +73,7 @@
     "sass": "^1.66.1",
     "typescript": "^5.2.2",
     "vitest": "^0.24.5",
-    "vue3-qr-reader": "^1.0.0",
+    "vue-qrcode-reader": "^5.3.4",
     "ws": "^8.13.0"
   }
 }
