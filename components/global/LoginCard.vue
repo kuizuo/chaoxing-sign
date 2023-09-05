@@ -45,7 +45,8 @@ async function signInWithPassword() {
     loading.value = true
 
     const { error, url } = await signIn('credentials', {
-      ...signInModel.value,
+      email: signInModel.value.email,
+      password: signInModel.value.password,
       redirect: false,
     })
 
