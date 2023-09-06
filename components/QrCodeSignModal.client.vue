@@ -151,7 +151,7 @@ watch(text, () => {
       <n-image v-if="qrcode && !showScan" :src="qrcode" />
 
       <template v-else>
-        <QrcodeStream v-if="showScan && !qrcode" :constraints="{ facingMode: '' }" class="bg-black/20" @camera-on="onCameraOn" @error="onError" @detect="onDetect" />
+        <QrcodeStream v-if="showScan && !qrcode" :constraints="{ facingMode: 'environment' }" class="bg-black/20" @camera-on="onCameraOn" @error="onError" @detect="onDetect" />
         <QrcodeDropZone v-else class="flex flex-col justify-center items-center h-full w-full cursor-pointer " @detect="onDetect" @click="handleUpload()">
           <div style="padding-top: 16px;margin-bottom: 12px">
             <Icon name="material-symbols:unarchive-outline-sharp" size="48" />
