@@ -2,7 +2,7 @@ import { CXMap } from '~~/server/protocol/cx'
 import { IMConnectionMap } from '~~/server/protocol/easemob'
 
 export default defineEventHandler(async (event) => {
-  const uid = event.context.cx.user?.uid
+  const uid = event.context.cx?.user?.uid
 
   await event.context.cx?.logout()
 

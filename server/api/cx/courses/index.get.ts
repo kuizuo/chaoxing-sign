@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     },
   })
 
-  const toCreate = courses.filter(c => !exists.some(e => e.id === `${c.courseId}_${c.classId}`))
+  const toCreate = courses.filter(c => !exists?.some(e => e.id === `${c.courseId}_${c.classId}`))
 
   if (toCreate.length > 0) {
     await event.context.prisma.course.createMany({

@@ -39,7 +39,7 @@ const rules: FormRules = {
 async function addAccount() {
   await formRef.value?.validate()
 
-  if (accountStore.accounts.some(a => a.username === form.username)) {
+  if (accountStore.accounts?.some(a => a.username === form.username)) {
     ms.warning('账号已存在,无需添加')
     return
   }
