@@ -42,7 +42,7 @@ export const useAccountStore = defineStore('account', () => {
     try {
       const { code, message, data } = await request('/api/cx/login', { method: 'POST', body: form })
       if (code === 200) {
-        log(`${data?.info?.username} ${message}`, { type: 'success' })
+        log(`${data?.info?.username} ${data?.info.realname} ${message}`, { type: 'success' })
 
         accounts.value.push({
           ...data,
