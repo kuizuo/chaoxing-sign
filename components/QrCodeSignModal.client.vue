@@ -23,11 +23,13 @@ export interface BoundingBox {
   left: number
 }
 
-interface Emit {
-  (e: 'success', text: string): void
-}
+const props = defineProps<{
+  title?: string
+}>()
 
-const emit = defineEmits<Emit>()
+const emit = defineEmits<{
+  (e: 'success', text: string): void
+}>()
 
 const ms = useMessage()
 const text = ref('')
@@ -92,7 +94,7 @@ async function onDetect(detectedCodes: DetectedBarcode[]) {
   if (firstCode) {
     const rawValue = firstCode.rawValue
 
-    ms.success('二维码识别成功,正在签到...')
+    ms.success('二维码识别成功,准备签到...')
     text.value = rawValue
     showScan.value = false
 
@@ -131,7 +133,7 @@ watch(text, () => {
     :mask-closable="false"
     preset="card"
     size="large"
-    title="上传二维码图片"
+    :title="title ?? '二维码签到'"
     :bordered="false"
     :closable="true"
     :style="{ 'max-width': '360px' }"

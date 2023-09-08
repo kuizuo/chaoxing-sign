@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { signTypeMap } from '~/constants/cx'
+
 const props = defineProps<{
+  activity: CX.ActivityItem
   loading: boolean
 }>()
 
@@ -7,8 +10,16 @@ const emit = defineEmits<{
   (e: 'success', text: string): void
 }>()
 
-const ms = useMessage()
+console.log('activity', props.activity)
+
 const text = ref('')
+
+const signPlaceholder = computed(() => {
+  return {
+    3: '请输入手势轨迹',
+    5: '请输入签到码',
+  }[props.activity?.otherId]
+})
 
 async function handleCodeSign(text: string) {
   emit('success', text)
@@ -30,7 +41,7 @@ function handleClose() {
     :mask-closable="false"
     preset="card"
     size="large"
-    title="签到码或手势签到"
+    :title="`${activity?.course?.name} | ${signTypeMap?.[activity?.otherId]}`"
     :bordered="false"
     :closable="true"
     :style="{ 'max-width': '360px' }"
@@ -39,7 +50,7 @@ function handleClose() {
     @after-leave="handleClose"
   >
     <n-input-group>
-      <n-input v-model:value="text" placeholder="请输入签到码或手势轨迹" clearable />
+      <n-input v-model:value="text" :placeholder="signPlaceholder" clearable />
       <n-button type="primary" :loading="loading" @click="handleCodeSign(text)">
         签到
       </n-button>

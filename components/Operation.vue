@@ -40,7 +40,7 @@ async function handleSignAll() {
   if (toAccounts.length === 0)
     return logStore.log('请先选择账号', { type: 'warning' })
 
-  logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
+  logStore.log(`共 ${toAccounts.length} 个账号准备签到`, { type: 'loading' })
 
   const data = await Promise.allSettled(
     toAccounts.map((account) => {
@@ -52,8 +52,8 @@ async function handleSignAll() {
 
   // // 如果一键签到中有二维码签到的课程,则弹出二维码扫码签到的弹窗
   const QrCodeSignActivity = oneData.find(item => item.signType === SignTypeEnum.QRCode)?.activity
-
   if (QrCodeSignActivity) {
+    doingActivity.value = QrCodeSignActivity
     ms.warning(`检测到有二维码签到的课程[${QrCodeSignActivity.course?.name}],请扫码`, { duration: 20 * 1000, closable: true })
     showQrCodeModal.value = true
     return
@@ -61,7 +61,6 @@ async function handleSignAll() {
 
   // 检测到签到码签到
   const CodeSignActivity = oneData.find(item => item.signType === SignTypeEnum.Code)?.activity
-
   if (CodeSignActivity) {
     doingActivity.value = CodeSignActivity
     ms.warning(`检测到有签到码签到的课程[${CodeSignActivity.course?.name}],请输入签到码, 如 1234`, { duration: 20 * 1000, closable: true })
@@ -71,15 +70,13 @@ async function handleSignAll() {
 
   // 检测到手势签到
   const GestureSignActivity = oneData.find(item => item.signType === SignTypeEnum.Gesture)?.activity
-
   if (GestureSignActivity) {
     doingActivity.value = GestureSignActivity
     ms.warning(`检测到有手势签到的课程[${GestureSignActivity.course?.name}],请输入手势轨迹, 如 123654789`, { duration: 20 * 1000, closable: true })
     showCodeOrGestureModal.value = true
-    return
   }
 
-  logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
+  // logStore.log(`共 ${toAccounts.length} 个账号签到完成`, { type: 'success' })
 }
 
 async function openQrCodeSignModal() {
@@ -94,7 +91,7 @@ async function openQrCodeSignModal() {
 async function handleSuccess(result: string) {
   const toAccounts = unref(selectAccounts)
 
-  logStore.log(`共 ${toAccounts.length} 个账号正在签到`, { type: 'loading' })
+  logStore.log(`共 ${toAccounts.length} 个账号准备签到`, { type: 'loading' })
 
   await Promise.allSettled(
     toAccounts.map((account) => {
@@ -152,13 +149,13 @@ async function handleCodeOrGestureSignSuccess(result: string) {
         全部二维码扫码签到
       </n-tooltip>
     </n-space>
-    <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleSuccess" />
-    <CodeOrGestureSignModal v-model:show="showCodeOrGestureModal" :loading="loading" @success="handleCodeOrGestureSignSuccess" />
+    <QrCodeSignModal v-model:show="showQrCodeModal" :title="doingActivity?.course.name" @success="handleSuccess" />
+    <CodeOrGestureSignModal v-model:show="showCodeOrGestureModal" :activity="doingActivity!" :loading="loading" @success="handleCodeOrGestureSignSuccess" />
   </n-card>
 </template>
 
 <style scoped>
-.icon{
+.icon {
   --at-apply: cursor-pointer transition hover:text-red-4
 }
 </style>

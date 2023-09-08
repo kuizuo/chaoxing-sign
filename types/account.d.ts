@@ -20,9 +20,7 @@ export interface Course extends CX.Course {
   isLoadActivity?: boolean
 }
 
-export interface Activity extends CX.ActivityDetail {
-  result?: string
-}
+export interface Activity extends CX.ActivityItem & CX.Course {}
 
 export interface History {
   id: stringÏ

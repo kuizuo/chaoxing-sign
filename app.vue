@@ -5,6 +5,10 @@ import { darkTheme, dateZhCN, lightTheme, zhCN } from 'naive-ui'
 const colorMode = useColorMode()
 const { title, keywords, description } = useAppConfig()
 
+const theme = computed(() => {
+  return colorMode.value === 'system' ? (colorMode.value ? lightTheme : darkTheme) : colorMode.value === 'light' ? lightTheme : darkTheme
+})
+
 const themeColor = ref('#e70012')
 
 const themeOverrides = computed(() => {
@@ -50,7 +54,7 @@ useHead({
 <template>
   <n-config-provider
     :locale="zhCN" :date-locale="dateZhCN"
-    :theme="colorMode.preference === 'dark' ? darkTheme : lightTheme"
+    :theme="theme"
     :theme-overrides="themeOverrides"
     :inline-theme-disabled="true"
   >

@@ -37,6 +37,7 @@ async function oneClickSign(uid: string) {
   const QrCodeSignActivity = data.find(item => item.signType === SignTypeEnum.QRCode)?.activity
 
   if (QrCodeSignActivity) {
+    doingActivity.value = QrCodeSignActivity
     ms.warning(`检测到有二维码签到的课程[${QrCodeSignActivity.course?.name}],请扫码`, { duration: 20 * 1000, closable: true })
     showQrCodeModal.value = true
     return
@@ -124,7 +125,7 @@ async function handleUnMonitor() {
           <n-ellipsis class="!max-w-[10ch]">
             {{ info.siteName }}
           </n-ellipsis>
-          <span>{{ info.realname }}</span>
+          <span cllass="text-sm">{{ info.realname }}</span>
           <n-popover v-if="monitor" trigger="hover">
             <template #trigger>
               <n-popconfirm
@@ -211,8 +212,8 @@ async function handleUnMonitor() {
           </n-tooltip>
         </n-space>
       </template>
-      <QrCodeSignModal v-model:show="showQrCodeModal" @success="handleQrCodeSignSuccess" />
-      <CodeOrGestureSignModal v-model:show="showCodeOrGestureModal" :loading="loading" @success="handleCodeOrGestureSignSuccess" />
+      <QrCodeSignModal v-model:show="showQrCodeModal" :title="doingActivity?.course.name" @success="handleQrCodeSignSuccess" />
+      <CodeOrGestureSignModal v-model:show="showCodeOrGestureModal" :activity="doingActivity!" :loading="loading" @success="handleCodeOrGestureSignSuccess" />
       <SignHistory v-model:show="showSignHistory" :uid="uid" />
       <SettingModal v-if="showSettingModal" v-model:show="showSettingModal" :uid="uid" :setting="setting" />
     </n-card>
@@ -223,7 +224,7 @@ async function handleUnMonitor() {
 </template>
 
 <style lang="scss" scoped>
-.icon{
+.icon {
   --at-apply: cursor-pointer transition hover:text-red-4
 }
 
