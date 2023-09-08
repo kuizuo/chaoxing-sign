@@ -31,6 +31,14 @@ export enum SignTypeEnum {
   Code = 5, // 签到码签到
 }
 
+export const signTypeMap: Record<number, string> = {
+  0: '普通签到',
+  2: '二维码签到',
+  3: '手势签到',
+  4: '位置签到',
+  5: '签到码签到',
+} as const
+
 export class Cx {
   public http!: Got
   public cookieJar: CookieJar
@@ -218,7 +226,7 @@ export class Cx {
     const $ = cheerio.load(html)
 
     const status = $('#statuscontent').text().trim().replaceAll(/[\n\s]/g, '')
-    console.log('statuscontent', status)
+    console.log(`${course.name} ${signTypeMap[activity.otherId]} 预签到状态: `, status)
     if (status)
       return status
   }
@@ -441,6 +449,10 @@ export class Cx {
         const activity = await this.getActivityDetail(a.id)
         const result = await this.handleSign(a.course, activity, setting)
 
+        // 如果已签到过, 则不返回
+        if (result === '已签到过')
+          continue
+
         signResults.push({
           activity: {
             ...a,
@@ -455,7 +467,10 @@ export class Cx {
   }
 
   async handleSign(course: CX.Course, activity: CX.ActivityDetail, setting?: CX.Setting) {
-    await this.preSign(course, activity)
+    const status = await this.preSign(course, activity)
+
+    if (status === '签到成功')
+      return '已签到过'
 
     if (setting?.signType && !setting?.signType?.map(type => Number(type))?.includes(activity.otherId))
       return '该账号不支持此签到类型'
