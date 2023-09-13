@@ -109,7 +109,7 @@ watch(show, (value) => {
               <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    <a class="flex" href="https://map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
                       <Icon name="material-symbols:add-location-outline-rounded" />
                     </a>
                   </template>
@@ -127,7 +127,7 @@ watch(show, (value) => {
               <template #suffix>
                 <n-tooltip trigger="hover">
                   <template #trigger>
-                    <a class="flex" href="https://map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
+                    <a class="flex" href="https://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">
                       <Icon name="material-symbols:add-location-outline-rounded" />
                     </a>
                   </template>
