@@ -1,4 +1,4 @@
-# 🌟某星签到
+# 🌟某星签到(网页版)
 
 <a href="https://www.npmjs.com/package/nuxt/v/rc"><img alt="size" src="https://img.shields.io/github/package-json/dependency-version/kuizuo/chaoxing-sign/dev/nuxt?style=flat&colorA=002438&colorB=28CF8D"></a> <a href="https://github.com/kuizuo/chaoxing-sign/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/kuizuo/chaoxing-sign/ci.yml?style=flat&colorA=002438&colorB=28CF8D"></a>  <a href="https://github.com/kuizuo/chaoxing-sign/tree/HEAD/LICENSED"><img alt="License" src="https://img.shields.io/github/license/kuizuo/chaoxing-sign?style=flat&colorA=002438&colorB=28CF8D" /></a>
 
@@ -6,16 +6,16 @@
 
 ## ✨功能
 
-网页~~版在线签到~~
-
 - [x] 普通签到
 - [x] 拍照签到
 - [x] 位置签到
-- [x] 手势签到 (检测到手势签到则弹窗输入手势轨迹签到)
-- [x] 签到码签到 (检测到签到码签到则弹窗输入签到码签到)
-- [x] 二维码签到（enc 已不在固定, 如果是刷新二维码, 签到必须在10秒完成
-- [x] 多用户凭据储存
-- [x] 同时签到多个账户
+- [x] 手势签到
+- [x] 签到码签到
+- [x] 二维码签到
+- [x] 监听签到任务,自动完成
+- [x] 支持多用户批量签到
+
+[更多帮助](./content/help.md)
 
 ## 🛠 运行
 
