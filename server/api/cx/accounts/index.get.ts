@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
     select: {
       uid: true,
       username: true,
+      password: true,
       info: true,
       courses: true,
       setting: true,
@@ -36,9 +37,9 @@ export default defineEventHandler(async (event) => {
   for await (const account of toReLoginAccounts) {
     const cx = new Cx({ username: account.username, password: account.password })
 
-    const result = await cx.login()
+    await cx.login()
 
-    if (result === '登录成功') {
+    if (cx.user.logged && cx.user.uid) {
       await prisma.cxAccount.update({
         where: {
           uid: cx.user.uid,
@@ -57,15 +58,6 @@ export default defineEventHandler(async (event) => {
         CXMap.set(cx.user.username, cx)
     }
     else {
-      await prisma.cxAccount.update({
-        where: {
-          uid: cx.user.uid,
-        },
-        data: {
-          lastLoginTime: new Date(),
-        },
-      })
-
       if (CXMap.has(cx.user.username))
         CXMap.delete(cx.user.username)
     }
