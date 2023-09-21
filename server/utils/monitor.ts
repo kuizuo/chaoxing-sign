@@ -65,6 +65,14 @@ export async function handleListen(client: EasemobChat.Connection, cx: Cx, accou
       },
       onClosed: async () => {
         // retry connect
+        // 如果用户在监听中更改设置后，然后在关闭监听时会导致 account 获取的是未设置前的数据
+        // 因此这里重新从数据库中获取 新的 account 信息
+        const account = await prisma.cxAccount.findUnique({
+          where: {
+            uid: cx.user.uid,
+          },
+        })
+
         try {
           await handleListen(client, cx, account)
         }
