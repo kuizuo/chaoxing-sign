@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
       data: {
         isOpened: true,
       },
-    }, '已监听')
+    }, '已处于监听状态')
   }
 
   const account = await event.context.prisma.cxAccount.findUnique({

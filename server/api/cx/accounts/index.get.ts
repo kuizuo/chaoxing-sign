@@ -45,7 +45,7 @@ export default defineEventHandler(async (event) => {
           uid: cx.user.uid,
         },
         data: {
-          cookies: cx.getCookie('', 'json'),
+          cookies: cx.getCookie('', 'json') as any,
           info: cx.user as any,
           lastLoginTime: new Date(),
         },

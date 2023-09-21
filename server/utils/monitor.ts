@@ -48,6 +48,7 @@ export async function handleListen(client: EasemobChat.Connection, cx: Cx, accou
   await new Promise((resolve, reject) => {
     client.listen({
       onOpened: async () => {
+        console.log(cx.user.username, account.setting)
         await prisma.cxAccount.update({
           where: {
             uid: cx.user.uid,

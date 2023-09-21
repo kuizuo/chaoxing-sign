@@ -2,7 +2,7 @@
 
 interface Body {
   uid: string
-  setting: Setting
+  setting: CX.Setting
 }
 
 export default defineEventHandler(async (event) => {
@@ -48,5 +48,5 @@ export default defineEventHandler(async (event) => {
   //   }
   // }
 
-  return ResOp.success(result.setting as unknown as Setting)
+  return ResOp.success(result.setting as unknown as CX.Setting)
 })

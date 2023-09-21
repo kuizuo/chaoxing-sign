@@ -3,6 +3,7 @@
   "rules": {
     "no-console": "off",
     "new-cap": "off",
-    "n/prefer-global/process": "off"
+    "n/prefer-global/process": "off",
+    "no-restricted-globals": "off"
   }
 }
