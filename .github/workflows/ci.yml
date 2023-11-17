@@ -31,19 +31,19 @@ jobs:
         run: nr build
 
       - name: SSH Deploy
-        uses: easingthemes/ssh-deploy@v2.2.11
+        uses: easingthemes/ssh-deploy@v4.1.10
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-          ARGS: '-avzr --delete'
-          SOURCE: '.output'
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: -avzr --delete
+          SOURCE: .output
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          TARGET: '/www/wwwroot/NodeProject/chaoxing-sign'
+          REMOTE_USER: root
+          TARGET: /opt/1panel/apps/openresty/openresty/www/sites/cx.kuizuo.cn/server
 
       - name: SSH Commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
-          key: ${{ secrets.PRIVATE_KEY }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: pm2 restart chaoxing-sign
