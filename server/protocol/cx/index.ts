@@ -355,6 +355,7 @@ export class Cx {
       fid: this.user.schoolid,
       name: this.user.realname,
       ifTiJiao: 1,
+      validate: '',
     }, '', '', { encodeURIComponent: s => s })
 
     return this.stuSign(query)
