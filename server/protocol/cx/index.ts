@@ -224,6 +224,8 @@ export class Cx {
       responseType: 'text',
     })
 
+    await sleep(500)
+
     // 两条必要请求!  位置签到必备
     const { body: data } = await this.http.get(
       'https://mobilelearn.chaoxing.com/pptSign/analysis',
@@ -249,7 +251,7 @@ export class Cx {
     )
     console.log('analysis 结果: ', data1)
 
-    sleep(200)
+    await sleep(500)
 
     const $ = cheerio.load(html)
 
@@ -306,7 +308,7 @@ export class Cx {
     if (data.result !== 1)
       return data.errorMsg
 
-    sleep(100)
+    await sleep(200)
 
     const query = qsStringify({
       activeId: activity.id,
@@ -338,7 +340,7 @@ export class Cx {
     if (data.result !== 1)
       return data.errorMsg
 
-    sleep(100)
+    await sleep(200)
 
     const query = qsStringify({
       activeId: activity.id,
@@ -525,6 +527,7 @@ export class Cx {
         return '失败'
 
       case SignTypeEnum.Location:
+        await sleep(500)
         return await this.signLocation(activity, setting?.location)
 
       case SignTypeEnum.QRCode:
