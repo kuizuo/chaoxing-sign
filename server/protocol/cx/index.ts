@@ -217,6 +217,7 @@ export class Cx {
         ls: '1',
         appType: '15',
         uid: this.user.uid,
+        isTeacherViewOpen: 0,
         // 是否为刷新二维码的
         ...((activity.ifRefreshEwm) && { rcode: encodeURIComponent(`SIGNIN:aid=${activity.id}&source=15&Code=${activity.code}&enc=${activity.enc}`) }),
       },
@@ -229,31 +230,6 @@ export class Cx {
     console.log(`${course.name} ${signTypeMap[activity.otherId]} 预签到状态: `, status)
     if (status)
       return status
-  }
-
-  /*
-    群聊预签到
-  */
-  async preSign_chat(activity: CX.ActivityDetail) {
-    const { body: data } = await this.http.get(
-      'https://mobilelearn.chaoxing.com/sign/preStuSign',
-      {
-        searchParams: {
-          activeId: activity.id,
-          code: '',
-          uid: this.user.uid,
-          courseId: null,
-          classId: '0',
-          Normal: '0',
-          // chatId: activity.chatId,
-          appType: '0',
-          tid: '',
-          atype: null,
-          sys: '0',
-        },
-      },
-    )
-    return data
   }
 
   /*
@@ -289,12 +265,26 @@ export class Cx {
   }
 
   async signCode(activity: CX.ActivityDetail, signCode: string) {
+    const { body: data } = await this.http.get<{ result: number; errorMsg: string }>(
+      'https://mobilelearn.chaoxing.com/widget/sign/pcStuSignController/checkSignCode',
+      {
+        searchParams: {
+          activeId: activity.id,
+          signCode,
+        },
+        responseType: 'json',
+      },
+    )
+
+    if (data.result !== 1)
+      return data.errorMsg
+
     const query = qsStringify({
       activeId: activity.id,
       uid: this.user.uid,
       clientip: '',
-      latitude: '-1',
-      longitude: '-1',
+      latitude: '',
+      longitude: '',
       appType: '15',
       fid: this.user.schoolid,
       name: this.user.realname,
@@ -305,17 +295,42 @@ export class Cx {
   }
 
   async signGesture(activity: CX.ActivityDetail, signCode: string) {
+    // 获取签到码
+    const { body: data1 } = await this.http.get<{ result: number; errorMsg: string }>(
+      'https://mobilelearn.chaoxing.com/v2/apis/active/getPPTActiveInfo',
+      {
+        searchParams: {
+          activeId: activity.id,
+        },
+        responseType: 'json',
+      },
+    )
+    console.log(data1)
+
+    const { body: data } = await this.http.get<{ result: number; errorMsg: string }>(
+      'https://mobilelearn.chaoxing.com/widget/sign/pcStuSignController/checkSignCode',
+      {
+        searchParams: {
+          activeId: activity.id,
+          signCode,
+        },
+        responseType: 'json',
+      },
+    )
+
+    if (data.result !== 1)
+      return data.errorMsg
+
     const query = qsStringify({
       activeId: activity.id,
       uid: this.user.uid,
       clientip: '',
-      latitude: '-1',
-      longitude: '-1',
+      latitude: '',
+      longitude: '',
       appType: '15',
       fid: this.user.schoolid,
       name: this.user.realname,
       signCode,
-
     }, '', '', { encodeURIComponent: s => s })
 
     return this.stuSign(query)

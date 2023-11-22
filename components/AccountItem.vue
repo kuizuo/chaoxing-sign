@@ -72,7 +72,7 @@ async function handleLogout() {
 }
 
 async function handleQrCodeSignSuccess(result: string) {
-  await accountStore.signByQrCode(props.uid, result)
+  await accountStore.signByQrCode(props.uid, result, doingActivity.value!.course.courseId!)
 }
 
 async function handleCodeOrGestureSignSuccess(result: string) {
@@ -85,10 +85,10 @@ async function handleCodeOrGestureSignSuccess(result: string) {
 
   try {
     if (activity.otherId === SignTypeEnum.Code)
-      await accountStore.signByCode(props.uid, String(activity.id), result)
+      await accountStore.signByCode(props.uid, doingActivity.value!.course.courseId!, String(activity.id), result)
 
     else if (activity.otherId === SignTypeEnum.Gesture)
-      await accountStore.signByGesture(props.uid, String(activity.id), result)
+      await accountStore.signByGesture(props.uid, doingActivity.value!.course.courseId!, String(activity.id), result)
   }
   finally {
     loading.value = false
