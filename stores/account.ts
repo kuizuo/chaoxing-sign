@@ -139,10 +139,10 @@ export const useAccountStore = defineStore('account', () => {
   /*
     签到码签到
   */
-  async function signByCode(uid: string, activityId: string, signCode: string) {
+  async function signByCode(uid: string, courseId: string, activityId: string, signCode: string) {
     const { data } = await request(`/api/cx/accounts/${uid}/sign_by_code`, {
       method: 'POST',
-      body: { uid, activityId, signCode },
+      body: { uid, courseId, activityId, signCode },
     })
 
     const { activity } = data!
@@ -156,10 +156,10 @@ export const useAccountStore = defineStore('account', () => {
   /*
     手势签到
   */
-  async function signByGesture(uid: string, activityId: string, signCode: string) {
+  async function signByGesture(uid: string, courseId: string, activityId: string, signCode: string) {
     const { data } = await request(`/api/cx/accounts/${uid}/sign_by_gesture`, {
       method: 'POST',
-      body: { uid, activityId, signCode },
+      body: { uid, courseId, activityId, signCode },
     })
 
     const { activity } = data!
@@ -173,7 +173,7 @@ export const useAccountStore = defineStore('account', () => {
   /*
     二维码签到
   */
-  async function signByQrCode(uid: string, link: string) {
+  async function signByQrCode(uid: string, link: string, courseId: string) {
     // 提取 activityId 和 enc
     // https://mobilelearn.chaoxing.com/widget/sign/e?id=8000063022220&c=529773&enc=A5BC081D895B41540E129437F6B4180F&DB_STRATEGY=PRIMARY_KEY&STRATEGY_PARA=id
 
@@ -183,7 +183,7 @@ export const useAccountStore = defineStore('account', () => {
 
     const { data } = await request(`/api/cx/accounts/${uid}/sign_by_qrcode`, {
       method: 'POST',
-      body: { uid, activityId, enc, code, url: link },
+      body: { uid, courseId, activityId, enc, code, url: link },
     })
 
     const { activity } = data!

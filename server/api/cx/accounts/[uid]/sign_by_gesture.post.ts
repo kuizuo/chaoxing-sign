@@ -2,12 +2,13 @@ import { ActivityStatusEnum, ActivityTypeEnum, SignMode } from '~/constants/cx'
 
 interface Body {
   uid: string
+  courseId: number
   activityId: number
   signCode: string
 }
 
 export default defineEventHandler(async (event) => {
-  const { activityId, signCode } = await readBody<Body>(event)
+  const { courseId, activityId, signCode } = await readBody<Body>(event)
 
   const activity = await event.context.cx.getActivityDetail(activityId)
 
@@ -23,6 +24,7 @@ export default defineEventHandler(async (event) => {
 
   const course = {
     classId: activity.clazzId,
+    courseId,
   }
 
   const status = await event.context.cx.preSign(course as unknown as CX.Course, activity)

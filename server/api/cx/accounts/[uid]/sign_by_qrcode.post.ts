@@ -2,6 +2,7 @@ import { ActivityStatusEnum, ActivityTypeEnum, SignMode } from '~/constants/cx'
 
 interface Body {
   uid: string
+  courseId: numebr
   activityId: number
   enc: string
   code: string
@@ -9,7 +10,7 @@ interface Body {
 }
 
 export default defineEventHandler(async (event) => {
-  const { activityId, code, enc } = await readBody<Body>(event)
+  const { courseId, activityId, code, enc } = await readBody<Body>(event)
 
   const activity = await event.context.cx.getActivityDetail(activityId)
 
@@ -25,6 +26,7 @@ export default defineEventHandler(async (event) => {
 
   const course = {
     classId: activity.clazzId,
+    courseId,
   }
   activity.code = code
   activity.enc = enc
@@ -55,4 +57,3 @@ export default defineEventHandler(async (event) => {
     result,
   })
 })
-
