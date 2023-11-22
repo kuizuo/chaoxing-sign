@@ -1,4 +1,4 @@
-import { qsParse, qsStringify, timestamp } from '@kuizuo/utils'
+import { qsParse, qsStringify, sleep, timestamp } from '@kuizuo/utils'
 import { mapLimit } from 'async'
 import type { Got } from 'got'
 import { CookieJar } from 'tough-cookie'
@@ -224,6 +224,33 @@ export class Cx {
       responseType: 'text',
     })
 
+    // 两条必要请求!  位置签到必备
+    const { body: data } = await this.http.get(
+      'https://mobilelearn.chaoxing.com/pptSign/analysis',
+      {
+        searchParams: {
+          vs: 1,
+          DB_STRATEGY: 'RANDOM',
+          aid: activity.id,
+        },
+        responseType: 'text',
+      },
+    )
+    const code = data.match(/code='\+'(.*?)'/)?.[1]
+    const { body: data1 } = await this.http.get(
+      'https://mobilelearn.chaoxing.com/pptSign/analysis2',
+      {
+        searchParams: {
+          DB_STRATEGY: 'RANDOM',
+          code,
+        },
+        responseType: 'text',
+      },
+    )
+    console.log('analysis 结果: ', data1)
+
+    sleep(200)
+
     const $ = cheerio.load(html)
 
     const status = $('#statuscontent').text().trim().replaceAll(/[\n\s]/g, '')
@@ -279,6 +306,8 @@ export class Cx {
     if (data.result !== 1)
       return data.errorMsg
 
+    sleep(100)
+
     const query = qsStringify({
       activeId: activity.id,
       uid: this.user.uid,
@@ -295,18 +324,6 @@ export class Cx {
   }
 
   async signGesture(activity: CX.ActivityDetail, signCode: string) {
-    // 获取签到码
-    const { body: data1 } = await this.http.get<{ result: number; errorMsg: string }>(
-      'https://mobilelearn.chaoxing.com/v2/apis/active/getPPTActiveInfo',
-      {
-        searchParams: {
-          activeId: activity.id,
-        },
-        responseType: 'json',
-      },
-    )
-    console.log(data1)
-
     const { body: data } = await this.http.get<{ result: number; errorMsg: string }>(
       'https://mobilelearn.chaoxing.com/widget/sign/pcStuSignController/checkSignCode',
       {
@@ -320,6 +337,8 @@ export class Cx {
 
     if (data.result !== 1)
       return data.errorMsg
+
+    sleep(100)
 
     const query = qsStringify({
       activeId: activity.id,
