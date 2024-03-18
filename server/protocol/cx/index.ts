@@ -553,6 +553,14 @@ export class Cx {
   }
 
   async getPhotoFile() {
+    const panPage = await got.get('https://pan-yz.chaoxing.com/', { cookieJar: this.cookieJar }).text()
+    const enc = panPage.match(/var enc ="(.*)"/)![1]
+    const { body: { list } } = await this.http.get<{ list: CX.YunPanFile[] } >(`https://pan-yz.chaoxing.com/opt/listres?&enc=${enc}`)
+    const userPhoto = list.find(d => d.name === '0.png' || d.name === '0.jpg')
+    if (userPhoto)
+      return userPhoto
+
+    // 如果没有找到用户图片, 则返回默认图片
     const { body: { data } } = await this.http.get<CX.Response<CX.YunPanFile[]>>('https://pan-yz.chaoxing.com/api/getMyDirAndFiles?puid=42736002&fldid=&page=1&size=100&addrec=0&showCollect=1&_token=3d44eb8928f52b391398035f530c4155m', {})
 
     return data.find(d => d.name === '0.png' || d.name === '0.jpg')
