@@ -13,3 +13,5 @@ declare module '@nuxt/schema' {
     }
   }
 }
+
+export {}
