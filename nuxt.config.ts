@@ -1,3 +1,5 @@
+import { pwa } from './config/pwa'
+
 export default defineNuxtConfig({
   app: {
     keepalive: true,
@@ -39,10 +41,11 @@ export default defineNuxtConfig({
     ['@pinia/nuxt', {
       autoImports: ['defineStore', 'definePiniaStore'],
     }],
-    'pinia-plugin-persistedstate/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
     '@sidebase/nuxt-auth',
     '@huntersofbook/naive-ui-nuxt',
-    '@nuxt/icon',
+    'nuxt-icon',
+    '@vite-pwa/nuxt',
     '@nuxt/devtools',
   ],
   imports: {
@@ -92,9 +95,11 @@ export default defineNuxtConfig({
   },
   auth: {
     isEnabled: true,
-    globalAppMiddleware: {
-      isEnabled: true,
-    }
+    enableGlobalAppMiddleware: true,
+    globalMiddlewareOptions: {
+      allow404WithoutAuth: true,
+      addDefaultCallbackUrl: true,
+    },
   },
   build: {
     transpile: ['punycode'],
@@ -102,6 +107,7 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
+  pwa,
   experimental: {
     renderJsonPayloads: true,
     asyncContext: true,
